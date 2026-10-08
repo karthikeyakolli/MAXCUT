@@ -1,0 +1,40 @@
+# Python bytecode & cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environment
+.venv/
+venv/
+env/
+ENV/
+build/
+dist/
+*.egg-info/
+
+# Jupyter & Notebooks
+.ipynb_checkpoints/
+
+# Testing & Linting
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Secrets & Credentials
+.env
+*.key
+qiskit-ibm.json
+.qiskit/
+
+# Ephemeral experiment outputs (preserve data dirs)
+results/data/*.tmp
+results/figures/*.tmp

@@ -1,0 +1,52 @@
+{
+  "project": "Qiskit Fall Fest 2026 — O1 Max-Cut",
+  "track": "O1 Max-Cut",
+  "challenge": {
+    "source_of_truth": "Qiskit Fall Fest 2026 Challenge Kit",
+    "problem_track": "O1",
+    "instance_path": "instances/challenge/o1_maxcut_instance.json",
+    "processor_a_spec": "data/hardware_specs/processor_a.json",
+    "processor_b_spec": "data/hardware_specs/processor_b.json",
+    "required_metrics": [
+      "optimal_cut_value",
+      "optimal_bitstrings",
+      "expectation_value",
+      "approximation_ratio",
+      "success_probability",
+      "circuit_depth",
+      "two_qubit_gate_count",
+      "total_gate_count",
+      "swap_count"
+    ]
+  },
+  "reproducibility": {
+    "seed_global": 42,
+    "seed_transpiler": 42,
+    "seed_simulator": 42,
+    "deterministic": true
+  },
+  "qaoa": {
+    "depth_p": [1, 2, 3],
+    "optimizer": "COBYLA",
+    "max_iterations": 100,
+    "tolerance": 1e-4,
+    "initial_point": "random_uniform"
+  },
+  "execution": {
+    "shots": 2048,
+    "transpiler_optimization_levels": [1, 2, 3],
+    "targets": [
+      "ideal_aer",
+      "processor_a",
+      "processor_b"
+    ]
+  },
+  "io": {
+    "instances_dir": "instances/challenge",
+    "raw_data_dir": "data/raw",
+    "processed_data_dir": "data/processed",
+    "hardware_specs_dir": "data/hardware_specs",
+    "results_data_dir": "results/data",
+    "results_figures_dir": "results/figures"
+  }
+}

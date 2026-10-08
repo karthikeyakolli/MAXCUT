@@ -1,0 +1,24 @@
+{
+  "name": "O1_MaxCut_Challenge",
+  "num_nodes": 6,
+  "nodes": [0, 1, 2, 3, 4, 5],
+  "edges": [
+    [0, 1, 1.0],
+    [0, 2, 1.0],
+    [1, 2, 1.0],
+    [1, 3, 1.0],
+    [2, 4, 1.0],
+    [3, 4, 1.0],
+    [3, 5, 1.0],
+    [4, 5, 1.0]
+  ],
+  "is_weighted": false,
+  "reference_optimum": null,
+  "constraints": {
+    "max_depth_p": 3
+  },
+  "metadata": {
+    "track": "O1 Max-Cut",
+    "organizer": "Qiskit Fall Fest 2026"
+  }
+}
