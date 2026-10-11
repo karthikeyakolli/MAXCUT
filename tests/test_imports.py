@@ -54,11 +54,17 @@ class TestFoundationImports(unittest.TestCase):
         import scipy
         import pandas
         import matplotlib
+        import nbformat
+        import nbclient
+        import ipykernel
 
         self.assertTrue(qiskit.__version__.startswith("2."))
         self.assertIsNotNone(qiskit_aer.__version__)
         self.assertIsNotNone(qiskit_ibm_runtime.__version__)
         self.assertIsNotNone(networkx.__version__)
+        self.assertIsNotNone(nbformat.__version__)
+        self.assertIsNotNone(nbclient.__version__)
+        self.assertIsNotNone(ipykernel.__version__)
 
     def test_experiment_config_validity(self):
         """Verify that configs/experiment.json exists and contains required keys."""

@@ -72,6 +72,7 @@ class ProcessorHardwareSpec:
     basis_gates: List[str]
     qubit_properties: Dict[str, Any] = field(default_factory=dict)
     source_path: Optional[str] = None
+    metadata: Dict[str, Any] = field(default_factory=dict)
 
     def summary(self) -> str:
         """Returns a concise summary of the hardware specification."""
@@ -84,7 +85,9 @@ class ProcessorHardwareSpec:
         )
 
 
-def load_challenge_instance(file_path: Union[str, Path]) -> MaxCutProblemInstance:
+def load_challenge_instance(
+    file_path: Union[str, Path] = Path("instances/challenge/o1_maxcut_instance.json"),
+) -> MaxCutProblemInstance:
     """Loads and validates a Max-Cut instance from an organizer-provided file.
 
     Supports JSON format (standard schema), adjacency matrix, or weighted edge list.
@@ -274,4 +277,5 @@ def load_processor_spec(file_path: Union[str, Path]) -> ProcessorHardwareSpec:
         basis_gates=list(data["basis_gates"]),
         qubit_properties=data.get("qubit_properties", {}),
         source_path=str(path.resolve()),
+        metadata=data.get("metadata", {}),
     )

@@ -1,7 +1,7 @@
 """Factory function for creating simulator or hardware processor backend runners."""
 
 from pathlib import Path
-from typing import Optional, Union
+from typing import Any, Dict, Optional, Union
 
 from maxcut.backends.aer_backend import AerBackendRunner
 from maxcut.backends.base import BaseBackendRunner
@@ -14,6 +14,8 @@ def create_backend_runner(
     hardware_spec: Optional[Union[ProcessorHardwareSpec, str, Path]] = None,
     seed_simulator: int = 42,
     seed_transpiler: int = 42,
+    execution_mode: str = "ideal",
+    noise_config: Optional[Dict[str, Any]] = None,
 ) -> BaseBackendRunner:
     """Instantiates a standardized backend runner.
 
@@ -22,6 +24,8 @@ def create_backend_runner(
         hardware_spec: Optional hardware specification or path to spec JSON.
         seed_simulator: RNG seed for shot simulation.
         seed_transpiler: RNG seed for circuit compilation/routing.
+        execution_mode: 'ideal' or 'noisy'.
+        noise_config: Optional noise parameter dictionary.
 
     Returns:
         BaseBackendRunner: Configured backend runner instance.
@@ -42,6 +46,8 @@ def create_backend_runner(
             spec_path=Path(spec_path) if spec_path else None,
             seed_simulator=seed_simulator,
             seed_transpiler=seed_transpiler,
+            execution_mode=execution_mode,
+            noise_config=noise_config,
         )
 
     if clean_name == "processor_b":
@@ -51,6 +57,8 @@ def create_backend_runner(
             spec_path=Path(spec_path) if spec_path else None,
             seed_simulator=seed_simulator,
             seed_transpiler=seed_transpiler,
+            execution_mode=execution_mode,
+            noise_config=noise_config,
         )
 
     # Generic processor fallback
@@ -70,4 +78,6 @@ def create_backend_runner(
         spec=spec_obj,
         seed_simulator=seed_simulator,
         seed_transpiler=seed_transpiler,
+        execution_mode=execution_mode,
+        noise_config=noise_config,
     )

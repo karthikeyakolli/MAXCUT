@@ -1,0 +1,10 @@
+# Gate-Level Compilation Breakdown (Levels 1, 2, 3)
+
+| Target | Architecture | Opt Level | Native 2Q Gate | Logical 2Q Interactions | Post-Basis-Synthesis 2Q Gates | Explicit Final-Circuit SWAP Gates | Routing SWAP-Equivalent Count | Routing Overhead (2Q Gates) | Final Native 2Q Gates | Routing Overhead Ratio | 1Q Gates (rz) | 1Q Gates (sx) | 1Q Gates (x) | Total 1Q Gates | Total Gates | Circuit Depth | Depth Expansion |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Processor_A | Falcon-H | 1 | ecr | 8 | 16 | 0 | 4 | 12 | 28 | 1.75 | 78 | 42 | 11 | 131 | 159 | 84 | 8.4 |
+| Processor_B | Ring-7 | 1 | cz | 8 | 16 | 0 | 4 | 12 | 28 | 1.75 | 59 | 52 | 0 | 111 | 139 | 98 | 9.8 |
+| Processor_A | Falcon-H | 2 | ecr | 8 | 16 | 0 | 4 | 12 | 28 | 1.75 | 84 | 52 | 6 | 142 | 170 | 99 | 9.9 |
+| Processor_B | Ring-7 | 2 | cz | 8 | 16 | 0 | 4 | 12 | 28 | 1.75 | 53 | 56 | 4 | 113 | 141 | 87 | 8.7 |
+| Processor_A | Falcon-H | 3 | ecr | 8 | 16 | 0 | 4 | 12 | 28 | 1.75 | 84 | 52 | 6 | 142 | 170 | 99 | 9.9 |
+| Processor_B | Ring-7 | 3 | cz | 8 | 16 | 0 | 4 | 12 | 28 | 1.75 | 53 | 56 | 4 | 113 | 141 | 87 | 8.7 |

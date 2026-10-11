@@ -1,0 +1,57 @@
+{
+  "backend_name": "Processor_B",
+  "architecture_family": "Heavy-Hex-7",
+  "native_2q_gate": "cz",
+  "optimization_level": 1,
+  "seed_transpiler": 42,
+  "logical_formulation": "5_qubit_symmetry_reduced",
+  "fixed_node": 0,
+  "logical_qubits": 5,
+  "logical_depth": 9,
+  "logical_2q_gates": 6,
+  "logical_rz_gates": 2,
+  "logical_rx_gates": 5,
+  "logical_h_gates": 5,
+  "physical_qubits_total": 7,
+  "physical_qubits_used": [
+    0,
+    1,
+    2,
+    3,
+    5
+  ],
+  "physical_qubits_active_count": 5,
+  "initial_layout_virtual_to_physical": {
+    "0": 0,
+    "1": 1,
+    "2": 2,
+    "3": 3,
+    "4": 5
+  },
+  "final_layout": [
+    0,
+    2,
+    1,
+    5,
+    3
+  ],
+  "is_compilation_successful": true,
+  "is_basis_compliant": true,
+  "is_connectivity_compliant": true,
+  "coupling_violations": [],
+  "transpiled_depth": 83,
+  "transpiled_total_gates": 114,
+  "transpiled_2q_gates": 18,
+  "basis_synthesis_2q_gates": 12,
+  "routing_2q_gates": 6,
+  "explicit_swap_count": 0,
+  "routing_swap_count": 2,
+  "native_2q_gate_count": 18,
+  "gate_breakdown": {
+    "rz": 51,
+    "sx": 39,
+    "cz": 18,
+    "measure": 5,
+    "barrier": 1
+  }
+}

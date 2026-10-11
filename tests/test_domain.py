@@ -195,6 +195,33 @@ class TestMaxCutDomain(unittest.TestCase):
         finally:
             Path(temp_path).unlink(missing_ok=True)
 
+    def test_single_edge_domain(self):
+        """Verify single-edge graph with 2 nodes evaluates correctly."""
+        graph = MaxCutGraph.from_edges([(0, 1, 2.5)], name="SingleEdgeDomain")
+        self.assertEqual(graph.num_nodes, 2)
+        self.assertEqual(graph.num_edges, 1)
+        self.assertEqual(graph.total_weight, 2.5)
+
+        self.assertEqual(graph.compute_cut("00").cut_value, 0.0)
+        self.assertEqual(graph.compute_cut("01").cut_value, 2.5)
+        self.assertEqual(graph.compute_cut("10").cut_value, 2.5)
+        self.assertEqual(graph.compute_cut("11").cut_value, 0.0)
+
+    def test_disconnected_components_domain(self):
+        """Verify domain behavior on disconnected components and isolated nodes."""
+        # Graph with 2 disconnected edges: (0, 1) w=1.0 and (2, 3) w=2.0
+        graph = MaxCutGraph(nodes=[0, 1, 2, 3], edges=[(0, 1, 1.0), (2, 3, 2.0)], name="DisconnectedDomain")
+        self.assertEqual(graph.total_weight, 3.0)
+
+        # Both edges cut: 0101 -> cut = 3.0
+        self.assertEqual(graph.compute_cut("0101").cut_value, 3.0)
+        # Only first edge cut: 0100 -> cut = 1.0
+        self.assertEqual(graph.compute_cut("0100").cut_value, 1.0)
+        # Only second edge cut: 0001 -> cut = 2.0
+        self.assertEqual(graph.compute_cut("0001").cut_value, 2.0)
+        # Neither edge cut: 0000 -> cut = 0.0
+        self.assertEqual(graph.compute_cut("0000").cut_value, 0.0)
+
 
 if __name__ == "__main__":
     unittest.main()

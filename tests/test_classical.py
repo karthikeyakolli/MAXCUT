@@ -131,6 +131,31 @@ class TestClassicalReferenceSolver(unittest.TestCase):
         finally:
             Path(temp_path).unlink(missing_ok=True)
 
+    def test_single_edge_exact_solver(self):
+        """Verify exact classical solver on a single weighted edge."""
+        graph = MaxCutGraph.from_edges([(0, 1, 7.5)], name="SingleEdgeClassical")
+        result = self.solver.solve(graph)
+
+        self.assertEqual(result.optimal_cut_value, 7.5)
+        self.assertEqual(result.total_assignments_evaluated, 4)
+        self.assertEqual(len(result.optimal_bitstrings), 2)
+        self.assertIn("01", result.optimal_bitstrings)
+        self.assertIn("10", result.optimal_bitstrings)
+        self.assertTrue(result.validate_solution(graph))
+
+    def test_disconnected_graph_exact_solver(self):
+        """Verify exact classical solver on disconnected components."""
+        graph = MaxCutGraph(nodes=[0, 1, 2, 3], edges=[(0, 1, 3.0), (2, 3, 5.0)], name="DisconnectedClassical")
+        result = self.solver.solve(graph)
+
+        self.assertEqual(result.optimal_cut_value, 8.0)
+        self.assertEqual(result.total_assignments_evaluated, 16)
+        self.assertTrue(result.validate_solution(graph))
+        # 4 optimal bitstrings: (01 or 10 on first pair) x (01 or 10 on second pair)
+        self.assertEqual(len(result.optimal_bitstrings), 4)
+        for bs in ["0101", "0110", "1001", "1010"]:
+            self.assertIn(bs, result.optimal_bitstrings)
+
 
 if __name__ == "__main__":
     unittest.main()

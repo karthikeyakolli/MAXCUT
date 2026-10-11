@@ -1,0 +1,10 @@
+# Compilation Resource Overhead Alongside Solution Quality
+
+Compares circuit depth, native 2Q gates, routing overhead, and cumulative gate fidelity against measured solution quality.
+
+| Experiment Case | Target Backend | Architecture | Execution Mode | Circuit Depth (Cycles) | Total Gate Count | Native 2Q Gate | Total 2Q Count | Basis 2Q Count | Routing 2Q Overhead | Routing SWAPs | Mean 2Q Error Rate | Compounded 2Q Survival | Approximation Ratio | Success Prob P(opt) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Processor A — ideal/reference | Processor_A | Falcon-H | aer_hardware_topology_emulation | 66 | 121 | ecr | 18 | 12 | 6 | 2 | 0.75% | 87.3% | 0.8457 | 42.53% |
+| Processor A — noisy baseline | Processor_A | Falcon-H | aer_noisy_simulation | 66 | 121 | ecr | 18 | 12 | 6 | 2 | 0.75% | 87.3% | 0.8259 | 38.92% |
+| Processor B — ideal/reference | Processor_B | Ring-7 | aer_hardware_topology_emulation | 81 | 122 | cz | 21 | 12 | 9 | 3 | 0.50% | 90.0% | 0.8389 | 40.87% |
+| Processor B — noisy baseline | Processor_B | Ring-7 | aer_noisy_simulation | 81 | 122 | cz | 21 | 12 | 9 | 3 | 0.50% | 90.0% | 0.8224 | 36.96% |

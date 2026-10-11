@@ -56,6 +56,56 @@ def decode_qiskit_counts(
     return decoded_counts
 
 
+def decode_reduced_qiskit_counts(
+    raw_counts: Dict[str, int],
+    node_to_qubit: Dict[int, int],
+    all_sorted_nodes: List[int],
+    fixed_node: int = 0,
+    fixed_val: int = 0,
+) -> Dict[str, int]:
+    """Translates reduced Qiskit measurement counts into full canonical node-ordered counts.
+
+    For an (n-1)-qubit circuit where node `fixed_node` is fixed to `fixed_val` (0),
+    this extracts measured bits for active nodes and inserts `fixed_val` at `fixed_node`.
+
+    Args:
+        raw_counts: Counts dictionary from Qiskit measurement {'01...': count}.
+        node_to_qubit: Mapping from active graph node ID to circuit qubit index.
+        all_sorted_nodes: Full list of all n graph node IDs in canonical sorted order.
+        fixed_node: Node ID that was fixed during symmetry reduction (default 0).
+        fixed_val: Fixed binary assignment (default 0).
+
+    Returns:
+        Dict[str, int]: Decoded counts keyed by full n-variable bitstrings.
+    """
+    n_red = len(node_to_qubit)
+    decoded_counts: Dict[str, int] = {}
+
+    for raw_bitstring, count in raw_counts.items():
+        clean_raw = str(raw_bitstring).replace(" ", "")
+        if len(clean_raw) != n_red:
+            raise ValueError(
+                f"Raw bitstring length ({len(clean_raw)}) does not match active qubit count ({n_red})."
+            )
+
+        node_bits = []
+        for node in all_sorted_nodes:
+            if node == fixed_node:
+                node_bits.append(str(fixed_val))
+            else:
+                qubit_idx = node_to_qubit[node]
+                # In Qiskit little-endian:
+                char = clean_raw[n_red - 1 - qubit_idx]
+                node_bits.append(char)
+
+        full_bitstring = "".join(node_bits)
+        decoded_counts[full_bitstring] = (
+            decoded_counts.get(full_bitstring, 0) + int(count)
+        )
+
+    return decoded_counts
+
+
 def evaluate_measurement_distribution(
     decoded_counts: Dict[str, int],
     graph: MaxCutGraph,

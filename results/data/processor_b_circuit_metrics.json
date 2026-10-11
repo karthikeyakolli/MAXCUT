@@ -15,9 +15,9 @@
     "transpiled_total_gates": 139,
     "transpiled_1q_gates": 111,
     "transpiled_2q_gates": 28,
-    "swap_count": 0,
-    "two_qubit_gate_overhead": 20,
-    "routing_overhead_ratio": 3.5,
+    "swap_count": 4,
+    "two_qubit_gate_overhead": 12,
+    "routing_overhead_ratio": 1.75,
     "depth_expansion_ratio": 9.8,
     "gate_breakdown": {
       "rz": 59,
@@ -103,6 +103,26 @@
       "native_2q_gate": "cz",
       "architecture_family": "Ring-7",
       "spec_source": "C:\\Users\\WIN_10\\.gemini\\antigravity\\scratch\\AXCUT\\processors\\processor_b\\hardware_spec.json"
+    },
+    "basis_synthesis_2q_gates": 16,
+    "routing_2q_gates": 12,
+    "explicit_swap_count": 0,
+    "routing_swap_count": 4,
+    "initial_layout": {
+      "0": 3,
+      "1": 2,
+      "2": 0,
+      "3": 6,
+      "4": 5,
+      "5": 4
+    },
+    "final_layout": {
+      "0": 2,
+      "1": 1,
+      "2": 0,
+      "3": 6,
+      "4": 4,
+      "5": 5
     }
   },
   {
@@ -121,9 +141,9 @@
     "transpiled_total_gates": 141,
     "transpiled_1q_gates": 113,
     "transpiled_2q_gates": 28,
-    "swap_count": 0,
-    "two_qubit_gate_overhead": 20,
-    "routing_overhead_ratio": 3.5,
+    "swap_count": 4,
+    "two_qubit_gate_overhead": 12,
+    "routing_overhead_ratio": 1.75,
     "depth_expansion_ratio": 8.7,
     "gate_breakdown": {
       "sx": 56,
@@ -210,6 +230,26 @@
       "native_2q_gate": "cz",
       "architecture_family": "Ring-7",
       "spec_source": "C:\\Users\\WIN_10\\.gemini\\antigravity\\scratch\\AXCUT\\processors\\processor_b\\hardware_spec.json"
+    },
+    "basis_synthesis_2q_gates": 16,
+    "routing_2q_gates": 12,
+    "explicit_swap_count": 0,
+    "routing_swap_count": 4,
+    "initial_layout": {
+      "0": 3,
+      "1": 2,
+      "2": 0,
+      "3": 6,
+      "4": 5,
+      "5": 4
+    },
+    "final_layout": {
+      "0": 2,
+      "1": 1,
+      "2": 0,
+      "3": 6,
+      "4": 4,
+      "5": 5
     }
   },
   {
@@ -228,9 +268,9 @@
     "transpiled_total_gates": 141,
     "transpiled_1q_gates": 113,
     "transpiled_2q_gates": 28,
-    "swap_count": 0,
-    "two_qubit_gate_overhead": 20,
-    "routing_overhead_ratio": 3.5,
+    "swap_count": 4,
+    "two_qubit_gate_overhead": 12,
+    "routing_overhead_ratio": 1.75,
     "depth_expansion_ratio": 8.7,
     "gate_breakdown": {
       "sx": 56,
@@ -317,6 +357,26 @@
       "native_2q_gate": "cz",
       "architecture_family": "Ring-7",
       "spec_source": "C:\\Users\\WIN_10\\.gemini\\antigravity\\scratch\\AXCUT\\processors\\processor_b\\hardware_spec.json"
+    },
+    "basis_synthesis_2q_gates": 16,
+    "routing_2q_gates": 12,
+    "explicit_swap_count": 0,
+    "routing_swap_count": 4,
+    "initial_layout": {
+      "0": 3,
+      "1": 2,
+      "2": 0,
+      "3": 6,
+      "4": 5,
+      "5": 4
+    },
+    "final_layout": {
+      "0": 2,
+      "1": 1,
+      "2": 0,
+      "3": 6,
+      "4": 4,
+      "5": 5
     }
   }
 ]

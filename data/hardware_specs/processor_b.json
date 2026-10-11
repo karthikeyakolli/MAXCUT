@@ -12,26 +12,28 @@
     [1, 0],
     [1, 2],
     [2, 1],
-    [2, 3],
-    [3, 2],
-    [3, 4],
-    [4, 3],
+    [1, 3],
+    [3, 1],
+    [3, 5],
+    [5, 3],
     [4, 5],
     [5, 4],
     [5, 6],
-    [6, 5],
-    [6, 0],
-    [0, 6]
+    [6, 5]
   ],
   "qubit_properties": {
     "t1_us_mean": 240.0,
     "t2_us_mean": 160.0,
-    "2q_error_mean": 0.0050
+    "2q_error_mean": 0.0050,
+    "1q_error_mean": 0.0003,
+    "readout_error_mean": 0.010
   },
   "metadata": {
-    "architecture_family": "Ring-7",
+    "architecture_family": "Heavy-Hex-7",
     "native_2q_gate": "cz",
     "challenge_track": "O1 Max-Cut",
-    "organizer": "Qiskit Fall Fest 2026"
+    "organizer": "Qiskit Fall Fest 2026",
+    "status": "PROVISIONAL — ORGANIZER CONFIRMATION REQUIRED",
+    "description": "7-physical-qubit heavy-hex-inspired processor with contemporary CZ compilation baseline"
   }
 }

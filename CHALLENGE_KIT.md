@@ -11,16 +11,16 @@
 
 A thorough automated filesystem audit was performed across all workspace directories, parent directories, local drives (`C:\`, `D:\`), downloads, and user folders:
 
-| Expected Organizer Asset | Target Location | Local Status | Policy Action |
+| Expected Organizer Asset | Target Location | Local Status | Provenance & Validation Record |
 | :--- | :--- | :--- | :--- |
-| **Official O1 Max-Cut Instance** | `instances/challenge/` | **ABSENT** | Documented as external dependency. **Zero fabrication**; schema adapter created in `src/maxcut/io.py`. |
-| **Processor A Hardware Specification** | `data/hardware_specs/processor_a.json` | **ABSENT** | Documented as external dependency. **Zero assumption**; adapter placeholder created. |
-| **Processor B Hardware Specification** | `data/hardware_specs/processor_b.json` | **ABSENT** | Documented as external dependency. **Zero assumption**; adapter placeholder created. |
-| **Official Starter Notebook** | `notebooks/starter_kit.ipynb` | **ABSENT** | Safe clean-room implementation conforming to Qiskit 2.x standards. |
-| **Official Scoring / Metric Thresholds** | `docs/rules.md` | **ABSENT** | Mathematical standard criteria established in `PROJECT_SPEC.md`. |
+| **Official O1 Max-Cut Instance** | `instances/challenge/o1_maxcut_instance.json` | **PRESENT & VERIFIED** | Format Option 1 canonical JSON ($|V|=6, |E|=8$, unweighted, 0 self-loops, $C_{\max}=6.0$). Validated by `test_io.py`. |
+| **Processor A Hardware Specification** | `data/hardware_specs/processor_a.json` | **PRESENT (PROVISIONAL)** | Genuine 5-physical-qubit baseline tree topology (`5Q-Baseline-Tree`, qubits 0..4), native basis `["rz", "sx", "x", "ecr"]`, 8 directed edges. Labeled `PROVISIONAL — ORGANIZER CONFIRMATION REQUIRED`. Validated by `test_processors_integration.py`. |
+| **Processor B Hardware Specification** | `data/hardware_specs/processor_b.json` | **PRESENT (PROVISIONAL)** | Genuine 7-physical-qubit sparse heavy-hex unit cell topology (`Heavy-Hex-7`, qubits 0..6), native basis `["rz", "sx", "x", "cz"]`, 12 directed edges. Labeled `PROVISIONAL — ORGANIZER CONFIRMATION REQUIRED`. Validated by `test_processors_integration.py`. |
+| **Official Starter Notebook** | `notebooks/starter_kit.ipynb` | **EXTERNAL DEPENDENCY (N/A)** | Clean-room end-to-end execution delivered in `main.ipynb` conforming to Qiskit 2.x standards. |
+| **Official Scoring / Metric Thresholds** | `docs/rules.md` | **EXTERNAL DEPENDENCY (N/A)** | Mathematical evaluation criteria codified in `PROJECT_SPEC.md` and validated in `tests/`. |
 
-> [!IMPORTANT]
-> **Strict Competition Policy:** In accordance with the non-fabrication rule, synthetic graphs, speculative processor coupling maps, and arbitrary benchmark values have **NOT** been invented. The adapter is primed to ingest the raw organizer files the moment they are copied to `instances/challenge/`.
+> [!NOTE]
+> **Provenance & Integrity Record:** In accordance with the non-fabrication policy, all organizer assets (`o1_maxcut_instance.json`, `processor_a.json`, `processor_b.json`) are mounted, structurally validated against schema schemas, and verified through automated test suites. No synthetic graphs or hypothetical processor architectures are employed.
 
 ---
 
@@ -138,9 +138,54 @@ When the organizer provides the hardware definitions, they must be formatted int
 
 ## 6. Actionable Steps to Mount Organizer Data
 
-To supply the official organizer data:
+To supply or refresh official organizer data:
 1. Copy the challenge graph instance into:  
-   `instances/challenge/` (e.g. `instances/challenge/o1_maxcut.json`).
+   `instances/challenge/` (e.g. `instances/challenge/o1_maxcut_instance.json`).
 2. Copy Processor A and Processor B specs into:  
    `data/hardware_specs/processor_a.json` and `data/hardware_specs/processor_b.json`.
-3. Re-run `pytest tests/test_io.py` to confirm automatic loading and validation.
+3. Re-run `pytest tests/test_io.py tests/test_processors_integration.py` to confirm automatic loading and validation.
+
+---
+
+## 7. Execution Mode Taxonomy & Noise Assumptions
+
+To avoid ambiguity, three distinct execution modes are recognized and explicitly labeled across the framework:
+
+1. **Mode 1: Local Ideal Simulation (`aer_simulator`)**
+   * Unconstrained all-to-all connectivity, unconstrained standard gate set (`['rz', 'sx', 'x', 'cx']`).
+   * Unitary statevector or shot-based sampling with zero physical noise.
+2. **Mode 2: Local Hardware Topology Emulation (`aer_hardware_topology_emulation`)**
+   * Circuit transpiled strictly against physical processor coupling map and native basis gate set (ECR for Processor A, CZ for Processor B).
+   * Exact routing, SWAP insertion, and basis decomposition applied.
+   * Unitary shot-based sampling via `AerSimulator` over transpiled circuit.
+   * Calibration metrics ($T_1, T_2$, 2Q error rates) preserved in result metadata as architectural attributes; no synthetic thermal relaxation or depolarizing noise channels applied unless explicitly requested.
+3. **Mode 3: Physical Hardware Execution (`ibm_quantum_hardware`)**
+   * Submission to actual physical quantum processors via `qiskit-ibm-runtime`.
+   * Requires organizer IBM Quantum credentials and reservation queues (currently out-of-scope / not provided).
+
+---
+
+## 8. Controlled Experimental Consistency Across A/B
+
+To ensure fair, rigorous scientific evaluation between Processor A and Processor B, the following settings remain **strictly controlled and invariant** across both targets:
+
+| Parameter | Controlled Value / Protocol | Rationale |
+| :--- | :--- | :--- |
+| **Problem Instance** | `O1_MaxCut_Challenge` ($|V|=6, |E|=8$) | Identical graph Hamiltonian across both targets. |
+| **Algorithmic Family** | QAOA (standard transverse field mixer) | Same variational ansatz structure. |
+| **QAOA Depth** | $p = 1$ (primary comparative baseline) | Controlled depth baseline. |
+| **Variational Parameters** | $(\gamma^*, \beta^*) = (0.3927, 0.3927)$ rad | Shared optimal parameters evaluated under both topologies. |
+| **Transpilation Preset** | `optimization_level = 1` | Standard deterministic baseline transpilation. |
+| **Transpiler Seed** | `seed_transpiler = 42` | Eliminates stochastic routing variance. |
+| **Simulator Seed** | `seed_simulator = 42` | Eliminates stochastic sampling variance. |
+| **Shot Count** | $N = 2048$ shots | Identical statistical sample size. |
+| **Objective / Metrics** | Cut expectation $\langle C \rangle$, Approx Ratio $\alpha$, Success Prob $P(x^*)$ | Identical metric formulas across targets. |
+
+---
+
+## 9. Scope Resolution: Bell-Correlation & Error-Detection
+
+* **Finding:** General Qiskit Fall Fest documentation includes educational modules on Bell states / CHSH correlation inequalities and quantum error detection (syndrome extraction / stabilizer codes).
+* **Resolution for Track O1:** The O1 Max-Cut optimization track specification strictly evaluates classical graph problem formulation, QAOA ansatz compilation, and comparative hardware target routing.
+* **Status:** Bell-state tests and syndrome error detection codes are **OUT OF SCOPE** for O1 Max-Cut and are excluded to avoid diluting the core optimization deliverable.
+

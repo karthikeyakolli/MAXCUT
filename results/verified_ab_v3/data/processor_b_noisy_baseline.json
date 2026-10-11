@@ -1,0 +1,273 @@
+{
+  "experiment_id": "verified_ab_v3_processor_b_noisy_baseline",
+  "experiment_case": "Processor B \u2014 noisy baseline",
+  "execution_mode": "aer_noisy_simulation",
+  "is_physical_hardware": false,
+  "is_noisy_simulation": true,
+  "noise_applied": true,
+  "noise_config": {
+    "single_qubit_error": 0.0003,
+    "two_qubit_error": 0.005,
+    "readout_error": 0.01,
+    "source": "processors/processor_b/hardware_spec.json",
+    "provenance_status": "PROVISIONAL \u2014 ORGANIZER CONFIRMATION REQUIRED"
+  },
+  "problem_metadata": {
+    "name": "O1_MaxCut_Challenge",
+    "num_nodes": 6,
+    "num_edges": 8,
+    "is_weighted": false,
+    "total_weight": 8.0,
+    "classical_optimum": 6.0,
+    "source_path": "C:\\Users\\WIN_10\\.gemini\\antigravity\\scratch\\AXCUT\\instances\\challenge\\o1_maxcut_instance.json"
+  },
+  "backend_metadata": {
+    "backend_name": "Processor_B",
+    "target_type": "hardware_processor",
+    "backend_physical_qubits": 7,
+    "active_physical_qubits_count": 5,
+    "active_physical_qubits": [
+      0,
+      1,
+      2,
+      3,
+      5
+    ],
+    "logical_circuit_width": 5,
+    "basis_gates": [
+      "rz",
+      "sx",
+      "x",
+      "cz"
+    ],
+    "coupling_map": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        5
+      ],
+      [
+        5,
+        3
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        4
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        6,
+        5
+      ]
+    ],
+    "coupling_edge_count": 12,
+    "qubit_properties": {
+      "t1_us_mean": 240.0,
+      "t2_us_mean": 160.0,
+      "2q_error_mean": 0.005,
+      "1q_error_mean": 0.0003,
+      "readout_error_mean": 0.01
+    },
+    "native_2q_gate": "cz",
+    "architecture_family": "Heavy-Hex-7",
+    "spec_source": "C:\\Users\\WIN_10\\.gemini\\antigravity\\scratch\\AXCUT\\processors\\processor_b\\hardware_spec.json",
+    "execution_mode": "aer_noisy_simulation",
+    "noise_applied": true,
+    "provenance_status": "PROVISIONAL \u2014 ORGANIZER CONFIRMATION REQUIRED"
+  },
+  "algorithm_parameters": {
+    "formulation": "5_qubit_symmetry_reduced",
+    "fixed_node": 0,
+    "depth_p": 1,
+    "shots": 2048,
+    "optimizer_name": "COBYLA",
+    "initial_parameters": [
+      2.353304971691044,
+      2.9867570806801083
+    ],
+    "optimal_parameters": [
+      2.527058471368481,
+      2.698287157638429
+    ],
+    "optimal_gamma": [
+      2.527058471368481
+    ],
+    "optimal_beta": [
+      2.698287157638429
+    ],
+    "optimizer_evaluations": 38,
+    "final_objective_value": -5.0399800680358355,
+    "analytic_expected_cut": 5.0399800680358355
+  },
+  "results": {
+    "expected_cut": 4.98388671875,
+    "cut_variance": 1.1824466349383245,
+    "sample_std_error": 0.0240284523214871,
+    "classical_optimal_cut": 6.0,
+    "approximation_ratio": 0.8306477864583334,
+    "best_sampled_cut": 6.0,
+    "best_sampled_bitstring": "011001",
+    "most_frequent_bitstring": "001101",
+    "ground_state_success_probability": 0.396484375,
+    "num_unique_bitstrings": 32,
+    "total_shots_sampled": 2048,
+    "is_classical_optimum_achieved": true
+  },
+  "cut_distribution": {
+    "5.0": 670,
+    "3.0": 145,
+    "6.0": 812,
+    "4.0": 363,
+    "2.0": 49,
+    "0.0": 9
+  },
+  "circuit_compilation_metrics": {
+    "logical_qubits": 5,
+    "backend_physical_qubits": 7,
+    "active_physical_qubits_used": [
+      0,
+      1,
+      2,
+      3,
+      5
+    ],
+    "active_physical_qubits_count": 5,
+    "transpiled_depth": 83,
+    "transpiled_total_gates": 114,
+    "transpiled_2q_gates": 18,
+    "basis_synthesis_2q_gates": 12,
+    "routing_2q_gates": 6,
+    "routing_swap_count": 2,
+    "gate_breakdown": {
+      "rz": 51,
+      "sx": 39,
+      "cz": 18,
+      "measure": 5,
+      "barrier": 1
+    },
+    "initial_layout": {
+      "0": 0,
+      "1": 1,
+      "2": 2,
+      "3": 3,
+      "4": 5
+    },
+    "final_layout": [
+      0,
+      2,
+      1,
+      5,
+      3
+    ],
+    "optimization_level": 1
+  },
+  "raw_counts": {
+    "01110": 82,
+    "11101": 45,
+    "10011": 110,
+    "10110": 212,
+    "11110": 43,
+    "01101": 84,
+    "10111": 74,
+    "01001": 143,
+    "00111": 132,
+    "01111": 75,
+    "11010": 53,
+    "00110": 156,
+    "11001": 191,
+    "00011": 104,
+    "00101": 25,
+    "10101": 49,
+    "10010": 54,
+    "01011": 125,
+    "11100": 32,
+    "11011": 55,
+    "01010": 37,
+    "00001": 15,
+    "10001": 64,
+    "11111": 13,
+    "10100": 6,
+    "01000": 8,
+    "00010": 14,
+    "11000": 10,
+    "01100": 20,
+    "00000": 9,
+    "10000": 4,
+    "00100": 4
+  },
+  "decoded_counts": {
+    "001110": 82,
+    "010111": 45,
+    "011001": 110,
+    "001101": 212,
+    "001111": 43,
+    "010110": 84,
+    "011101": 74,
+    "010010": 143,
+    "011100": 132,
+    "011110": 75,
+    "001011": 53,
+    "001100": 156,
+    "010011": 191,
+    "011000": 104,
+    "010100": 25,
+    "010101": 49,
+    "001001": 54,
+    "011010": 125,
+    "000111": 32,
+    "011011": 55,
+    "001010": 37,
+    "010000": 15,
+    "010001": 64,
+    "011111": 13,
+    "000101": 6,
+    "000010": 8,
+    "001000": 14,
+    "000011": 10,
+    "000110": 20,
+    "000000": 9,
+    "000001": 4,
+    "000100": 4
+  },
+  "execution_metadata": {
+    "timestamp_utc": "2026-10-10T16:51:03.206341+00:00",
+    "simulation_duration_seconds": 0.10886470007244498,
+    "platform": "Windows-10-10.0.19045-SP0",
+    "python_version": "3.14.6 (tags/v3.14.6:c63aec6, Jun 10 2026, 10:26:10) [MSC v.1944 64 bit (AMD64)]",
+    "qiskit_version": "2.5.2",
+    "qiskit_aer_version": "0.17.2",
+    "seed_simulator": 42,
+    "seed_transpiler": 42,
+    "seed_global": 42
+  }
+}

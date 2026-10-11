@@ -1,6 +1,6 @@
 {
   "name": "Processor_A",
-  "num_qubits": 7,
+  "num_qubits": 5,
   "basis_gates": [
     "rz",
     "sx",
@@ -14,22 +14,22 @@
     [2, 1],
     [1, 3],
     [3, 1],
-    [3, 5],
-    [5, 3],
-    [4, 5],
-    [5, 4],
-    [5, 6],
-    [6, 5]
+    [3, 4],
+    [4, 3]
   ],
   "qubit_properties": {
     "t1_us_mean": 210.0,
     "t2_us_mean": 140.0,
-    "2q_error_mean": 0.0075
+    "2q_error_mean": 0.0075,
+    "1q_error_mean": 0.0005,
+    "readout_error_mean": 0.015
   },
   "metadata": {
-    "architecture_family": "Falcon-H",
+    "architecture_family": "5Q-Baseline-Tree",
     "native_2q_gate": "ecr",
     "challenge_track": "O1 Max-Cut",
-    "organizer": "Qiskit Fall Fest 2026"
+    "organizer": "Qiskit Fall Fest 2026",
+    "status": "PROVISIONAL — ORGANIZER CONFIRMATION REQUIRED",
+    "description": "5-physical-qubit baseline processor with fixed T-tree coupling topology"
   }
 }

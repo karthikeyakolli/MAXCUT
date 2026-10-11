@@ -19,9 +19,6 @@ from maxcut.metrics.circuit_metrics import (
     CircuitResourceMetrics,
     extract_circuit_metrics,
 )
-from processors.processor_a import ProcessorABackend
-from processors.processor_b import ProcessorBBackend
-
 
 class ProcessorCircuitComparator:
     """Orchestrates identical transpilation of a logical circuit across Processor A and B."""
@@ -32,8 +29,14 @@ class ProcessorCircuitComparator:
         backend_b: Optional[BaseBackendRunner] = None,
         seed_transpiler: int = 42,
     ) -> None:
-        self.backend_a: BaseBackendRunner = backend_a or ProcessorABackend(seed_transpiler=seed_transpiler)
-        self.backend_b: BaseBackendRunner = backend_b or ProcessorBBackend(seed_transpiler=seed_transpiler)
+        if backend_a is None:
+            from processors.processor_a.adapter import ProcessorABackend
+            backend_a = ProcessorABackend(seed_transpiler=seed_transpiler)
+        if backend_b is None:
+            from processors.processor_b.adapter import ProcessorBBackend
+            backend_b = ProcessorBBackend(seed_transpiler=seed_transpiler)
+        self.backend_a: BaseBackendRunner = backend_a
+        self.backend_b: BaseBackendRunner = backend_b
         self.seed_transpiler: int = seed_transpiler
         self._results: List[CircuitResourceMetrics] = []
 
@@ -63,6 +66,7 @@ class ProcessorCircuitComparator:
                 coupling_map = CouplingMap(b.spec.coupling_map) if hasattr(b, "spec") else None
                 basis_gates = list(b.spec.basis_gates) if hasattr(b, "spec") else None
 
+                # Execute staged transpilation targeting specific processor architecture
                 pass_manager = generate_preset_pass_manager(
                     coupling_map=coupling_map,
                     basis_gates=basis_gates,
@@ -70,7 +74,18 @@ class ProcessorCircuitComparator:
                     seed_transpiler=self.seed_transpiler,
                 )
 
-                transpiled_qc = pass_manager.run(logical_circuit)
+                state = {"max_swaps": 0}
+
+                def _transpile_cb(**kwargs: Any) -> None:
+                    dag = kwargs.get("dag")
+                    if dag and hasattr(dag, "count_ops"):
+                        swaps = int(dag.count_ops().get("swap", 0))
+                        if swaps >= state["max_swaps"] and swaps > 0:
+                            state["max_swaps"] = swaps
+
+                transpiled_qc = pass_manager.run(logical_circuit, callback=_transpile_cb)
+                logical_swaps = int(logical_circuit.count_ops().get("swap", 0))
+                routing_swap_count = max(0, state["max_swaps"] - logical_swaps)
 
                 metrics = extract_circuit_metrics(
                     logical_circuit=logical_circuit,
@@ -78,6 +93,8 @@ class ProcessorCircuitComparator:
                     backend_runner=b,
                     optimization_level=level,
                     seed_transpiler=self.seed_transpiler,
+                    pass_manager=pass_manager,
+                    routing_swap_count=routing_swap_count,
                 )
                 self._results.append(metrics)
 
@@ -102,10 +119,14 @@ class ProcessorCircuitComparator:
                 "Transpiled Depth": r.transpiled_circuit_depth,
                 "Depth Expansion": round(r.depth_expansion_ratio, 2),
                 "Logical 2Q Gates": r.logical_2q_gates,
+                "Basis 2Q Gates": r.basis_synthesis_2q_gates,
+                "Explicit SWAPs": r.explicit_swap_count,
+                "Routing SWAPs": r.routing_swap_count,
+                "SWAP Count": r.swap_count,
+                "Routing 2Q Gates": r.routing_2q_gates,
                 "Transpiled 2Q Gates": r.transpiled_2q_gates,
                 "2Q Overhead": r.two_qubit_gate_overhead,
                 "Routing Ratio": round(r.routing_overhead_ratio, 2),
-                "SWAP Count": r.swap_count,
                 "Transpiled Total Gates": r.transpiled_total_gates,
             })
         return pd.DataFrame(records)

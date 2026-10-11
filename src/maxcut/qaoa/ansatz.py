@@ -146,3 +146,80 @@ def build_qaoa_circuit(
         node_to_qubit=node_to_qubit,
         qubit_to_node=qubit_to_node,
     )
+
+
+def build_reduced_qaoa_circuit(
+    graph: MaxCutGraph,
+    p: int = 1,
+    fixed_node: int = 0,
+    include_measurements: bool = False,
+) -> QAOAAnsatz:
+    """Constructs a parameterized QAOA circuit for Max-Cut using symmetry reduction (x_{fixed_node} = 0).
+
+    For an n-node graph, uses (n - 1) qubits.
+    Circuit Architecture:
+    1. Initialize: |+>^{\\otimes (n-1)} via Hadamard on all active qubits.
+    2. For l = 0, ..., p - 1:
+       a. Cost unitary U_C(gamma_l):
+          - For edges (u, v) not incident to fixed_node:
+            Apply RZZ(gamma_l * w_{uv}) between qubit(u) and qubit(v).
+          - For edges incident to fixed_node, say (fixed_node, v):
+            Apply RZ(gamma_l * w_{0v}) on qubit(v).
+       b. Mixer unitary U_M(beta_l):
+          - For each active qubit:
+            Apply RX(2 * beta_l).
+    3. Optional: Measurements into classical register.
+    """
+    if p < 1:
+        raise ValueError(f"QAOA depth p must be >= 1, got {p}.")
+
+    active_nodes = [node for node in graph.nodes if node != fixed_node]
+    n_red = len(active_nodes)
+    node_to_qubit = {node: i for i, node in enumerate(active_nodes)}
+    qubit_to_node = {i: node for i, node in enumerate(active_nodes)}
+
+    qc = QuantumCircuit(n_red, name=f"QAOA_MaxCut_Reduced_p{p}")
+
+    gamma_params = [Parameter(f"gamma_{l}") for l in range(p)]
+    beta_params = [Parameter(f"beta_{l}") for l in range(p)]
+
+    # 1. Initial State: |+>^{\\otimes (n-1)}
+    for q in range(n_red):
+        qc.h(q)
+
+    # 2. Alternating layers of U_C and U_M
+    for l in range(p):
+        gamma_l = gamma_params[l]
+        beta_l = beta_params[l]
+
+        # --- Cost Layer ---
+        for edge in graph.edges:
+            u, v, w = edge.u, edge.v, edge.weight
+            if u == fixed_node and v != fixed_node:
+                q_v = node_to_qubit[v]
+                qc.rz(w * gamma_l, q_v)
+            elif v == fixed_node and u != fixed_node:
+                q_u = node_to_qubit[u]
+                qc.rz(w * gamma_l, q_u)
+            elif u != fixed_node and v != fixed_node:
+                q_u = node_to_qubit[u]
+                q_v = node_to_qubit[v]
+                qc.rzz(w * gamma_l, q_u, q_v)
+
+        # --- Mixer Layer ---
+        for q in range(n_red):
+            qc.rx(2.0 * beta_l, q)
+
+    if include_measurements:
+        qc.measure_all()
+
+    return QAOAAnsatz(
+        circuit=qc,
+        p=p,
+        num_qubits=n_red,
+        gamma_parameters=gamma_params,
+        beta_parameters=beta_params,
+        node_to_qubit=node_to_qubit,
+        qubit_to_node=qubit_to_node,
+    )
+

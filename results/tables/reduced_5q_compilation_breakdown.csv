@@ -1,0 +1,7 @@
+Target,Architecture,Opt Level,Native 2Q Gate,Logical Qubits,Active Physical Qubits,Physical Qubits Used,Logical 2Q Interactions,Basis Synthesis 2Q,Routing SWAPs,Routing 2Q Overhead,Total Native 2Q Gates,Circuit Depth,Total Gates,Connectivity Compliant,Basis Compliant,1Q rz,1Q sx,1Q x
+Processor_A,5Q-Baseline-Tree,1,ecr,5,5,"[0, 1, 2, 3, 4]",6,12,2,6,18,69,116,True,True,54,30,8
+Processor_A,5Q-Baseline-Tree,2,ecr,5,5,"[0, 1, 2, 3, 4]",6,12,2,6,18,76,131,True,True,63,41,3
+Processor_A,5Q-Baseline-Tree,3,ecr,5,5,"[0, 1, 2, 3, 4]",6,12,2,6,18,76,131,True,True,63,41,3
+Processor_B,Heavy-Hex-7,1,cz,5,5,"[0, 1, 2, 3, 5]",6,12,2,6,18,83,114,True,True,51,39,0
+Processor_B,Heavy-Hex-7,2,cz,5,5,"[1, 3, 4, 5, 6]",6,12,2,6,18,67,108,True,True,40,39,5
+Processor_B,Heavy-Hex-7,3,cz,5,5,"[1, 3, 4, 5, 6]",6,12,2,6,18,65,101,True,True,36,37,4

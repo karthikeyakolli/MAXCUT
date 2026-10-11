@@ -116,11 +116,21 @@ class ExperimentRunner:
         opt_time = time.perf_counter() - opt_start
 
         # 5. Assemble and bind QAOA circuit
-        ansatz = build_qaoa_circuit(graph, p=config.depth_p, include_measurements=True)
-        bound_qc = ansatz.bind(
-            gamma_values=opt_res.optimal_gamma,
-            beta_values=opt_res.optimal_beta,
-        )
+        use_reduced = (active_backend.num_qubits < graph.num_nodes) or getattr(config, "use_reduced", False)
+        if use_reduced:
+            from maxcut.qaoa.ansatz import build_reduced_qaoa_circuit
+            from maxcut.qaoa.decoding import decode_reduced_qiskit_counts
+            ansatz = build_reduced_qaoa_circuit(graph, p=config.depth_p, fixed_node=0, include_measurements=True)
+            bound_qc = ansatz.bind(
+                gamma_values=opt_res.optimal_gamma,
+                beta_values=opt_res.optimal_beta,
+            )
+        else:
+            ansatz = build_qaoa_circuit(graph, p=config.depth_p, include_measurements=True)
+            bound_qc = ansatz.bind(
+                gamma_values=opt_res.optimal_gamma,
+                beta_values=opt_res.optimal_beta,
+            )
 
         # 6. Execute backend transpilation and measurement sampling
         sim_start = time.perf_counter()
@@ -132,11 +142,20 @@ class ExperimentRunner:
         sim_time = time.perf_counter() - sim_start
 
         # 7. Decode Qiskit little-endian measurement outcomes to canonical node order
-        decoded_counts = decode_qiskit_counts(
-            raw_counts=exec_res.raw_counts,
-            node_to_qubit=ansatz.node_to_qubit,
-            sorted_nodes=sorted(graph.nodes),
-        )
+        if use_reduced:
+            decoded_counts = decode_reduced_qiskit_counts(
+                raw_counts=exec_res.raw_counts,
+                node_to_qubit=ansatz.node_to_qubit,
+                all_sorted_nodes=sorted(graph.nodes),
+                fixed_node=0,
+                fixed_val=0,
+            )
+        else:
+            decoded_counts = decode_qiskit_counts(
+                raw_counts=exec_res.raw_counts,
+                node_to_qubit=ansatz.node_to_qubit,
+                sorted_nodes=sorted(graph.nodes),
+            )
 
         # 8. Statistical evaluation of solution distribution
         eval_metrics = evaluate_measurement_distribution(

@@ -1,0 +1,5 @@
+Case,Backend,Mode,Shots,Best Cut,Mean Cut,SEM Cut,95% CI Cut,Approx Ratio,P(Opt),SEM P(Opt),95% CI P(Opt),Depth,2Q Gates,SWAPs,Total Gates
+"Processor A — ideal/reference","Processor_A","aer_hardware_topology_emulation",2048,6.0,4.8901,0.0264,"[4.8384, 4.9419]",0.8150,0.3931,0.0108,"[37.21%, 41.44%]",84,28,4,159
+"Processor A — noisy baseline","Processor_A","aer_noisy_simulation",2048,6.0,4.7373,0.0277,"[4.6830, 4.7916]",0.7896,0.3564,0.0106,"[33.60%, 37.74%]",84,28,4,159
+"Processor B — ideal/reference","Processor_B","aer_hardware_topology_emulation",2048,6.0,4.9116,0.0265,"[4.8597, 4.9635]",0.8186,0.4072,0.0109,"[38.61%, 42.87%]",98,28,4,139
+"Processor B — noisy baseline","Processor_B","aer_noisy_simulation",2048,6.0,4.8223,0.0273,"[4.7688, 4.8757]",0.8037,0.3813,0.0107,"[36.06%, 40.26%]",98,28,4,139

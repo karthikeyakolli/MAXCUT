@@ -32,15 +32,15 @@ class TestProcessorsIntegration(unittest.TestCase):
         """Verify Processor A architectural constraints and metadata completeness."""
         self.assertEqual(self.proc_a.backend_name, "Processor_A")
         self.assertEqual(self.proc_a.target_type, "hardware_processor")
-        self.assertEqual(self.proc_a.num_qubits, 7)
+        self.assertEqual(self.proc_a.num_qubits, 5)
         self.assertEqual(self.proc_a.spec.basis_gates, ["rz", "sx", "x", "ecr"])
-        self.assertEqual(len(self.proc_a.spec.coupling_map), 12)
+        self.assertEqual(len(self.proc_a.spec.coupling_map), 8)
 
         metadata = self.proc_a.get_metadata()
         self.assertIn("t1_us_mean", metadata["qubit_properties"])
         self.assertIn("t2_us_mean", metadata["qubit_properties"])
         self.assertEqual(metadata["native_2q_gate"], "ecr")
-        self.assertEqual(metadata["architecture_family"], "Falcon-H")
+        self.assertEqual(metadata["architecture_family"], "5Q-Baseline-Tree")
 
     def test_processor_b_spec_and_metadata(self):
         """Verify Processor B architectural constraints and metadata completeness."""
@@ -48,17 +48,18 @@ class TestProcessorsIntegration(unittest.TestCase):
         self.assertEqual(self.proc_b.target_type, "hardware_processor")
         self.assertEqual(self.proc_b.num_qubits, 7)
         self.assertEqual(self.proc_b.spec.basis_gates, ["rz", "sx", "x", "cz"])
-        self.assertEqual(len(self.proc_b.spec.coupling_map), 14)
+        self.assertEqual(len(self.proc_b.spec.coupling_map), 12)
 
         metadata = self.proc_b.get_metadata()
         self.assertIn("t1_us_mean", metadata["qubit_properties"])
         self.assertIn("t2_us_mean", metadata["qubit_properties"])
         self.assertEqual(metadata["native_2q_gate"], "cz")
-        self.assertEqual(metadata["architecture_family"], "Ring-7")
+        self.assertEqual(metadata["architecture_family"], "Heavy-Hex-7")
 
     def test_qaoa_circuit_preparation_processor_a(self):
         """Verify that the exact QAOA circuit for the official instance compiles onto Processor A."""
-        ansatz = build_qaoa_circuit(self.official_graph, p=1, include_measurements=True)
+        from maxcut.qaoa.ansatz import build_reduced_qaoa_circuit
+        ansatz = build_reduced_qaoa_circuit(self.official_graph, p=1, fixed_node=0, include_measurements=True)
         # Bind nominal parameters
         bound_qc = ansatz.bind(gamma_values=[2.4835], beta_values=[4.2540])
 
@@ -73,7 +74,8 @@ class TestProcessorsIntegration(unittest.TestCase):
 
     def test_qaoa_circuit_preparation_processor_b(self):
         """Verify that the exact QAOA circuit for the official instance compiles onto Processor B."""
-        ansatz = build_qaoa_circuit(self.official_graph, p=1, include_measurements=True)
+        from maxcut.qaoa.ansatz import build_reduced_qaoa_circuit
+        ansatz = build_reduced_qaoa_circuit(self.official_graph, p=1, fixed_node=0, include_measurements=True)
         # Bind nominal parameters
         bound_qc = ansatz.bind(gamma_values=[2.4835], beta_values=[4.2540])
 
