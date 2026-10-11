@@ -35,12 +35,14 @@ jobs:
       - name: Run automated unit and regression test suite
         env:
           PYTHONPATH: .
+          MPLBACKEND: Agg
         run: |
-          python -m pytest -v --durations=10
+          python -m pytest -v --tb=short tests
 
       - name: Validate required artifacts and pre-rendered notebook
         env:
           PYTHONPATH: .
+          MPLBACKEND: Agg
         run: |
           python scripts/validate_artifacts.py
 
