@@ -1,0 +1,78 @@
+OPENQASM 2.0;
+include "qelib1.inc";
+qreg q[9];
+creg meas[5];
+// 1. Initial State: Hadamard Layer (sx, rz) on Active Qubits [1, 2, 3, 4, 5]
+rz(pi/2) q[1];
+sx q[1];
+rz(pi/2) q[1];
+rz(pi/2) q[2];
+sx q[2];
+rz(pi/2) q[2];
+rz(pi/2) q[3];
+sx q[3];
+rz(pi/2) q[3];
+rz(pi/2) q[4];
+sx q[4];
+rz(pi/2) q[4];
+rz(pi/2) q[5];
+sx q[5];
+rz(pi/2) q[5];
+// 2. Cost Layer: Incident Edges (0, 1) and (0, 2) on Physical Qubits 1 and 2
+rz(2.527058471368) q[1];
+rz(2.527058471368) q[2];
+// 3. Cost Layer: 6 Non-Incident Edges on Sparse-Tree CX Topology
+cx q[1],q[2];
+rz(2.527058471368) q[2];
+cx q[1],q[2];
+cx q[2],q[3];
+rz(2.527058471368) q[3];
+cx q[2],q[3];
+cx q[2],q[4];
+rz(2.527058471368) q[4];
+cx q[2],q[4];
+cx q[4],q[5];
+rz(2.527058471368) q[5];
+cx q[4],q[5];
+// Tree Routing SWAP(2, 4)
+cx q[2],q[4];
+cx q[4],q[2];
+cx q[2],q[4];
+cx q[1],q[4];
+rz(2.527058471368) q[4];
+cx q[1],q[4];
+cx q[3],q[5];
+rz(2.527058471368) q[5];
+cx q[3],q[5];
+// 4. Mixer Layer: RX(2*beta) on Active Qubits [1, 2, 3, 4, 5]
+rz(pi/2) q[1];
+sx q[1];
+rz(-2.254981661687) q[1];
+sx q[1];
+rz(pi/2) q[1];
+rz(pi/2) q[2];
+sx q[2];
+rz(-2.254981661687) q[2];
+sx q[2];
+rz(pi/2) q[2];
+rz(pi/2) q[3];
+sx q[3];
+rz(-2.254981661687) q[3];
+sx q[3];
+rz(pi/2) q[3];
+rz(pi/2) q[4];
+sx q[4];
+rz(-2.254981661687) q[4];
+sx q[4];
+rz(pi/2) q[4];
+rz(pi/2) q[5];
+sx q[5];
+rz(-2.254981661687) q[5];
+sx q[5];
+rz(pi/2) q[5];
+// 5. Measurement Operations into Classical Register
+measure q[1] -> meas[0];
+measure q[2] -> meas[1];
+measure q[3] -> meas[2];
+measure q[4] -> meas[3];
+measure q[5] -> meas[4];

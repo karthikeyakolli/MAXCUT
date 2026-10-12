@@ -1,0 +1,217 @@
+{
+  "experiment_id": "verified_ab_v4_processor_d_noisy_baseline",
+  "experiment_case": "Processor D \u2014 Noisy Baseline",
+  "execution_mode": "aer_noisy_simulation",
+  "is_physical_hardware": false,
+  "is_noisy_simulation": true,
+  "noise_applied": true,
+  "noise_config": {
+    "single_qubit_error": 0.001,
+    "two_qubit_error": 0.005,
+    "readout_error": 0.01,
+    "model_type": "uniform_depolarizing_symmetric_readout"
+  },
+  "problem_metadata": {
+    "name": "O1_MaxCut_Challenge",
+    "num_nodes": 6,
+    "num_edges": 8,
+    "is_weighted": false,
+    "total_weight": 8.0,
+    "classical_optimum": 6.0,
+    "source_path": "C:\\Users\\OMEN\\.gemini\\antigravity-ide\\scratch\\MAXCUT\\instances\\challenge\\o1_maxcut_instance.json"
+  },
+  "backend_metadata": {
+    "backend_name": "Processor_D",
+    "target_type": "hardware_processor",
+    "backend_physical_qubits": 8,
+    "active_physical_qubits_count": 5,
+    "active_physical_qubits": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "logical_circuit_width": 5,
+    "basis_gates": [
+      "rz",
+      "sx",
+      "x",
+      "cx"
+    ],
+    "coupling_map": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        0,
+        2
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        1,
+        3
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        3,
+        4
+      ],
+      [
+        4,
+        3
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        4
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        6,
+        5
+      ],
+      [
+        6,
+        7
+      ],
+      [
+        7,
+        6
+      ],
+      [
+        0,
+        7
+      ],
+      [
+        7,
+        0
+      ]
+    ],
+    "coupling_edge_count": 20,
+    "qubit_properties": {
+      "t1_us_mean": 240.0,
+      "t2_us_mean": 180.0,
+      "1q_error_mean": 0.001,
+      "2q_error_mean": 0.005,
+      "readout_error_mean": 0.01
+    },
+    "native_2q_gate": "cx",
+    "architecture_family": "8Q Chorded Ring Mesh",
+    "configuration_hash": "a60ecf34eb463a10",
+    "spec_source": "C:\\Users\\OMEN\\.gemini\\antigravity-ide\\scratch\\MAXCUT\\processors\\processor_d\\hardware_spec.json",
+    "provenance_status": "CUSTOM PROCESSOR D (PHASE 7 VERIFIED)"
+  },
+  "algorithm_parameters": {
+    "formulation": "5_qubit_symmetry_reduced",
+    "fixed_node": 0,
+    "depth_p": 1,
+    "shots": 4096,
+    "optimizer_name": "COBYLA",
+    "optimal_parameters": [
+      2.527058471368481,
+      2.698287157638429
+    ],
+    "optimal_gamma": [
+      2.527058471368481
+    ],
+    "optimal_beta": [
+      2.698287157638429
+    ],
+    "analytic_ideal_expected_cut": 5.039980068035836,
+    "analytic_ideal_p_opt": 0.4156637793083864,
+    "shared_parameter_rule_enforced": true
+  },
+  "results": {
+    "expected_cut": 4.9140625,
+    "cut_variance": 1.368925518925519,
+    "sample_std_error": 0.018281420398014087,
+    "confidence_interval_95": [
+      4.878231647276708,
+      4.949893352723292
+    ],
+    "classical_optimal_cut": 6.0,
+    "approximation_ratio": 0.8190104166666666,
+    "best_sampled_cut": 6.0,
+    "best_sampled_bitstring": "001100",
+    "most_frequent_bitstring": "001101",
+    "ground_state_success_probability": 0.388671875,
+    "ground_state_success_shots": 1592,
+    "ground_state_wilson_ci_95": [
+      0.37385498121061284,
+      0.40369739266524585
+    ],
+    "num_unique_bitstrings": 32,
+    "total_shots_sampled": 4096,
+    "is_classical_optimum_achieved": true
+  },
+  "cut_distribution": {
+    "0.0": 29,
+    "3.0": 313,
+    "4.0": 726,
+    "6.0": 1592,
+    "5.0": 1287,
+    "2.0": 149
+  },
+  "circuit_compilation_metrics": {
+    "transpiled_depth": 36,
+    "transpiled_total_gates": 66,
+    "transpiled_2q_gates": 12,
+    "basis_synthesis_2q_gates": 12,
+    "routing_2q_gates": 0,
+    "routing_swap_count": 0,
+    "native_2q_gate": "cx",
+    "physical_qubits_used": [
+      0,
+      1,
+      2,
+      3,
+      4
+    ],
+    "active_qubits_count": 5,
+    "total_backend_qubits": 8
+  },
+  "timing": {
+    "execution_duration_seconds": 0.0028222999990248354,
+    "execution_timestamp_utc": "2026-10-12T14:19:16.066272+00:00"
+  },
+  "transpiler_settings": {
+    "optimization_level": 1,
+    "routing_algorithm": "SABRE",
+    "seed_transpiler": 42,
+    "seed_simulator": 42
+  }
+}

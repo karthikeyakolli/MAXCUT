@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" width="800" height="480">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .title { font-family: system-ui, -apple-system, sans-serif; font-size: 20px; font-weight: 700; fill: #f8fafc; }
+      .subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; fill: #94a3b8; }
+      .axis-label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 600; fill: #e2e8f0; }
+      .tick-text { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #94a3b8; text-anchor: middle; }
+      .val-text { font-family: system-ui, -apple-system, sans-serif; font-size: 10px; fill: #cbd5e1; text-anchor: middle; }
+      .legend-text { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #cbd5e1; }
+      .grid { stroke: #1e293b; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <text x="40" y="40" class="title">Figure 6: Empirical Cut Value Distributions (Ideal vs. Noisy)</text>
+  <text x="40" y="65" class="subtitle">Sampled over 4096 shots per condition | Demonstrating noise degradation from optimal C=6</text>
+
+  <!-- Horizontal Grid lines (y = 0% to 50%) -->
+  <!-- 0% at y=360, 10% at y=304, 20% at y=248, 30% at y=192, 40% at y=136, 50% at y=80 -->
+  <line x1="80" y1="360" x2="740" y2="360" stroke="#334155" stroke-width="1.5" />
+  <line x1="80" y1="304" x2="740" y2="304" class="grid" />
+  <line x1="80" y1="248" x2="740" y2="248" class="grid" />
+  <line x1="80" y1="192" x2="740" y2="192" class="grid" />
+  <line x1="80" y1="136" x2="740" y2="136" class="grid" />
+
+  <text x="70" y="364" class="val-text" text-anchor="end">0%</text>
+  <text x="70" y="308" class="val-text" text-anchor="end">10%</text>
+  <text x="70" y="252" class="val-text" text-anchor="end">20%</text>
+  <text x="70" y="196" class="val-text" text-anchor="end">30%</text>
+  <text x="70" y="140" class="val-text" text-anchor="end">40%</text>
+
+  <!-- Bars for each cut value C in (0, 2, 3, 4, 5, 6) -->
+  <!-- Cut C = 2 -->
+  <!-- Group center x = 150 -->
+  <rect x="120" y="345.78125" width="14" height="14.21875" fill="#38bdf8" rx="2" />
+  <rect x="136" y="338.671875" width="14" height="21.328125" fill="#ef4444" rx="2" />
+  <rect x="152" y="338.9453125" width="14" height="21.0546875" fill="#f59e0b" rx="2" />
+  <rect x="168" y="339.62890625" width="14" height="20.37109375" fill="#10b981" rx="2" />
+  <text x="150" y="380" class="tick-text">C = 2</text>
+
+  <!-- Cut C = 3 -->
+  <!-- Group center x = 270 -->
+  <rect x="240" y="330.33203125" width="14" height="29.66796875" fill="#38bdf8" rx="2" />
+  <rect x="256" y="314.0625" width="14" height="45.9375" fill="#ef4444" rx="2" />
+  <rect x="272" y="315.4296875" width="14" height="44.5703125" fill="#f59e0b" rx="2" />
+  <rect x="288" y="317.20703125" width="14" height="42.79296875" fill="#10b981" rx="2" />
+  <text x="270" y="380" class="tick-text">C = 3</text>
+
+  <!-- Cut C = 4 -->
+  <!-- Group center x = 390 -->
+  <rect x="360" y="264.296875" width="14" height="95.703125" fill="#38bdf8" rx="2" />
+  <rect x="376" y="257.734375" width="14" height="102.265625" fill="#ef4444" rx="2" />
+  <rect x="392" y="259.23828125" width="14" height="100.76171875" fill="#f59e0b" rx="2" />
+  <rect x="408" y="260.7421875" width="14" height="99.2578125" fill="#10b981" rx="2" />
+  <text x="390" y="380" class="tick-text">C = 4</text>
+
+  <!-- Cut C = 5 -->
+  <!-- Group center x = 510 -->
+  <rect x="480" y="180.76171875" width="14" height="179.23828125" fill="#38bdf8" rx="2" />
+  <rect x="496" y="187.4609375" width="14" height="172.5390625" fill="#ef4444" rx="2" />
+  <rect x="512" y="186.23046875" width="14" height="173.76953125" fill="#f59e0b" rx="2" />
+  <rect x="528" y="184.04296875" width="14" height="175.95703125" fill="#10b981" rx="2" />
+  <text x="510" y="380" class="tick-text">C = 5</text>
+
+  <!-- Cut C = 6 (Optimal) -->
+  <!-- Group center x = 630 -->
+  <rect x="600" y="120.87890625" width="14" height="239.12109375" fill="#38bdf8" rx="2" />
+  <rect x="616" y="146.71875" width="14" height="213.28125" fill="#ef4444" rx="2" />
+  <rect x="632" y="144.66796875" width="14" height="215.33203125" fill="#f59e0b" rx="2" />
+  <rect x="648" y="142.34375" width="14" height="217.65625" fill="#10b981" rx="2" />
+  <text x="630" y="380" class="tick-text" font-weight="700" fill="#f8fafc">C = 6 (OPT)</text>
+
+  <!-- Annotations on C=6 -->
+  <text x="607" y="114.87890625" class="val-text">42.7%</text>
+  <text x="623" y="140.71875" class="val-text">38.1%</text>
+  <text x="639" y="138.66796875" class="val-text">38.5%</text>
+  <text x="655" y="136.34375" class="val-text">38.9%</text>
+
+  <!-- Legend -->
+  <rect x="100" y="420" width="14" height="14" fill="#38bdf8" />
+  <text x="120" y="432" class="legend-text">Ideal Reference (42.7% opt)</text>
+
+  <rect x="290" y="420" width="14" height="14" fill="#ef4444" />
+  <text x="310" y="432" class="legend-text">Proc A Noisy (38.09% opt)</text>
+
+  <rect x="470" y="420" width="14" height="14" fill="#f59e0b" />
+  <text x="490" y="432" class="legend-text">Proc B Noisy (38.45% opt)</text>
+
+  <rect x="650" y="420" width="14" height="14" fill="#10b981" />
+  <text x="670" y="432" class="legend-text">Proc D Noisy (38.87% opt)</text>
+</svg>

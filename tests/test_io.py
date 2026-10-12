@@ -89,7 +89,7 @@ class TestChallengeKitIO(unittest.TestCase):
             "name": "Processor_A",
             "num_qubits": 5,
             "coupling_map": [[0, 1], [1, 2], [2, 3], [3, 4]],
-            "basis_gates": ["rz", "sx", "x", "ecr"],
+            "basis_gates": ["rz", "sx", "x", "cx"],
             "qubit_properties": {"t1": 150.0},
         }
         with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
@@ -102,7 +102,7 @@ class TestChallengeKitIO(unittest.TestCase):
             self.assertEqual(spec.name, "Processor_A")
             self.assertEqual(spec.num_qubits, 5)
             self.assertEqual(len(spec.coupling_map), 4)
-            self.assertEqual(spec.basis_gates, ["rz", "sx", "x", "ecr"])
+            self.assertEqual(spec.basis_gates, ["rz", "sx", "x", "cx"])
             self.assertIn("Processor: Processor_A", spec.summary())
         finally:
             Path(temp_path).unlink(missing_ok=True)

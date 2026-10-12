@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 420" width="800" height="420">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .title { font-family: system-ui, -apple-system, sans-serif; font-size: 20px; font-weight: 700; fill: #f8fafc; }
+      .subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; fill: #94a3b8; }
+      .node-text { font-family: system-ui, -apple-system, sans-serif; font-size: 16px; font-weight: 700; fill: #ffffff; text-anchor: middle; dominant-baseline: central; }
+      .sub-text { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; fill: #94a3b8; text-anchor: middle; }
+      .cx-edge { stroke: #38bdf8; stroke-width: 4; }
+      .stat-card { fill: #1e293b; stroke: #334155; stroke-width: 1.5; rx: 8; }
+      .card-header { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 600; fill: #38bdf8; }
+      .card-body { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #e2e8f0; }
+    </style>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <text x="40" y="40" class="title">Figure 2: Processor A Coupling Map (5Q Linear Chain)</text>
+  <text x="40" y="65" class="subtitle">Architecture: 5 Physical Qubits, 4 Bidirectional CX Links | Transpiled Compilation Overhead: 2 SWAPs (+50% 2Q Gates)</text>
+
+  <!-- Physical Coupling Links -->
+  <line x1="120" y1="180" x2="240" y2="180" class="cx-edge" />
+  <line x1="240" y1="180" x2="360" y2="180" class="cx-edge" />
+  <line x1="360" y1="180" x2="480" y2="180" class="cx-edge" />
+  <line x1="480" y1="180" x2="600" y2="180" class="cx-edge" />
+
+  <!-- Qubits (0 to 4) -->
+  <g transform="translate(120, 180)">
+    <circle r="26" fill="#0284c7" stroke="#38bdf8" stroke-width="3" />
+    <text class="node-text">Q0</text>
+    <text y="42" class="sub-text">Mapped: q0</text>
+  </g>
+
+  <g transform="translate(240, 180)">
+    <circle r="26" fill="#0284c7" stroke="#38bdf8" stroke-width="3" />
+    <text class="node-text">Q1</text>
+    <text y="42" class="sub-text">Mapped: q1</text>
+  </g>
+
+  <g transform="translate(360, 180)">
+    <circle r="26" fill="#0284c7" stroke="#38bdf8" stroke-width="3" />
+    <text class="node-text">Q2</text>
+    <text y="42" class="sub-text">Mapped: q2</text>
+  </g>
+
+  <g transform="translate(480, 180)">
+    <circle r="26" fill="#0284c7" stroke="#38bdf8" stroke-width="3" />
+    <text class="node-text">Q3</text>
+    <text y="42" class="sub-text">Mapped: q3</text>
+  </g>
+
+  <g transform="translate(600, 180)">
+    <circle r="26" fill="#0284c7" stroke="#38bdf8" stroke-width="3" />
+    <text class="node-text">Q4</text>
+    <text y="42" class="sub-text">Mapped: q4</text>
+  </g>
+
+  <!-- Metric Panels Below -->
+  <rect x="40" y="270" width="220" height="110" class="stat-card" />
+  <text x="55" y="295" class="card-header">Hardware Specification</text>
+  <text x="55" y="320" class="card-body">• Physical Qubits: 5 (100% active)</text>
+  <text x="55" y="340" class="card-body">• Physical Links: 4 (8 CX pairs)</text>
+  <text x="55" y="360" class="card-body">• Max Degree: 2 (Linear Chain)</text>
+
+  <rect x="290" y="270" width="220" height="110" class="stat-card" />
+  <text x="305" y="295" class="card-header">Compilation Overhead</text>
+  <text x="305" y="320" class="card-body">• Transpiled Depth: 58 gates</text>
+  <text x="305" y="340" class="card-body">• Total CX: 18 (12 basis + 6 routing)</text>
+  <text x="305" y="360" class="card-body">• Routing SWAPs: 2 (+50% CX overhead)</text>
+
+  <rect x="540" y="270" width="220" height="110" class="stat-card" />
+  <text x="555" y="295" class="card-header">Noisy Solution Quality</text>
+  <text x="555" y="320" class="card-body">• Mean Cut &lt;C&gt;: 4.8784 ± 0.0187</text>
+  <text x="555" y="340" class="card-body">• Approx Ratio: 81.31%</text>
+  <text x="555" y="360" class="card-body">• P(opt): 38.09% | Noise Loss: -3.51%</text>
+</svg>

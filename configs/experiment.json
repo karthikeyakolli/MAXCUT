@@ -32,8 +32,20 @@
     "tolerance": 1e-4,
     "initial_point": "random_uniform"
   },
+  "transpilation": {
+    "optimization_level": 1,
+    "layout_method": "sabre",
+    "routing_method": "sabre",
+    "seed_transpiler": 42
+  },
+  "noise": {
+    "single_qubit_error": 0.001,
+    "two_qubit_error": 0.005,
+    "readout_error": 0.01,
+    "model_type": "uniform_depolarizing_symmetric_readout"
+  },
   "execution": {
-    "shots": 2048,
+    "shots": 4096,
     "transpiler_optimization_levels": [1, 2, 3],
     "targets": [
       "ideal_aer",

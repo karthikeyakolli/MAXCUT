@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 480" width="800" height="480">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .title { font-family: system-ui, -apple-system, sans-serif; font-size: 20px; font-weight: 700; fill: #f8fafc; }
+      .subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; fill: #94a3b8; }
+      .axis-label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 600; fill: #e2e8f0; }
+      .tick-text { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #94a3b8; }
+      .bubble-text { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 700; fill: #ffffff; }
+      .bubble-sub { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; fill: #cbd5e1; }
+      .grid { stroke: #1e293b; stroke-width: 1; }
+      .trend-line { stroke: #38bdf8; stroke-width: 2; stroke-dasharray: 4,4; }
+    </style>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <text x="40" y="40" class="title">Figure 8: Transpiled Circuit Depth vs. Noisy Approximation Ratio</text>
+  <text x="40" y="65" class="subtitle">Monotonic performance improvement as routing SWAP penalty is eliminated across Processors A, B, and D</text>
+
+  <!-- Plot Canvas: x from 30 to 65 (Depth), y from 80.5% to 84.5% (Approx Ratio) -->
+  <!-- Origin at (100, 380), Top-Right at (700, 100) -->
+  <!-- X mapping: x_pixel = 100 + (depth - 30) * (600 / 35) = 100 + (depth - 30) * 17.14 -->
+  <!-- Y mapping: y_pixel = 380 - (alpha - 80.5) * (280 / 4.0) = 380 - (alpha - 80.5) * 70 -->
+
+  <!-- Axes & Grid -->
+  <line x1="100" y1="380" x2="720" y2="380" stroke="#475569" stroke-width="2" />
+  <line x1="100" y1="100" x2="100" y2="380" stroke="#475569" stroke-width="2" />
+
+  <!-- Y Ticks: 81.0%, 82.0%, 83.0%, 84.0% -->
+  <line x1="100" y1="345" x2="720" y2="345" class="grid" />
+  <text x="90" y="349" class="tick-text" text-anchor="end">81.0%</text>
+
+  <line x1="100" y1="275" x2="720" y2="275" class="grid" />
+  <text x="90" y="279" class="tick-text" text-anchor="end">82.0%</text>
+
+  <line x1="100" y1="205" x2="720" y2="205" class="grid" />
+  <text x="90" y="209" class="tick-text" text-anchor="end">83.0%</text>
+
+  <line x1="100" y1="135" x2="720" y2="135" class="grid" />
+  <text x="90" y="139" class="tick-text" text-anchor="end">84.0%</text>
+
+  <!-- Ideal Reference Line at alpha = 84.26% -> y = 380 - 3.76 * 70 = 116.8 -->
+  <line x1="100" y1="117" x2="720" y2="117" stroke="#10b981" stroke-width="2" stroke-dasharray="6,4" />
+  <text x="715" y="112" class="tick-text" fill="#10b981" text-anchor="end">Theoretical Ideal Reference (84.26%)</text>
+
+  <!-- X Ticks: Depth 35, 45, 55, 60 -->
+  <text x="186" y="405" class="tick-text" text-anchor="middle">Depth 35</text>
+  <text x="357" y="405" class="tick-text" text-anchor="middle">Depth 45</text>
+  <text x="528" y="405" class="tick-text" text-anchor="middle">Depth 55</text>
+  <text x="614" y="405" class="tick-text" text-anchor="middle">Depth 60</text>
+
+  <text x="410" y="435" class="axis-label" text-anchor="middle">Transpiled Circuit Depth (Gates)</text>
+  <text x="40" y="240" class="axis-label" transform="rotate(-90 40 240)" text-anchor="middle">Approximation Ratio (%)</text>
+
+  <!-- Trend Line through Noisy Points -->
+  <!-- D (36, 81.90%): x = 203, y = 282 -->
+  <!-- B (52, 81.54%): x = 477, y = 307 -->
+  <!-- A (58, 81.31%): x = 580, y = 323 -->
+  <line x1="203" y1="282" x2="580" y2="323" class="trend-line" />
+
+  <!-- Data Point: Processor A (Depth 58, 81.31%) -->
+  <circle cx="580" cy="323" r="18" fill="#ef4444" stroke="#fca5a5" stroke-width="2.5" />
+  <text x="605" y="320" class="bubble-text" fill="#ef4444">Processor A</text>
+  <text x="605" y="336" class="bubble-sub">Depth 58 | 81.31% | 2 SWAPs</text>
+
+  <!-- Data Point: Processor B (Depth 52, 81.54%) -->
+  <circle cx="477" cy="307" r="18" fill="#f59e0b" stroke="#fde68a" stroke-width="2.5" />
+  <text x="502" y="300" class="bubble-text" fill="#f59e0b">Processor B</text>
+  <text x="502" y="316" class="bubble-sub">Depth 52 | 81.54% | 1 SWAP</text>
+
+  <!-- Data Point: Processor D (Depth 36, 81.90%) -->
+  <circle cx="203" cy="282" r="22" fill="#10b981" stroke="#a7f3d0" stroke-width="3" />
+  <text x="232" y="275" class="bubble-text" fill="#10b981">Processor D (Custom)</text>
+  <text x="232" y="291" class="bubble-sub">Depth 36 | 81.90% | 0 SWAPs</text>
+  <text x="232" y="306" class="bubble-sub" fill="#34d399">Lowest Depth &amp; Highest Quality</text>
+</svg>

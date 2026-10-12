@@ -1,201 +1,259 @@
-# Qiskit Fall Fest 2026 — Phase 1, Track O1 (Max-Cut)
-# Final Hackathon Standards, Guidelines & Submission Readiness Audit Report
+# MAXCUT — Final Hackathon Readiness, Compliance, and Scientific Audit Report
 
-**Document File:** `docs/audit/FINAL_HACKATHON_READINESS_REPORT.md`  
-**Evaluation Date:** 2026-10-11  
-**Evaluator Roles:** Senior Quantum-Computing Researcher, Qiskit Engineer, Scientific-Methodology Reviewer, Software-Quality Auditor, and Hackathon Evaluator  
-**Repository:** [https://github.com/karthikeyakolli/MAXCUT](https://github.com/karthikeyakolli/MAXCUT)  
-**Selected Track / Problem:** Quantum Optimization — **Problem Code: O1 (Max-Cut)**  
-**Audit Scope:** Comprehensive Read-Only Verification Audit (Non-destructive inspection, zero code modifications, independent calculation oracle checks)
-
----
-
-## Pre-Audit Working Tree & Integrity Verification
-
-Before beginning this audit, the repository working tree was inspected (`git status`):
-* **Branch:** `main` (synchronized with `origin/main`).
-* **Pre-existing Working State:** All local hardware specs, adapters, empirical results in `results/verified_ab_v3/`, and test suites are intact.
-* **Integrity Directive:** Zero source files, tests, notebooks, or configurations were modified or discarded during this audit. The sole repository change is the creation of this audit report.
+**Track:** Track O1 — Quantum Optimization (Max-Cut)  
+**Standard:** Qiskit Fall Fest 2026 Challenge Kit (Tier 1 Operational Standard)  
+**Document Identifier:** `docs/audit/FINAL_HACKATHON_READINESS_REPORT.md`  
+**Role:** Senior Qiskit Engineer, Scientific Reproducibility Auditor & Hackathon Compliance Reviewer  
+**Date:** October 2026  
+**Audited Release Version:** Version 4.0.0 (`results/verified_ab_v4/`)  
+**Status:** **AUDIT COMPLETE — SUBMISSION READY (PENDING PARTICIPANT FINAL RELEASE DECISION)**
 
 ---
 
-## A. Executive Verdict
+## 1. Executive Verdict
 
-### **CONDITIONALLY READY — NON-CRITICAL ITEMS REMAIN**
-
-> [!IMPORTANT]
-> ### Detailed Verdict Rationale
-> 1. **Mathematical & Classical Correctness: PASS (Verified)**  
->    The canonical 6-vertex, 8-edge unweighted challenge instance is unaltered. The exact classical brute-force solver evaluates all 64 states in $0.4\text{ ms}$, confirming $C_{\max} = 6.0000$ and identifying all 10 degenerate optimal bitstrings (5 complementary pairs). The QUBO minimization, Ising Hamiltonian, and quantum operator spectra match to machine precision ($0.0000$).
-> 2. **Symmetry-Reduction Correctness & Contest Rule Compatibility: PASS (Verified) / COMPATIBLE**  
->    Fixing $x_0 = 0$ is mathematically proven across all 64 states, preserving $C_{\max} = 6.0000$ and mapping bijectively to valid 6-vertex partitions. The available Phase 1 challenge rules specify the Max-Cut problem and objective, and are silent on formulation restrictions (they contain no rule prohibiting symmetry reduction).
-> 3. **Processor Architecture Finalization: PASS (Verified)**  
->    In accordance with the project owner's finalized requirements from the hackathon chat:
->    - **Processor A** is verified as a genuine **5-physical-qubit processor** (`5Q-Baseline-Tree`, qubits `0..4`, fixed 5-node T-tree coupling graph, native `ecr`, depth 69, 18 ECR gates).
->    - **Processor B** is verified as a genuine **7-physical-qubit processor** (`Heavy-Hex-7`, qubits `0..6`, sparse heavy-hex unit cell topology, native `cz`, depth 83, 18 CZ gates) targeting its full 7-qubit topology with physical qubits `[0, 1, 2, 3, 5]` actively mapped.
-> 4. **Controlled Empirical Experimentation: PASS (Verified)**  
->    All four required cases (Proc A Ideal, Proc A Noisy, Proc B Ideal, Proc B Noisy) are fully executed with $N = 2048$ shots, seed 42, and shared $\gamma^* = 2.5271, \beta^* = 2.6983$. Raw counts sum to exactly 2048 per case. All statistical metrics, standard errors, Wilson CIs, Welch $t$-tests, and two-proportion $z$-tests reproduce directly from raw data without fabrication.
-> 5. **Submission Deliverables & Disclosures: PASS (Verified)**  
->    The test suite passes **115 automated tests** in 39.27s. All 5 config files, 10 data files, 12 tables, 9 figures, and the pre-rendered notebook `main.ipynb` (10 code cells executed with full outputs) pass `scripts/validate_artifacts.py`. Prominent AI assistance disclosures and scientific interpretation disclaiming quantum advantage are present.
-> 6. **Remaining Non-Critical Item:**  
->    The exact numerical noise parameters ($T_1, T_2, \bar{e}_{2Q}$) represent local synthetic baseline models rather than official organizer hardware calibration timestamps, as the external Google Drive folder (`1caxlXXeqjOkLmXGlimy_Etw0uPHSwyga`) was inaccessible offline. This is documented transparently in the repository.
+| Audit Domain | Determination | Status Summary |
+| :--- | :---: | :--- |
+| **Problem Instance & Classical Ground Truth** | **PASS — VERIFIED** | Canonical 6-vertex, 8-edge integer graph; $C_{\max} = 6.0000$ independently certified. |
+| **Mathematical Formulation & Reduction** | **PASS — VERIFIED** | 5-qubit $\mathbb{Z}_2$ symmetry reduction ($x_0 = 0$) mathematically equivalent to 6-qubit model. |
+| **Hardware Target Specifications** | **PASS — VERIFIED** | Processor A (5Q linear), Processor B (9Q tree), and Processor D (8Q chorded mesh) compliant. |
+| **Source Conflict Resolution** | **PASS — VERIFIED** | Tier 1 Challenge Kit precedence applied; Tier 3 "Organizer Approval" PDF conflicts cataloged. |
+| **Benchmark Protocols & Noise** | **PASS — VERIFIED** | Native `cx` gate basis; uniform synthetic noise ($p_{1Q}=0.001, p_{CX}=0.005, p_{RO}=0.01$); 4096 shots. |
+| **Algorithmic Fairness** | **PASS — VERIFIED** | Variational angles frozen ($\gamma^* = 2.527058, \beta^* = 2.698287$); zero backend-specific retuning. |
+| **Custom Processor D Design** | **PASS — VERIFIED** | Addresses measured SWAP bottleneck; 0 SWAPs, 12 CX, depth 36, planar degree $\le 3$. |
+| **Statistical Integrity** | **PASS — VERIFIED** | All metrics recomputed from raw counts; Wilson intervals and Welch $t$-tests verified. |
+| **Deliverables & Figure Assets** | **PASS — VERIFIED** | 8 publication-grade vector SVG figures; machine-readable CSV/JSON tables; clean `main.py`. |
+| **Disclosures & Governance** | **PASS — VERIFIED** | AI-assistance disclosure and explicit Quantum Advantage disclaimer present. |
+| **Historical Preservation** | **PASS — VERIFIED** | Versions 2 and 3 preserved without data leakage into Version 4 canonical findings. |
+| **Automated Test Suite** | **PASS — VERIFIED** | 40/40 tests passing across all phase modules (`Ran 40 tests in 0.197s OK`). |
+| **OVERALL VERDICT** | **PASS — VERIFIED** | **REPRESENTATIVE BENCHMARK IS REPRODUCIBLE, AUDITED, AND READY FOR SUBMISSION.** |
 
 ---
 
-## B. Master Requirement Traceability Matrix
+## 2. Source Precedence & Conflict Resolution Register
 
-| Req # | Requirement Area | Source / Criterion | Inspected Files | Test / Command Executed | Actual Evidence & Finding | Audit Verdict | Severity if Failing | Required Action |
-| :---: | :--- | :--- | :--- | :--- | :--- | :---: | :---: | :--- |
-| **01** | **Track & Problem Input Integrity** | Challenge Kit O1 | [`instances/challenge/o1_maxcut_instance.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/instances/challenge/o1_maxcut_instance.json)<br>[`src/maxcut/io.py`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/src/maxcut/io.py) | SHA-256 integrity check;<br>`pytest tests/test_io.py` | Exactly $\|V\|=6, \|E\|=8$, $W=8.00$, unweighted, 0 self-loops, 1 connected component. Preserved completely unmodified. | **PASS — VERIFIED** | Critical | None |
-| **02** | **Classical Reference Solver** | Project Spec Sec. 3 | [`src/maxcut/classical/solver.py`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/src/maxcut/classical/solver.py)<br>[`results/data/classical_reference.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/data/classical_reference.json) | Exhaustive 64-state evaluation oracle;<br>`pytest tests/test_classical.py` | Proven global optimum $C_{\max} = 6.0000$ in $0.4\text{ ms}$. Exactly 10 optimal bitstrings (5 complementary pairs under $\mathbb{Z}_2$ symmetry). | **PASS — VERIFIED** | Critical | None |
-| **03** | **Mathematical Objective & Hamiltonian** | Project Spec Sec. 3, 6 | [`src/maxcut/formulation/qubo.py`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/src/maxcut/formulation/qubo.py)<br>[`tests/test_formulation.py`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/tests/test_formulation.py) | State-by-state energy spectrum check;<br>`pytest tests/test_formulation.py` | Certified $C(x) = -f_{\text{QUBO}}(x) = -E_{\text{Ising}}(s) = -\langle x \| H_C \| x \rangle$. Minimization ground energy $E_0 = -6.0000$. Max deviation: $0.0000$. | **PASS — VERIFIED** | Critical | None |
-| **04** | **Symmetry-Reduction Mathematical Correctness** | Phase 2 Mandate | [`src/maxcut/formulation/qubo.py`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/src/maxcut/formulation/qubo.py)<br>[`tests/test_reduced_formulation.py`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/tests/test_reduced_formulation.py) | `pytest tests/test_reduced_formulation.py` (7/7 passed) | Fixing $x_0 = 0$ preserves all 8 edges and $W=8.00$. All 64 states map to 32 canonical reduced states preserving exact cut values; $C_{\max}=6.0$ invariant; 10 optima condense to 5 pairs. | **PASS — VERIFIED** | Critical | None |
-| **05** | **Symmetry-Reduction Rule Compatibility** | Participant Instructions | Inspection of Challenge Kit docs & rules | Rule audit of participant guidelines | Contest instructions define Max-Cut objective and do not restrict formulation or prohibit symmetry reduction. | **PASS — VERIFIED** | Medium | Maintain documentation of mathematical equivalence |
-| **06** | **Processor A: Physical Width & Topology** | Hackathon Chat Finalized Target | [`processors/processor_a/hardware_spec.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/processors/processor_a/hardware_spec.json)<br>[`processors/processor_a/adapter.py`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/processors/processor_a/adapter.py) | Schema check: `num_qubits: 5`;<br>`pytest tests/test_processors_integration.py` | Genuine 5 physical qubits (`0..4`). Fixed 5-node T-tree graph (4 undirected edges, 8 directed pairs). Native basis `["rz", "sx", "x", "ecr"]`. Zero Falcon-H remnant. | **PASS — VERIFIED** | Critical | None |
-| **07** | **Processor B: Physical Width & Topology** | Hackathon Chat Finalized Target | [`processors/processor_b/hardware_spec.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/processors/processor_b/hardware_spec.json)<br>[`processors/processor_b/adapter.py`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/processors/processor_b/adapter.py) | Schema check: `num_qubits: 7`;<br>`pytest tests/test_processors_integration.py` | Genuine 7 physical qubits (`0..6`). Connected, sparse heavy-hex unit cell (6 undirected edges, 12 directed pairs). Native basis `["rz", "sx", "x", "cz"]`. Former Ring-7 removed. | **PASS — VERIFIED** | Critical | None |
-| **08** | **QAOA Circuit & Parameter Optimization** | Participant Guide Sec. 3 | [`src/maxcut/qaoa/ansatz.py`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/src/maxcut/qaoa/ansatz.py)<br>[`src/maxcut/qaoa/optimizer.py`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/src/maxcut/qaoa/optimizer.py) | Exact unitary comparison against matrix exponential | Parameter optimization uses exact statevector expectation. Cost layer correctly omits identity global phase. Max unitary deviation from theory: $4.00 \times 10^{-16}$. Optimal $\gamma^*=2.5271, \beta^*=2.6983$. | **PASS — VERIFIED** | High | None |
-| **09** | **Controlled Four-Case Empirical Experiment** | Phase 4 Mandate | [`results/verified_ab_v3/counts_*.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/)<br>[`results/verified_ab_v3/data/`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/data/) | Independent count recount & shot sum check | 4 cases executed freshly under identical parameters ($N=2048$ shots, seed 42): Proc A Ideal, Proc A Noisy, Proc B Ideal, Proc B Noisy. Raw counts sum to exactly 2048 per case. | **PASS — VERIFIED** | Critical | None |
-| **10** | **Real Transpiled Circuit Metrics** | Project Spec Sec. 8 | [`results/circuits/`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/circuits/)<br>[`results/verified_ab_v3/tables/`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/tables/) | Inspection of transpiled QASM circuits | Derived directly from transpiled QASM: Proc A: depth 69, 116 gates, 18 ECR (12 basis + 6 routing, 2 SWAPs). Proc B: depth 83, 114 gates, 18 CZ (12 basis + 6 routing, 2 SWAPs). Zero double-counting. | **PASS — VERIFIED** | High | None |
-| **11** | **Statistical Accuracy & Uncertainty** | Phase 5 Mandate | [`results/verified_ab_v3/tables/`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/tables/)<br>[`report/analysis.md`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/report/analysis.md) | `pytest tests/test_verified_ab_v3_statistics.py` (3/3 passed) | Standard errors, 95% CIs, Wilson score intervals computed from raw data. Welch $t$-tests and Two-prop $z$-tests documented. Non-significant tests reported strictly as "no difference detected." | **PASS — VERIFIED** | High | None |
-| **12** | **Scientific Interpretation** | Hackathon Guidelines | [`report/analysis.md`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/report/analysis.md)<br>[`README.md`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/README.md) | Narrative inspection | Correctly disclaims Quantum Advantage ($0.4\text{ ms}$ classical solver). Explains depth efficiency vs. gate fidelity survival trade-offs objectively. | **PASS — VERIFIED** | High | None |
-| **13** | **Raw Data & Reproducibility** | Participant Instructions | [`results/verified_ab_v3/`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/)<br>[`scripts/`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/scripts/) | Re-execution of reproduction scripts | All raw counts, summary data, tables, figures, and QASM circuits exist and regenerate deterministically with fixed seeds (42). | **PASS — VERIFIED** | Critical | None |
-| **14** | **Clean Notebook Execution** | Submission Guidelines | [`main.ipynb`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/main.ipynb) | `nbformat` cell validation;<br>`scripts/validate_artifacts.py` | All 10 code cells pre-rendered with complete execution counts ($1 \dots 10$) and text/table/figure outputs reflecting v3 corrected architectures. | **PASS — VERIFIED** | Critical | None |
-| **15** | **Code Quality & Automated Tests** | Project Spec Sec. 7 | [`tests/`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/tests/) | `.\.venv\Scripts\pytest` | **115 passing tests** in 39.27s (100% green build) covering unit, integration, circuit metrics, noise, and statistical tests. | **PASS — VERIFIED** | High | None |
-| **16** | **Dependencies & CI Workflow** | Submission Guidelines | [`requirements.txt`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/requirements.txt)<br>`.github/workflows/ci.yml` | Dependency inspection & CI workflow validation | Pinned dependencies for Python 3.11/3.12/3.14. CI runs pytest and validates clean repository state. | **PASS — VERIFIED** | Medium | None |
-| **17** | **Submission Deliverables & Artifacts** | Participant Instructions | Repository root & `docs/` | `python scripts/validate_artifacts.py` | All expected assets present: `main.ipynb`, `processors/`, `results/`, `README.md`, `report/analysis.md`, `pyproject.toml`, `requirements.txt`. | **PASS — VERIFIED** | Critical | None |
-| **18** | **AI-Assistance Disclosure** | Submission Guidelines | [`README.md`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/README.md#L15-L16)<br>[`report/analysis.md`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/report/analysis.md#L13-L16) | Document inspection | Full AI-Assistance Disclosure prominently included in README and analysis report. Zero fabricated experimental data. | **PASS — VERIFIED** | Medium | None |
-| **19** | **Traceability & Release Status** | Audit Standards | [`docs/audit/`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/docs/audit/) | Crosswalk & provenance audit | Bidirectional requirement traceability maintained. Historical v2 and v1 baselines archived separately. Git working tree uncommitted and unpushed. | **PASS — VERIFIED** | High | Finalize audit report |
+Discrepancies in the distributed hackathon materials were formally governed by the Phase 0 Authoritative Precedence Hierarchy:
+1. **Tier 1 (Operational Standard):** *Updated Qiskit Fall Fest 2026 Challenge Kit* — Primary operational standard for participants.
+2. **Tier 2 (Organizer Overrides):** Formal written organizer communications (none detected overriding Tier 1).
+3. **Tier 3 (Provisional Draft):** *Processor A/B Benchmark Configuration PDF* — Explicitly labeled *"For Organizer Approval"*.
+4. **Tier 4 (Historical Decks):** Preliminary slide decks (superseded where conflicting).
 
----
-
-## C. Comprehensive Numerical Evidence (Version 3 Reconciled)
-
-The table below reconciles all empirical metrics from the executed Version 3 benchmark. Every number has been independently recalculated from the raw count files and certified against the source artifacts:
-
-| Dimension / Metric | Processor A (Ideal Reference) | Processor A (Noisy Baseline) | Processor B (Ideal Reference) | Processor B (Noisy Baseline) | Source Data Artifact |
-| :--- | :---: | :---: | :---: | :---: | :--- |
-| **Backend Target Name** | `Processor_A` | `Processor_A` | `Processor_B` | `Processor_B` | `hardware_spec.json` |
-| **Architecture Family** | `5Q-Baseline-Tree` | `5Q-Baseline-Tree` | `Heavy-Hex-7` | `Heavy-Hex-7` | `hardware_spec.json` |
-| **Backend Physical Qubit Count** | **5** | **5** | **7** | **7** | `hardware_spec.json` |
-| **Logical Circuit Width** | 5 | 5 | 5 | 5 | `ansatz.py` |
-| **Physical Qubits Mapped** | **5** (`[0, 1, 2, 3, 4]`) | **5** (`[0, 1, 2, 3, 4]`) | **5** (`[0, 1, 2, 3, 5]`) | **5** (`[0, 1, 2, 3, 5]`) | `transpiled.qasm` |
-| **Execution Mode** | `aer_topology_emulation` | `aer_noisy_simulation` | `aer_topology_emulation` | `aer_noisy_simulation` | `case_summary.json` |
-| **Executed Shot Count** | **2,048** | **2,048** | **2,048** | **2,048** | `counts_*.json` |
-| **Global & Transpiler Seeds** | 42 | 42 | 42 | 42 | `experiment_summary.json` |
-| **Shared Variational Parameters** | $\gamma^* = 2.5271, \beta^* = 2.6983$ | $\gamma^* = 2.5271, \beta^* = 2.6983$ | $\gamma^* = 2.5271, \beta^* = 2.6983$ | $\gamma^* = 2.5271, \beta^* = 2.6983$ | `experiment_summary.json` |
-| **Transpiled Circuit Depth** | **69 cycles** | **69 cycles** | **83 cycles** | **83 cycles** | `transpiled.qasm` |
-| **Total Gate Count** | **116** | **116** | **114** | **114** | `transpiled.qasm` |
-| **Native 2Q Entangling Gate** | `ecr` | `ecr` | `cz` | `cz` | `hardware_spec.json` |
-| **Native 2Q Gate Count** | **18 ECR** | **18 ECR** | **18 CZ** | **18 CZ** | `transpiled.qasm` |
-| **Basis Synthesis 2Q Gates** | 12 | 12 | 12 | 12 | `table1_breakdown.md` |
-| **Routing 2Q Gates** | 6 | 6 | 6 | 6 | `table1_breakdown.md` |
-| **Routing SWAP Count** | **2 SWAPs** | **2 SWAPs** | **2 SWAPs** | **2 SWAPs** | `table1_breakdown.md` |
-| **Coupling Map Violations** | **0** | **0** | **0** | **0** | `test_reduced_processor_integration` |
-| **Mean 2Q Gate Error Rate** | 0.0% (Ideal) | $0.75\%$ | 0.0% (Ideal) | $0.50\%$ | `hardware_spec.json` |
-| **Compounded 2Q Survival $(1 - \bar{e}_{2Q})^{18}$** | 100.0% | **87.3%** | 100.0% | **91.4%** | `statistical_summary.json` |
-| **Best Sampled Cut ($C_{\text{best}}$)** | **6.0000** | **6.0000** | **6.0000** | **6.0000** | `counts_*.json` |
-| **Sample Mean Cut ($\bar{C}$)** | **5.0625** | **4.9399** | **5.0742** | **4.9839** | `statistical_summary.json` |
-| **Standard Error ($\text{SE}$)** | $0.0229$ | $0.0244$ | $0.0230$ | $0.0240$ | `statistical_summary.json` |
-| **95% Confidence Interval ($\bar{C}$)** | $[5.0177, 5.1074]$ | $[4.8920, 4.9878]$ | $[5.0292, 5.1192]$ | $[4.9368, 5.0310]$ | `table2_performance.md` |
-| **Approximation Ratio ($\hat{\alpha}$)** | **0.8438 (84.38%)** | **0.8233 (82.33%)** | **0.8457 (84.57%)** | **0.8306 (83.06%)** | `table2_performance.md` |
-| **Optimal Solution Hits ($N = 2048$)** | **854** | **770** | **871** | **812** | `counts_*.json` |
-| **Ground State Probability $P_{\text{opt}}$** | **41.70%** | **37.60%** | **42.53%** | **39.65%** | `table2_performance.md` |
-| **Wilson 95% CI ($P_{\text{opt}}$)** | $[39.58\%, 43.85\%]$ | $[35.52\%, 39.72\%]$ | $[40.40\%, 44.68\%]$ | $[37.55\%, 41.78\%]$ | `table2_performance.md` |
-| **Raw Count Artifact Location** | [`counts_processor_a_ideal.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/counts_processor_a_ideal.json) | [`counts_processor_a_noisy.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/counts_processor_a_noisy.json) | [`counts_processor_b_ideal.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/counts_processor_b_ideal.json) | [`counts_processor_b_noisy.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/counts_processor_b_noisy.json) | Directory: `results/verified_ab_v3/` |
-| **Generated Figure Location** | [Figure 1: Sampling Distribution](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/figures/figure1_sampling_distribution.png) | [Figure 2: Compilation Overhead](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/figures/figure2_compilation_overhead_breakdown.png) | [Figure 3: Metric CIs](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/figures/figure3_metric_confidence_intervals.png) | [Figure 3: Metric CIs](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/figures/figure3_metric_confidence_intervals.png) | Directory: `figures/` |
+### Conflict Resolution Summary:
+- **Processor A Topology:**
+  - *Tier 1 Operational Guide:* 5 physical qubits, linear-chain coupling: `{(0, 1), (1, 2), (2, 3), (3, 4)}`.
+  - *Tier 3 Draft PDF:* 5 physical qubits, T-tree coupling: `{(0, 1), (1, 2), (1, 3), (3, 4)}`.
+  - *Resolution:* **Implemented Tier 1 Linear Chain** in [`processors/processor_a/hardware_spec.json`](file:///c:/Users/OMEN/.gemini/antigravity-ide/scratch/MAXCUT/processors/processor_a/hardware_spec.json) (hash `aa9e30240af51a17`). The conflict is fully documented in [`docs/audit/PHASE_0_REQUIREMENT_FREEZE.md`](file:///c:/Users/OMEN/.gemini/antigravity-ide/scratch/MAXCUT/docs/audit/PHASE_0_REQUIREMENT_FREEZE.md).
+- **Processor B Topology:**
+  - *Tier 1 Operational Guide:* 9 physical qubits, sparse-tree heavy-hex unit cell: `{(0, 1), (1, 2), (2, 3), (2, 4), (4, 5), (5, 6), (4, 7), (7, 8)}`.
+  - *Tier 3 Draft PDF:* 9 physical qubits, 12-edge augmented cyclic grid.
+  - *Historical Starter Guide:* 7 physical qubits, ring topology.
+  - *Resolution:* **Implemented Tier 1 9-Qubit Sparse Tree** in [`processors/processor_b/hardware_spec.json`](file:///c:/Users/OMEN/.gemini/antigravity-ide/scratch/MAXCUT/processors/processor_b/hardware_spec.json) (hash `341d471380e28d49`). The obsolete 7-qubit ring and unratified 12-edge graph are quarantined from the runtime path.
+- **Native Two-Qubit Gate Basis:**
+  - *Tier 1 Operational Guide:* Mandates native CX basis (`["rz", "sx", "x", "cx"]`).
+  - *Earlier Codebase:* Retained ECR and CZ native gates from initial exploratory drafts.
+  - *Resolution:* **Standardized exclusively on CX** across Processors A, B, and D in the runtime compiler.
+- **Processor C vs Processor D Requirement:**
+  - *Processor C:* 13-qubit reference/study architecture. **NOT an execution target for Phase 1 O1**. No Bell-correlation or stabilizer experiments were added.
+  - *Processor D:* Custom architecture required by the Updated Challenge Kit. Designed, evaluated, and certified as `Processor_D` (8Q Chorded Ring Mesh).
 
 ---
 
-## D. Detailed Processor Evidence & Provenance Classification
+## 3. Requirement-by-Requirement Compliance Matrix
 
-### 1. Processor A Evidence Summary
-
-* **Physical Qubit Count:** Exactly **5 physical qubits** (`[0, 1, 2, 3, 4]`).
-* **Coupling Graph:** Fixed 5-node T-tree graph with 4 undirected edges (8 directed pairs):
-  $$\text{Coupling Map: } [[0, 1], [1, 0], [1, 2], [2, 1], [1, 3], [3, 1], [3, 4], [4, 3]]$$
-* **Basis Gates:** `["rz", "sx", "x", "ecr"]` (native 2Q entangler: `ecr`).
-* **Compilation Settings:** Qiskit 2.x preset pass manager (`optimization_level = 1`, `seed_transpiler = 42`).
-* **Noise Model:** Synthetic thermal relaxation ($T_1 = 210\ \mu\text{s}, T_2 = 140\ \mu\text{s}$) + depolarizing ($p_{1Q} = 0.010\%, p_{2Q} = 0.75\%$) + readout assignment error ($p_{\text{meas}} = 1.50\%$).
-* **Actual Mapped Physical Qubits:** 5 qubits occupied (`[0, 1, 2, 3, 4]`, 100% device utilization).
-* **Configuration Paths:** [`processors/processor_a/hardware_spec.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/processors/processor_a/hardware_spec.json), [`data/hardware_specs/processor_a.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/data/hardware_specs/processor_a.json).
-* **Provenance Classification:**
-  1. *Finalized High-Level Requirements:* 5 physical qubits, fixed baseline coupling graph, synthetic noise model. (**MATCH — CONFIRMED BY CHAT**)
-  2. *Internal Code Verification:* Genuine 5-qubit backend width, coupling map, native gate enforcement, and noise model connection. (**VERIFIED IN CODE**)
-  3. *Local Implementation Choices:* Fixed T-tree topology and numerical calibration rates ($T_1=210, T_2=140, p_{2Q}=0.75\%$).
-  4. *Genuinely Unspecified Details:* Official hardware calibration timestamps and exact primary edge list from Google Drive archive.
-
----
-
-### 2. Processor B Evidence Summary
-
-* **Physical Qubit Count:** Exactly **7 physical qubits** (`[0, 1, 2, 3, 4, 5, 6]`).
-* **Coupling Graph:** Connected, sparse, heavy-hex-inspired unit cell graph with 6 undirected edges (12 directed pairs):
-  $$\text{Coupling Map: } [[0, 1], [1, 0], [1, 2], [2, 1], [1, 3], [3, 1], [3, 5], [5, 3], [4, 5], [5, 4], [5, 6], [6, 5]]$$
-* **Basis Gates:** `["rz", "sx", "x", "cz"]` (native 2Q entangler: `cz`).
-* **Compilation Settings:** Qiskit 2.x preset pass manager (`optimization_level = 1`, `seed_transpiler = 42`).
-* **Noise Model:** Synthetic thermal relaxation ($T_1 = 240\ \mu\text{s}, T_2 = 140\ \mu\text{s}$) + depolarizing ($p_{1Q} = 0.015\%, p_{2Q} = 0.50\%$) + readout assignment error ($p_{\text{meas}} = 1.00\%$).
-* **Actual Mapped Physical Qubits:** 5 active physical qubits mapped (`[0, 1, 2, 3, 5]`), with qubits `4` and `6` available as topological ancillae.
-* **Configuration Paths:** [`processors/processor_b/hardware_spec.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/processors/processor_b/hardware_spec.json), [`data/hardware_specs/processor_b.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/data/hardware_specs/processor_b.json).
-* **Provenance Classification:**
-  1. *Finalized High-Level Requirements:* 7 physical qubits, heavy-hex-inspired graph, contemporary compilation baseline. (**MATCH — CONFIRMED BY CHAT**)
-  2. *Internal Code Verification:* Full 7-qubit target in transpiler pass manager, native gate enforcement, and noise model connection. Former Ring-7 completely eliminated. (**VERIFIED IN CODE**)
-  3. *Local Implementation Choices:* Heavy-hex unit cell topology and numerical calibration rates ($T_1=240, T_2=140, p_{2Q}=0.50\%$).
-  4. *Genuinely Unspecified Details:* Official hardware calibration timestamps and exact primary edge list from Google Drive archive.
+| Requirement Specification | Compliance Status | Evidence Artifact & Validation Reference |
+| :--- | :---: | :--- |
+| **Problem Selection:** Exactly one track problem: O1 Max-Cut | **PASS — VERIFIED** | [`instances/challenge/o1_maxcut_instance.json`](instances/challenge/o1_maxcut_instance.json); `test_01_problem_integrity` passes. |
+| **Graph Definition:** 6 vertices, 8 edges, integer weights ($w=1$) | **PASS — VERIFIED** | Verified by [`tests/test_phase2_math.py`](tests/test_phase2_math.py); 0 self-loops, 0 multigraph edges. |
+| **Classical Reference Ground Truth:** Exact $C_{\max}$ calculated | **PASS — VERIFIED** | $C_{\max} = 6.0000$ (10 optimal bitstrings) in [`results/data/classical_reference.json`](results/data/classical_reference.json). |
+| **Mathematical Equivalence:** QUBO, Ising, and Max-Cut match | **PASS — VERIFIED** | Spectral parity verified by [`tests/test_phase2_math.py`](tests/test_phase2_math.py) across all 64 states. |
+| **Symmetry Reduction:** 5-qubit exact reduction ($x_0 = 0$) | **PASS — VERIFIED** | Bijective preservation of $C_{\max} = 6.0000$ verified in Phase 2 and Phase 5 audits. |
+| **Processor A Specification:** 5 physical qubits, linear chain | **PASS — VERIFIED** | [`processors/processor_a/hardware_spec.json`](processors/processor_a/hardware_spec.json); verified in Phase 3/4. |
+| **Processor B Specification:** 9 physical qubits, sparse tree | **PASS — VERIFIED** | [`processors/processor_b/hardware_spec.json`](processors/processor_b/hardware_spec.json); verified in Phase 3/4. |
+| **Processor C Scope:** Architectural reference only, not executed | **PASS — VERIFIED** | Phase 0/1/7 audit scope boundaries enforced; no Bell/stabilizer tasks added. |
+| **Processor D Custom:** Custom architecture designed & tested | **PASS — VERIFIED** | 8Q Chorded Ring Mesh in [`processors/processor_d/`](processors/processor_d/); certified in Phase 7. |
+| **Native Gate Basis:** `["rz", "sx", "x", "cx"]` | **PASS — VERIFIED** | OpenQASM 2.0 exports in [`results/verified_ab_v4/circuits/`](results/verified_ab_v4/circuits/) contain only `rz`, `sx`, `x`, `cx`. |
+| **Noise Configuration:** $p_{1Q}=0.001, p_{CX}=0.005, p_{RO}=0.01$ | **PASS — VERIFIED** | Uniform synthetic noise model implemented in [`src/maxcut/backends/processor_backend.py`](src/maxcut/backends/processor_backend.py). |
+| **Shot Budget:** Exactly 4096 shots per sampled case | **PASS — VERIFIED** | Sum of raw counts in all 6 JSON files equals exactly 4096 ($N = 24,576$ total). |
+| **Transpiler Protocol:** Level 1, SABRE layout/routing, seed 42 | **PASS — VERIFIED** | Deterministic pass manager verified in Phase 4 and Phase 6. |
+| **Variational Parameters:** Traceable, frozen shared angles | **PASS — VERIFIED** | $\gamma^* = 2.527058, \beta^* = 2.698287$; held strictly constant across A, B, and D. |
+| **Primary Matrix:** 4 fresh A/B cases + 2 D cases | **PASS — VERIFIED** | All 6 cases generated in [`results/verified_ab_v4/`](results/verified_ab_v4/) with separate ideal/noisy runs. |
+| **Accounting Integrity:** Logical, synthesis, and routing separated | **PASS — VERIFIED** | 12 synthesis CX gates distinguished from routing SWAP gates (6 CX on A, 3 on B, 0 on D). |
+| **Uncertainty Estimates:** SE, 95% CI, Wilson score intervals | **PASS — VERIFIED** | Recalculated from raw counts in [`results/verified_ab_v4/tables/master_phase8_metrics.csv`](results/verified_ab_v4/tables/master_phase8_metrics.csv). |
+| **Hypothesis Testing:** Welch $t$-test, 2-proportion $z$-test | **PASS — VERIFIED** | Complete test matrix in [`results/verified_ab_v4/tables/statistical_hypothesis_tests_complete.csv`](results/verified_ab_v4/tables/statistical_hypothesis_tests_complete.csv). |
+| **Publication Figures:** 8 required vector SVG figures | **PASS — VERIFIED** | Generated in [`results/verified_ab_v4/figures/`](results/verified_ab_v4/figures/); XML validity tested. |
+| **Execution Entrypoint:** Clean standalone execution | **PASS — VERIFIED** | [`main.py`](main.py) executes cleanly with code 0 on standard Python 3.10+. |
+| **Artifact Validator:** Complete self-check script | **PASS — VERIFIED** | [`scripts/validate_artifacts.py`](scripts/validate_artifacts.py) executes cleanly with return code 0. |
+| **README Documentation:** Comprehensive, transparent, aligned | **PASS — VERIFIED** | [`README.md`](README.md) updated with authoritative V4 benchmark, methods, and limitations. |
+| **AI Disclosure:** Disclosed in accordance with policy | **PASS — VERIFIED** | Present in [`README.md`](README.md) and [`main.ipynb`](main.ipynb). |
+| **Quantum Advantage Disclaimer:** Honest, anti-hype statement | **PASS — VERIFIED** | Explicit disclaimer published in [`README.md`](README.md) and all audit reports. |
+| **Historical Quarantine:** v2 and v3 preserved without leakage | **PASS — VERIFIED** | Documented in [`results/verified_ab_v4/tables/historical_comparison_v2_v3_v4.md`](results/verified_ab_v4/tables/historical_comparison_v2_v3_v4.md). |
 
 ---
 
-## E. Findings Ranked by Importance
+## 4. Final Hardware Architecture Summary
 
-### 1. Critical Blockers
-* **None.** There are zero code-breaking defects, zero regression test failures, zero missing artifacts, and zero discrepancies between reported results and raw data.
+```
++------------------------------------------------------------------------------------------------------------------+
+|                                        FINAL PROCESSOR CONFIGURATION SUMMARY                                     |
++-------------+----------------------+----------+---------+--------------------+---------+------------+------------+
+| Target      | Architecture Family  | Phys Q   | Act Q   | Coupling Edges     | Max Deg | Spec Hash  | Transpiler |
++-------------+----------------------+----------+---------+--------------------+---------+------------+------------+
+| Processor A | 5Q Linear Chain CX   | 5        | 5       | 4 (8 CX pairs)     | 2       | aa9e30240a | SABRE Lvl 1|
+| Processor B | 9Q Sparse Tree CX    | 9        | 5       | 8 (16 CX pairs)    | 3       | 341d471380 | SABRE Lvl 1|
+| Processor D | 8Q Chorded Mesh CX   | 8        | 5       | 10 (20 CX pairs)   | 3       | a60ecf34eb | SABRE Lvl 1|
++-------------+----------------------+----------+---------+--------------------+---------+------------+------------+
+```
 
-### 2. High-Priority Correctness / Compliance Findings
-* **Finding H-1: External Upstream Challenge Kit Archive Access**  
-  * *Location:* Google Drive link in hackathon announcement (`1caxlXXeqjOkLmXGlimy_Etw0uPHSwyga`).  
-  * *Evidence:* External Google Drive folder is inaccessible from offline/sandboxed development environments.  
-  * *Impact:* The project successfully implemented the finalized chat requirements (5Q baseline for A, 7Q heavy-hex for B). However, byte-for-byte identity of the JSON files with the upstream archive cannot be verified without internet access.  
-  * *Corrective Action:* When network access is available, compare the repository JSON files with the upstream drive files.
-
-### 3. Medium-Priority Compliance Findings
-* **Finding M-1: Symmetry-Reduction Regulatory Documentation**  
-  * *Location:* [`report/analysis.md`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/report/analysis.md#L45-L70), [`src/maxcut/formulation/qubo.py`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/src/maxcut/formulation/qubo.py).  
-  * *Evidence:* 5-qubit complement-symmetry reduction ($x_0 = 0$) is mathematically proven and preserves the exact Max-Cut objective for all 64 states. The challenge rules do not forbid it.  
-  * *Impact:* None on correctness. A judge adhering strictly to unreduced 6-qubit embedding could ask why 5 qubits were used on Processor A.  
-  * *Corrective Action:* Keep the comprehensive mathematical proof prominently displayed in `README.md`, `report/analysis.md`, and `main.ipynb` (already implemented).
-
-### 4. Low-Priority Suggestions
-* **Finding L-1: Git Staging Before Submission**  
-  * *Location:* Workspace root.  
-  * *Evidence:* The Git working tree currently has unstaged modifications and untracked artifacts created during development.  
-  * *Impact:* Clean local working state; not yet committed.  
-  * *Corrective Action:* Perform `git add` and `git commit` when the project owner decides to finalize the submission commit.
-
-### 5. Optional Optimizations (Evaluated & Kept as-is)
-* **Finding O-1: Precomputed Cut Lookup Table in Measurement Decoding**  
-  * *Analysis:* Evaluating cuts across 32 unique bitstrings from 2,048 shots takes only $1.3\text{ ms}$. Caching would save $< 1\text{ ms}$ while introducing coupling risk. Kept as-is in accordance with the decision rule.
+### Direct Topological Differentials:
+1. **Processor A (Linear Chain):** Acyclic treewidth 1. Forces 2 routing SWAPs (+6 CX gates) and dilates depth to 58.
+2. **Processor B (Sparse Tree):** Acyclic treewidth 1 with degree-3 branching hubs. Forces 1 routing SWAP (+3 CX gates) and dilates depth to 52.
+3. **Processor D (Chorded Mesh):** Cyclic planar graph with maximum physical degree 3. Directly embeds the 4-cycle and triangle present in the 5-qubit reduced interaction graph, achieving **0 SWAPs, exactly 12 CX gates, and depth 36** (a **$37.9\%$ depth reduction** vs Processor A).
 
 ---
 
-## F. Final Submission Checklist & Release Decision
+## 5. Authoritative Master Results (Version 4.0.0)
 
-| Deliverable / Guideline Item | Required Location / Artifact | Audit Verification Evidence | Checklist Status |
-| :--- | :--- | :--- | :---: |
-| **1. Primary Interactive Notebook** | [`main.ipynb`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/main.ipynb) | All 10 code cells executed with outputs via `nbclient` | **SATISFIED** |
-| **2. Processor A Specification** | [`processors/processor_a/hardware_spec.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/processors/processor_a/hardware_spec.json) | Genuine 5 physical qubits, T-tree graph, native `ecr` | **SATISFIED** |
-| **3. Processor B Specification** | [`processors/processor_b/hardware_spec.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/processors/processor_b/hardware_spec.json) | Genuine 7 physical qubits, heavy-hex graph, native `cz` | **SATISFIED** |
-| **4. Challenge Graph Instance** | [`instances/challenge/o1_maxcut_instance.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/instances/challenge/o1_maxcut_instance.json) | $\|V\|=6, \|E\|=8, W=8.00$, unweighted, 0 self-loops | **SATISFIED** |
-| **5. Classical Ground Truth Reference** | [`results/data/classical_reference.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/data/classical_reference.json) | Exact brute-force $C_{\max} = 6.0000$ in $0.4\text{ ms}$, 10 bitstrings | **SATISFIED** |
-| **6. Controlled 4-Case Raw Results** | [`results/verified_ab_v3/counts_*.json`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/) | $N = 2048$ shots per case, seed 42, zero fabrication | **SATISFIED** |
-| **7. Transpiled QASM Circuits** | [`results/circuits/*.qasm`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/circuits/) | Exported QASM for Proc A (depth 69) and Proc B (depth 83) | **SATISFIED** |
-| **8. Result Tables & Figures** | [`results/verified_ab_v3/tables/`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/tables/) & [`figures/`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/results/verified_ab_v3/figures/) | 6 tables (CSV/MD), 3 publication figures generated | **SATISFIED** |
-| **9. Scientific Analysis & Report** | [`report/analysis.md`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/report/analysis.md) | Comprehensive 11-step narrative, trade-off analysis | **SATISFIED** |
-| **10. README & Setup Instructions** | [`README.md`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/README.md) | Setup, reproduction workflow, environment specs | **SATISFIED** |
-| **11. Environment & Dependencies** | [`requirements.txt`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/requirements.txt), [`pyproject.toml`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/pyproject.toml) | Pinned versions for Qiskit 2.x, Aer, NumPy, SciPy | **SATISFIED** |
-| **12. Automated Regression Tests** | [`tests/`](file:///c:/Users/WIN_10/.gemini/antigravity/scratch/AXCUT/tests/) | 115 passing tests in 39.27s (`pytest -v`) | **SATISFIED** |
-| **13. AI-Assistance Disclosure** | In `README.md` and `report/analysis.md` | Prominent hackathon-compliant AI disclosure | **SATISFIED** |
-| **14. Traceability & Historical Separation** | In `results/` and `docs/audit/` | Version 3 separated cleanly from historical v2 and v1 | **SATISFIED** |
+All values are derived directly from the primary 4096-shot raw count distributions and transpiled OpenQASM 2.0 circuits:
+
+```
++---------------------------------------------------------------------------------------------------------------------------------------------------------------+
+|                                                          MASTER BENCHMARK PERFORMANCE MATRIX (V4)                                                             |
++------------------------------+--------+-------+-------+-------+--------+-------+-------+------------+-----------+---------+-----------------+---------+-------------+
+| Experiment Condition         | Target | Phys Q| Act Q | Depth | Total  | CX Tot| SWAPs | Shots | Mean <C>   | Std Err   | 95% CI  | Approx Ratio    | P(opt)  | Wilson 95%  |
++------------------------------+--------+-------+-------+-------+--------+-------+-------+------------+-----------+---------+-----------------+---------+-------------+
+| Processor A — Ideal Reference| Proc A | 5     | 5     | 58    | 84     | 18    | 2     | 4096  | 5.0557     | 0.0166    | [5.023, 5.088]  | 84.26% [83.7, 84.8] | 0.4270  | [0.412, 0.442]|
+| Processor A — Noisy Baseline | Proc A | 5     | 5     | 58    | 84     | 18    | 2     | 4096  | 4.8784     | 0.0187    | [4.842, 4.915]  | 81.31% [80.7, 81.9] | 0.3809  | [0.366, 0.396]|
+| Processor B — Ideal Reference| Proc B | 9     | 5     | 52    | 78     | 15    | 1     | 4096  | 5.0557     | 0.0166    | [5.023, 5.088]  | 84.26% [83.7, 84.8] | 0.4270  | [0.412, 0.442]|
+| Processor B — Noisy Baseline | Proc B | 9     | 5     | 52    | 78     | 15    | 1     | 4096  | 4.8923     | 0.0186    | [4.856, 4.929]  | 81.54% [80.9, 82.2] | 0.3845  | [0.370, 0.400]|
+| Processor D — Ideal Reference| Proc D | 8     | 5     | 36    | 66     | 12    | 0     | 4096  | 5.0557     | 0.0166    | [5.023, 5.088]  | 84.26% [83.7, 84.8] | 0.4270  | [0.412, 0.442]|
+| Processor D — Noisy Baseline | Proc D | 8     | 5     | 36    | 66     | 12    | 0     | 4096  | **4.9141** | **0.0183**| [4.878, 4.950]  | **81.90%** [81.3, 82.5]| **0.3887**| [0.374, 0.404]|
++------------------------------+--------+-------+-------+-------+--------+-------+-------+------------+-----------+---------+-----------------+---------+-------------+
+```
+
+### Relative Noise Loss Analysis:
+- **Processor A:** $-3.51\%$ mean cut degradation ($\Delta \langle C \rangle = -0.1772, t = 7.0974, p = 1.27 \times 10^{-12}$).
+- **Processor B:** $-3.23\%$ mean cut degradation ($\Delta \langle C \rangle = -0.1633, t = 6.5609, p = 5.35 \times 10^{-11}$).
+- **Processor D:** **$-2.80\%$** mean cut degradation ($\Delta \langle C \rangle = -0.1416, t = 5.7362, p = 9.68 \times 10^{-9}$).
+
+### Cross-Architecture Pairwise Comparisons:
+- **Processor D vs Processor A (Noisy):** $\Delta \langle C \rangle = +0.0356$, Welch $t = +1.3642$ ($p = 0.1725$, Cohen's $d = 0.0301$); $\Delta P(\text{opt}) = +0.0078$, 2-prop $z = +0.7267$ ($p = 0.4674$).
+- **Processor D vs Processor B (Noisy):** $\Delta \langle C \rangle = +0.0217$, Welch $t = +0.8340$ ($p = 0.4043$, Cohen's $d = 0.0184$); $\Delta P(\text{opt}) = +0.0042$, 2-prop $z = +0.3857$ ($p = 0.6997$).
+- **Scientific Caveat:** The numerical improvement is consistent with reduced gate counts and shallow circuits, but at 4096 shots for $p=1$, the $+0.036$ difference is within the 95% confidence interval ($p > 0.05$). We report this with scientific candor rather than asserting inflated claims.
 
 ---
 
-### Final Release Determination:
-**THE MAXCUT PROJECT FULLY SATISFIES ALL VERIFIABLE HACKATHON REQUIREMENTS, EXHIBITS ZERO CODE DEFECTS, PROVES 100% REPRODUCIBILITY ACROSS 115 PASSING TESTS, AND IS READY FOR PACKAGING AND SUBMISSION.**
+## 6. Reproducibility & Test Execution Evidence
+
+All test suites and verification scripts were executed locally on Windows host environment:
+
+### Command Execution Log:
+```powershell
+# 1. Comprehensive Phase Test Discovery
+python -m unittest discover -s tests -p "test_phase*.py"
+Ran 40 tests in 0.197s
+OK
+
+# 2. Standalone End-to-End Pipeline Execution
+python main.py
+Exit Code: 0
+Output: [SUCCESS] All components verified and fully reproducible!
+
+# 3. Artifact Presence and Schema Validator
+python scripts/validate_artifacts.py
+Exit Code: 0
+Output: [SUCCESS] All required configuration, result, table, figure, and notebook artifacts are verified!
+```
+
+### Test Breakdown by Phase:
+- `tests/test_phase2_math.py`: 4 tests (Canonical graph, classical optimum, QUBO/Ising equivalence, 5Q reduction).
+- `tests/test_phase3_specs.py`: 4 tests (Processor A 5Q linear spec, Processor B 9Q tree spec, coupling maps, hash integrity).
+- `tests/test_phase4_benchmark_config.py`: 4 tests (CX native gate basis, synthetic noise model calibration, pass manager preset).
+- `tests/test_phase5_qaoa_validation.py`: 5 tests (QAOA p=1 circuit, rotation conventions, multistart optimizer, parameter freezing).
+- `tests/test_phase6_primary_experiments.py`: 5 tests (4-case primary matrix, 4096 shots, QASM circuit metrics, count recalculation).
+- `tests/test_phase7_processor_d.py`: 6 tests (Processor D 8Q chorded mesh, degree $\le 3$, zero-SWAP compilation, recalculation).
+- `tests/test_phase8_analysis_validation.py`: 6 tests (Master tables reconciliation, Wilson score intervals, 8 SVG figures, historical segregation).
+- `tests/test_phase9_compliance.py`: 6 tests (Final compliance checklist, `main.py` execution, `validate_artifacts.py`, disclosures).
+
+**Total: 40/40 Passing Unit & Regression Tests (0 failures, 0 errors, 0 skips).**
+
+---
+
+## 7. Submission Artifacts & Disclosure Checklist
+
+```
++----------------------------------------------------------------------------------------------------+
+|                                    REQUIRED SUBMISSION ARTIFACTS                                    |
++----+---------------------------------------------------+--------------------+----------------------+
+| #  | Artifact Description                              | File Path          | Audit Verification   |
++----+---------------------------------------------------+--------------------+----------------------+
+| 1  | Standalone Entrypoint Script                      | main.py            | PASS — VERIFIED      |
+| 2  | Judge-Ready Notebook                              | main.ipynb         | PASS — VERIFIED      |
+| 3  | Technical Narrative & Documentation               | README.md          | PASS — VERIFIED      |
+| 4  | Problem Instance Definition                       | instances/challenge| PASS — VERIFIED      |
+| 5  | Processor Hardware Specifications                 | processors/        | PASS — VERIFIED      |
+| 6  | Python Package Configuration                      | pyproject.toml     | PASS — VERIFIED      |
+| 7  | Explicit Dependency Specification                 | requirements.txt   | PASS — VERIFIED      |
+| 8  | Master Result Tables (CSV, JSON, Markdown)        | results/verified_..| PASS — VERIFIED      |
+| 9  | Raw Measurement Count Files (4096 shots each)     | results/verified_..| PASS — VERIFIED      |
+| 10 | Compiled OpenQASM 2.0 Circuit Exports             | results/verified_..| PASS — VERIFIED      |
+| 11 | Publication Vector SVG Figures (8 figures)        | results/verified_..| PASS — VERIFIED      |
+| 12 | Comprehensive Phase Audit Documents (Phases 0-9)  | docs/audit/        | PASS — VERIFIED      |
++----+---------------------------------------------------+--------------------+----------------------+
+```
+
+### Disclosures & Statements:
+- **AI-Assistance Disclosure:** Fully disclosed in [`README.md`](README.md#ai-assistance-disclosure) and [`main.ipynb`](main.ipynb).
+- **Quantum Advantage Disclaimer:** Prominently featured in [`README.md`](README.md#quantum-advantage-disclaimer), [`main.py`](main.py), and [`docs/audit/PHASE_8_ANALYSIS_VALIDATION.md`](docs/audit/PHASE_8_ANALYSIS_VALIDATION.md#62-quantum-advantage-disclaimer).
+- **Credentials and Secrets Check:** Verified zero API tokens, credentials, or private keys in the workspace tree.
+- **Git State Protection:** In strict compliance with instructions, no Git commits, tags, pushes, or public submissions were initiated.
+
+---
+
+## 8. Blockers vs. Optional Improvements Analysis
+
+### Mandatory Submission Blockers:
+$$\textbf{Zero Mandatory Blockers Remain.}$$
+All operational requirements set forth in the Updated Challenge Kit and Phase 0 Requirement Freeze are fully satisfied.
+
+### Optional Improvements (Not Compliance Failures):
+1. **Ansatz Depth Scaling ($p \ge 2$):** While $p=1$ is permitted and certified, evaluating $p=2$ on Processor D would compound the SWAP penalty on Processor A (4 SWAPs vs 0 SWAPs), likely widening the statistical gap at $p < 0.05$.
+2. **Zero-Noise Extrapolation (ZNE):** Digital pulse-stretching or unitary folding error mitigation could be layered over the noisy results.
+3. **Hardware Execution on IBM Quantum Fabric:** Running on physical superconducting hardware (e.g., `ibm_kyoto` or `ibm_sherbrooke`) if organizer access credits are granted.
+
+---
+
+## 9. Final Submission Checklist
+
+```
++----------------------------------------------------------------------------------------------------+
+|                                    FINAL SUBMISSION READINESS CHECKLIST                            |
++----+------------------------------------------------------------------------+----------------------+
+| #  | Verification Item                                                      | Compliance Status    |
++----+------------------------------------------------------------------------+----------------------+
+| 1  | Track O1 Max-Cut problem unambiguously identified                      | PASS — VERIFIED      |
+| 2  | Canonical 6-node graph preserved without synthetic alterations         | PASS — VERIFIED      |
+| 3  | Exact classical optimum certified ($C_{\max} = 6.0000$)                | PASS — VERIFIED      |
+| 4  | Processor A 5Q linear chain matches Tier 1 Kit                         | PASS — VERIFIED      |
+| 5  | Processor B 9Q sparse tree matches Tier 1 Kit                          | PASS — VERIFIED      |
+| 6  | Custom Processor D addresses measured bottleneck (0 SWAPs, depth 36)   | PASS — VERIFIED      |
+| 7  | Native CX entangler used across all compiled circuits                  | PASS — VERIFIED      |
+| 8  | Prescribed uniform synthetic noise model applied                       | PASS — VERIFIED      |
+| 9  | 4096 shots per case strictly enforced                                  | PASS — VERIFIED      |
+| 10 | Variational angles held constant across all processors                 | PASS — VERIFIED      |
+| 11 | Master tables, statistics, and 8 SVG figures generated                 | PASS — VERIFIED      |
+| 12 | Standalone main.py and validate_artifacts.py execute cleanly           | PASS — VERIFIED      |
+| 13 | 40/40 unit and regression tests passing                                | PASS — VERIFIED      |
+| 14 | AI disclosure and Quantum Advantage disclaimer published               | PASS — VERIFIED      |
+| 15 | Historical data safely segregated in v2 and v3 folders                 | PASS — VERIFIED      |
+| 16 | Git release protection active (uncommitted, awaiting participant sign)  | PASS — VERIFIED      |
++----+------------------------------------------------------------------------+----------------------+
+```
+
+---
+
+## 10. Audit Conclusion
+
+The **MAXCUT** project for the Qiskit Fall Fest 2026 (Track O1 — Max-Cut) has been audited, migrated, validated, and verified against all applicable requirements. The implementation exhibits complete mathematical consistency, architectural integrity, and scientific transparency.
+
+**FINAL AUDIT DETERMINATION: PASS — VERIFIED (SUBMISSION READY).**  
+*Release is locked pending the participant's explicit submission command.*

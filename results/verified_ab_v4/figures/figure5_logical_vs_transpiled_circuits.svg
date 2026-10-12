@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .title { font-family: system-ui, -apple-system, sans-serif; font-size: 20px; font-weight: 700; fill: #f8fafc; }
+      .subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; fill: #94a3b8; }
+      .bar-label { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 600; fill: #e2e8f0; }
+      .bar-val { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 700; fill: #ffffff; text-anchor: middle; dominant-baseline: central; }
+      .legend-text { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #cbd5e1; }
+      .axis-text { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; fill: #64748b; }
+      .grid-line { stroke: #1e293b; stroke-width: 1; }
+    </style>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <text x="40" y="40" class="title">Figure 5: Logical vs. Transpiled Circuit Gate Breakdown &amp; Depth</text>
+  <text x="40" y="65" class="subtitle">Comparison of Logical QAOA p=1 Ansatz vs. Hardware-Transpiled Circuits across Processors A, B, and D</text>
+
+  <!-- Panel 1: Gate Breakdown Stacked Bars -->
+  <text x="40" y="110" class="bar-label" fill="#38bdf8">Gate Breakdown (Single-Qubit + Basis CX + Routing CX)</text>
+
+  <!-- Processor A: 66 1Q (330px), 12 Basis CX (60px), 6 Routing CX (30px) -> Total 84 (420px) -->
+  <text x="40" y="145" class="bar-label">Processor A (84)</text>
+  <rect x="180" y="130" width="264" height="24" fill="#0284c7" rx="3" />
+  <rect x="444" y="130" width="48" height="24" fill="#3b82f6" rx="3" />
+  <rect x="492" y="130" width="24" height="24" fill="#ef4444" rx="3" />
+  <text x="312" y="142" class="bar-val">66 (1Q)</text>
+  <text x="468" y="142" class="bar-val">12</text>
+  <text x="504" y="142" class="bar-val">6</text>
+
+  <!-- Processor B: 63 1Q (252px), 12 Basis CX (48px), 3 Routing CX (12px) -> Total 78 (390px) -->
+  <text x="40" y="185" class="bar-label">Processor B (78)</text>
+  <rect x="180" y="170" width="252" height="24" fill="#0284c7" rx="3" />
+  <rect x="432" y="170" width="48" height="24" fill="#3b82f6" rx="3" />
+  <rect x="480" y="170" width="12" height="24" fill="#ef4444" rx="3" />
+  <text x="306" y="182" class="bar-val">63 (1Q)</text>
+  <text x="456" y="182" class="bar-val">12</text>
+  <text x="508" y="182" class="axis-text" fill="#ef4444">+3</text>
+
+  <!-- Processor D: 54 1Q (216px), 12 Basis CX (48px), 0 Routing CX -> Total 66 (330px) -->
+  <text x="40" y="225" class="bar-label">Processor D (66)</text>
+  <rect x="180" y="210" width="216" height="24" fill="#059669" rx="3" />
+  <rect x="396" y="210" width="48" height="24" fill="#3b82f6" rx="3" />
+  <text x="288" y="222" class="bar-val">54 (1Q)</text>
+  <text x="420" y="222" class="bar-val">12</text>
+
+  <!-- Panel 2: Transpiled Depth Comparison -->
+  <text x="40" y="280" class="bar-label" fill="#38bdf8">Transpiled Circuit Depth (Impact of Routing SWAPs)</text>
+
+  <!-- Processor A Depth 58 -->
+  <text x="40" y="315" class="bar-label">Processor A (Depth 58)</text>
+  <rect x="220" y="300" width="464" height="22" fill="#ef4444" rx="3" />
+  <text x="452" y="311" class="bar-val">58 Gates (2 SWAPs inserted)</text>
+
+  <!-- Processor B Depth 52 -->
+  <text x="40" y="355" class="bar-label">Processor B (Depth 52)</text>
+  <rect x="220" y="340" width="416" height="22" fill="#f59e0b" rx="3" />
+  <text x="428" y="351" class="bar-val">52 Gates (1 SWAP inserted)</text>
+
+  <!-- Processor D Depth 36 -->
+  <text x="40" y="395" class="bar-label">Processor D (Depth 36)</text>
+  <rect x="220" y="380" width="288" height="22" fill="#10b981" rx="3" />
+  <text x="364" y="391" class="bar-val">36 Gates (0 SWAPs: -37.9% vs A)</text>
+
+  <!-- Legend -->
+  <rect x="180" y="425" width="14" height="14" fill="#0284c7" />
+  <text x="200" y="436" class="legend-text">Single-Qubit Rotations (rz, sx, x)</text>
+
+  <rect x="420" y="425" width="14" height="14" fill="#3b82f6" />
+  <text x="440" y="436" class="legend-text">Problem Synthesis CX (12)</text>
+
+  <rect x="610" y="425" width="14" height="14" fill="#ef4444" />
+  <text x="630" y="436" class="legend-text">Routing CX Overhead</text>
+</svg>

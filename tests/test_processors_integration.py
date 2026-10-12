@@ -33,28 +33,28 @@ class TestProcessorsIntegration(unittest.TestCase):
         self.assertEqual(self.proc_a.backend_name, "Processor_A")
         self.assertEqual(self.proc_a.target_type, "hardware_processor")
         self.assertEqual(self.proc_a.num_qubits, 5)
-        self.assertEqual(self.proc_a.spec.basis_gates, ["rz", "sx", "x", "ecr"])
+        self.assertEqual(self.proc_a.spec.basis_gates, ["rz", "sx", "x", "cx"])
         self.assertEqual(len(self.proc_a.spec.coupling_map), 8)
 
         metadata = self.proc_a.get_metadata()
         self.assertIn("t1_us_mean", metadata["qubit_properties"])
         self.assertIn("t2_us_mean", metadata["qubit_properties"])
-        self.assertEqual(metadata["native_2q_gate"], "ecr")
-        self.assertEqual(metadata["architecture_family"], "5Q-Baseline-Tree")
+        self.assertEqual(metadata["native_2q_gate"], "cx")
+        self.assertEqual(metadata["architecture_family"], "5Q-Linear-Chain")
 
     def test_processor_b_spec_and_metadata(self):
         """Verify Processor B architectural constraints and metadata completeness."""
         self.assertEqual(self.proc_b.backend_name, "Processor_B")
         self.assertEqual(self.proc_b.target_type, "hardware_processor")
-        self.assertEqual(self.proc_b.num_qubits, 7)
-        self.assertEqual(self.proc_b.spec.basis_gates, ["rz", "sx", "x", "cz"])
-        self.assertEqual(len(self.proc_b.spec.coupling_map), 12)
+        self.assertEqual(self.proc_b.num_qubits, 9)
+        self.assertEqual(self.proc_b.spec.basis_gates, ["rz", "sx", "x", "cx"])
+        self.assertEqual(len(self.proc_b.spec.coupling_map), 16)
 
         metadata = self.proc_b.get_metadata()
         self.assertIn("t1_us_mean", metadata["qubit_properties"])
         self.assertIn("t2_us_mean", metadata["qubit_properties"])
-        self.assertEqual(metadata["native_2q_gate"], "cz")
-        self.assertEqual(metadata["architecture_family"], "Heavy-Hex-7")
+        self.assertEqual(metadata["native_2q_gate"], "cx")
+        self.assertEqual(metadata["architecture_family"], "9Q-Sparse-Tree")
 
     def test_qaoa_circuit_preparation_processor_a(self):
         """Verify that the exact QAOA circuit for the official instance compiles onto Processor A."""
@@ -69,8 +69,8 @@ class TestProcessorsIntegration(unittest.TestCase):
         self.assertEqual(len(verification["non_basis_gates"]), 0)
         self.assertGreater(verification["transpiled_depth"], 0)
         self.assertGreater(verification["transpiled_2q_gates"], 0)
-        # Processor A uses native ecr gates for 2Q entangling
-        self.assertGreater(verification["ecr_gate_count"], 0)
+        # Processor A uses native cx gates for 2Q entangling
+        self.assertGreater(verification["cx_gate_count"], 0)
 
     def test_qaoa_circuit_preparation_processor_b(self):
         """Verify that the exact QAOA circuit for the official instance compiles onto Processor B."""
@@ -85,8 +85,8 @@ class TestProcessorsIntegration(unittest.TestCase):
         self.assertEqual(len(verification["non_basis_gates"]), 0)
         self.assertGreater(verification["transpiled_depth"], 0)
         self.assertGreater(verification["transpiled_2q_gates"], 0)
-        # Processor B uses native cz gates for 2Q entangling
-        self.assertGreater(verification["cz_gate_count"], 0)
+        # Processor B uses native cx gates for 2Q entangling
+        self.assertGreater(verification["cx_gate_count"], 0)
 
     def test_decoupled_backend_factory(self):
         """Verify that create_backend_runner decouples the application from concrete classes."""
@@ -112,7 +112,7 @@ class TestProcessorsIntegration(unittest.TestCase):
         )
         res_a = exp_runner.run(config=cfg_a, graph=self.official_graph, backend=self.proc_a, save_result=False)
         self.assertEqual(res_a.backend_metadata["backend_name"], "Processor_A")
-        self.assertEqual(res_a.backend_metadata["native_2q_gate"], "ecr")
+        self.assertEqual(res_a.backend_metadata["native_2q_gate"], "cx")
         self.assertGreater(res_a.circuit_metrics["transpiled_2q_gates"], 0)
 
         # Run on Processor B
@@ -125,7 +125,7 @@ class TestProcessorsIntegration(unittest.TestCase):
         )
         res_b = exp_runner.run(config=cfg_b, graph=self.official_graph, backend=self.proc_b, save_result=False)
         self.assertEqual(res_b.backend_metadata["backend_name"], "Processor_B")
-        self.assertEqual(res_b.backend_metadata["native_2q_gate"], "cz")
+        self.assertEqual(res_b.backend_metadata["native_2q_gate"], "cx")
         self.assertGreater(res_b.circuit_metrics["transpiled_2q_gates"], 0)
 
 

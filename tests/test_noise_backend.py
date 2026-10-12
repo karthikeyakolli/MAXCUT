@@ -46,7 +46,7 @@ def sample_circuit(sample_graph: MaxCutGraph) -> QuantumCircuit:
 def synthetic_noise_config():
     return {
         "single_qubit_error": 0.001,
-        "two_qubit_error": 0.01,
+        "two_qubit_error": 0.005,
         "readout_error": 0.01,
     }
 
@@ -76,25 +76,23 @@ def test_missing_noise_config_blocks_execution():
 
 
 def test_noise_configuration_application_processor_a(synthetic_noise_config):
-    """Verifies noise model construction attaches 2Q errors strictly to native ECR on Processor A."""
+    """Verifies noise model construction attaches 2Q errors strictly to native CX on Processor A."""
     spec_a = load_processor_spec("processors/processor_a/hardware_spec.json")
     model_a = build_noise_model(spec_a, synthetic_noise_config)
     assert isinstance(model_a, NoiseModel)
 
-    # Check that basis gates in noise model include native entangler 'ecr'
-    assert "ecr" in model_a.basis_gates
-    assert "cz" not in model_a.basis_gates
+    # Check that basis gates in noise model include native entangler 'cx'
+    assert "cx" in model_a.basis_gates
 
 
 def test_noise_configuration_application_processor_b(synthetic_noise_config):
-    """Verifies noise model construction attaches 2Q errors strictly to native CZ on Processor B."""
+    """Verifies noise model construction attaches 2Q errors strictly to native CX on Processor B."""
     spec_b = load_processor_spec("processors/processor_b/hardware_spec.json")
     model_b = build_noise_model(spec_b, synthetic_noise_config)
     assert isinstance(model_b, NoiseModel)
 
-    # Check that basis gates in noise model include native entangler 'cz'
-    assert "cz" in model_b.basis_gates
-    assert "ecr" not in model_b.basis_gates
+    # Check that basis gates in noise model include native entangler 'cx'
+    assert "cx" in model_b.basis_gates
 
 
 def test_deterministic_noisy_results_under_fixed_seed(
@@ -175,6 +173,6 @@ def test_reproducibility_metadata_and_raw_storage(
     assert result.job_metadata["seed_simulator"] == 99
     assert result.job_metadata["seed_transpiler"] == 77
     assert result.job_metadata["execution_mode"] == "aer_noisy_simulation"
-    assert result.job_metadata["native_2q_gate"] == "ecr"
+    assert result.job_metadata["native_2q_gate"] == "cx"
     assert result.noise_config == synthetic_noise_config
     assert result.hardware_spec["name"] == "Processor_A"

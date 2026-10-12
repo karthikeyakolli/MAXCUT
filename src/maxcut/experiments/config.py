@@ -16,7 +16,7 @@ class ExperimentConfig:
 
     # QAOA algorithmic parameters
     depth_p: int = 1
-    shots: int = 2048
+    shots: int = 4096
     optimizer: str = "COBYLA"
     initial_parameters: Optional[List[float]] = None
     optimization_settings: Dict[str, Any] = field(

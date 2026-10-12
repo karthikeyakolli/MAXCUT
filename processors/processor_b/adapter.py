@@ -1,4 +1,4 @@
-"""Backend adapter for Processor B (Ring-7 architecture, CZ native entangler).
+"""Backend adapter for Processor B (9Q sparse tree architecture, CX native entangler).
 
 Implements BaseBackendRunner to decouple the application from hardware-specific logic.
 Provides architecture verification and metadata collection without submitting physical jobs.
@@ -92,7 +92,7 @@ class ProcessorBBackend(BaseBackendRunner):
 
     @property
     def native_2q_gate(self) -> str:
-        return self._spec.metadata.get("native_2q_gate", "cz")
+        return self._spec.metadata.get("native_2q_gate", "cx")
 
     def get_metadata(self) -> Dict[str, Any]:
         """Collects exhaustive architectural metadata."""
@@ -104,8 +104,8 @@ class ProcessorBBackend(BaseBackendRunner):
             "coupling_map": list(self._spec.coupling_map),
             "coupling_edge_count": len(self._spec.coupling_map),
             "qubit_properties": dict(self._spec.qubit_properties),
-            "native_2q_gate": self._spec.metadata.get("native_2q_gate", "cz"),
-            "architecture_family": self._spec.metadata.get("architecture_family", "Heavy-Hex-7"),
+            "native_2q_gate": self.native_2q_gate,
+            "architecture_family": self._spec.metadata.get("architecture_family", "9Q-Sparse-Tree"),
             "spec_source": str(self.SPEC_PATH),
             "execution_mode": self._execution_mode,
             "noise_applied": self._noise_applied,
@@ -122,6 +122,8 @@ class ProcessorBBackend(BaseBackendRunner):
             basis_gates=self._spec.basis_gates,
             optimization_level=optimization_level,
             seed_transpiler=self.seed_transpiler,
+            layout_method="sabre",
+            routing_method="sabre",
         )
 
         state = {"max_swaps": 0}
@@ -209,10 +211,14 @@ class ProcessorBBackend(BaseBackendRunner):
             "routing_2q_gates": routing_2q_gates,
             "explicit_swap_count": explicit_swap_count,
             "routing_swap_count": routing_swap_count,
+            "cx_gate_count": op_counts.get("cx", 0),
             "cz_gate_count": op_counts.get("cz", 0),
             "swap_count": routing_swap_count,
             "transpiled_qubit_count": transpiled_qc.num_qubits,
             "optimization_level": optimization_level,
+            "layout_method": "sabre",
+            "routing_method": "sabre",
+            "seed_transpiler": self.seed_transpiler,
         }
 
     def transpile_circuit(
@@ -226,6 +232,8 @@ class ProcessorBBackend(BaseBackendRunner):
             basis_gates=self._spec.basis_gates,
             optimization_level=optimization_level,
             seed_transpiler=self.seed_transpiler,
+            layout_method="sabre",
+            routing_method="sabre",
         )
 
         state = {"max_swaps": 0}
@@ -310,10 +318,14 @@ class ProcessorBBackend(BaseBackendRunner):
             "routing_2q_gates": routing_2q_gates,
             "explicit_swap_count": explicit_swap_count,
             "routing_swap_count": routing_swap_count,
+            "cx_gate_count": op_counts.get("cx", 0),
             "cz_gate_count": op_counts.get("cz", 0),
             "swap_count": routing_swap_count,
             "transpiled_qubit_count": transpiled_qc.num_qubits,
             "optimization_level": optimization_level,
+            "layout_method": "sabre",
+            "routing_method": "sabre",
+            "seed_transpiler": self.seed_transpiler,
         }
         return transpiled_qc, metrics
 
@@ -329,6 +341,8 @@ class ProcessorBBackend(BaseBackendRunner):
             basis_gates=self._spec.basis_gates,
             optimization_level=optimization_level,
             seed_transpiler=self.seed_transpiler,
+            layout_method="sabre",
+            routing_method="sabre",
         )
 
         state = {"max_swaps": 0}
@@ -375,8 +389,11 @@ class ProcessorBBackend(BaseBackendRunner):
             "execution_mode": self._execution_mode,
             "noise_applied": self._noise_applied,
             "backend_name": self.backend_name,
-            "architecture_family": "Ring-7",
-            "native_2q_gate": "cz",
+            "architecture_family": self._spec.metadata.get("architecture_family", "9Q-Sparse-Tree"),
+            "native_2q_gate": self.native_2q_gate,
+            "optimization_level": optimization_level,
+            "layout_method": "sabre",
+            "routing_method": "sabre",
         }
 
         return ProcessorExecutionResult(

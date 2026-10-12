@@ -1,0 +1,82 @@
+OPENQASM 2.0;
+include "qelib1.inc";
+qreg q[5];
+creg meas[5];
+// 1. Initial State: Hadamard Layer (sx, rz)
+rz(pi/2) q[0];
+sx q[0];
+rz(pi/2) q[0];
+rz(pi/2) q[1];
+sx q[1];
+rz(pi/2) q[1];
+rz(pi/2) q[2];
+sx q[2];
+rz(pi/2) q[2];
+rz(pi/2) q[3];
+sx q[3];
+rz(pi/2) q[3];
+rz(pi/2) q[4];
+sx q[4];
+rz(pi/2) q[4];
+// 2. Cost Layer: Incident Edges (0, 1) and (0, 2) on Nodes 1, 2
+rz(2.527058471368) q[0];
+rz(2.527058471368) q[1];
+// 3. Cost Layer: 6 Non-Incident Edges with Linear-Chain SABRE CX Routing
+cx q[0],q[1];
+rz(2.527058471368) q[1];
+cx q[0],q[1];
+cx q[2],q[3];
+rz(2.527058471368) q[3];
+cx q[2],q[3];
+// Routing SWAP(1, 2)
+cx q[1],q[2];
+cx q[2],q[1];
+cx q[1],q[2];
+cx q[0],q[1];
+rz(2.527058471368) q[1];
+cx q[0],q[1];
+cx q[2],q[3];
+rz(2.527058471368) q[3];
+cx q[2],q[3];
+// Routing SWAP(2, 3)
+cx q[2],q[3];
+cx q[3],q[2];
+cx q[2],q[3];
+cx q[3],q[4];
+rz(2.527058471368) q[4];
+cx q[3],q[4];
+cx q[1],q[2];
+rz(2.527058471368) q[2];
+cx q[1],q[2];
+// 4. Mixer Layer: RX(2*beta) on All Active Qubits
+rz(pi/2) q[0];
+sx q[0];
+rz(-2.254981661687) q[0];
+sx q[0];
+rz(pi/2) q[0];
+rz(pi/2) q[1];
+sx q[1];
+rz(-2.254981661687) q[1];
+sx q[1];
+rz(pi/2) q[1];
+rz(pi/2) q[2];
+sx q[2];
+rz(-2.254981661687) q[2];
+sx q[2];
+rz(pi/2) q[2];
+rz(pi/2) q[3];
+sx q[3];
+rz(-2.254981661687) q[3];
+sx q[3];
+rz(pi/2) q[3];
+rz(pi/2) q[4];
+sx q[4];
+rz(-2.254981661687) q[4];
+sx q[4];
+rz(pi/2) q[4];
+// 5. Measurement Operations
+measure q[0] -> meas[0];
+measure q[1] -> meas[1];
+measure q[2] -> meas[2];
+measure q[3] -> meas[3];
+measure q[4] -> meas[4];

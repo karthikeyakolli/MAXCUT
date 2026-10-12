@@ -1,0 +1,51 @@
+{
+  "execution_date_utc": "2026-10-12T14:01:00.364044+00:00",
+  "instance": "O1_MaxCut_Challenge",
+  "shots_per_case": 4096,
+  "pairwise_comparisons": [
+    {
+      "comparison": "Processor A Ideal vs Noisy",
+      "delta_mean_cut": 0.1772,
+      "relative_degradation_pct": 3.51,
+      "welch_t_stat": 7.0974,
+      "welch_p_value": 1.2709833185908792e-12,
+      "delta_p_opt": 0.0461,
+      "p_opt_degradation_pct": 10.81,
+      "two_prop_z_stat": 4.2556,
+      "two_prop_p_value": 2.08450529171067e-05,
+      "statistically_significant": true
+    },
+    {
+      "comparison": "Processor B Ideal vs Noisy",
+      "delta_mean_cut": 0.1633,
+      "relative_degradation_pct": 3.23,
+      "welch_t_stat": 6.5609,
+      "welch_p_value": 5.347855491777409e-11,
+      "delta_p_opt": 0.0425,
+      "p_opt_degradation_pct": 9.95,
+      "two_prop_z_stat": 3.9151,
+      "two_prop_p_value": 9.0381710134535e-05,
+      "statistically_significant": true
+    },
+    {
+      "comparison": "Processor A vs B Controlled Ideal",
+      "delta_mean_cut": 0.0,
+      "welch_t_stat": 0.0,
+      "welch_p_value": 1.0,
+      "delta_p_opt": 0.0,
+      "two_prop_z_stat": 0.0,
+      "two_prop_p_value": 1.0,
+      "statistically_significant": false
+    },
+    {
+      "comparison": "Processor A vs B Controlled Noisy",
+      "delta_mean_cut": -0.0139,
+      "welch_t_stat": -0.5286,
+      "welch_p_value": 0.5970840339105563,
+      "delta_p_opt": -0.0037,
+      "two_prop_z_stat": -0.341,
+      "two_prop_p_value": 0.733123322299311,
+      "statistically_significant": false
+    }
+  ]
+}

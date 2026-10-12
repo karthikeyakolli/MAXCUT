@@ -56,8 +56,8 @@ class TestCircuitMetricsAnalysis(unittest.TestCase):
         self.assertGreaterEqual(metrics.two_qubit_gate_overhead, 0)
         self.assertGreaterEqual(metrics.routing_overhead_ratio, 1.0)
         self.assertGreaterEqual(metrics.depth_expansion_ratio, 1.0)
-        self.assertIn("ecr", metrics.gate_breakdown)
-        self.assertEqual(metrics.native_2q_gate, "ecr")
+        self.assertIn("cx", metrics.gate_breakdown)
+        self.assertEqual(metrics.native_2q_gate, "cx")
 
     def test_comparator_symmetric_compilation(self):
         """Verify that comparator evaluates Processor A and B under strictly symmetric settings."""

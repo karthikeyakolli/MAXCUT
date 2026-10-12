@@ -26,6 +26,20 @@ class MissingNoiseConfigurationError(ValueError):
     pass
 
 
+CANONICAL_SYNTHETIC_NOISE_CONFIG: Dict[str, Any] = {
+    "single_qubit_error": 0.001,
+    "two_qubit_error": 0.005,
+    "readout_error": 0.01,
+    "model_type": "uniform_depolarizing_symmetric_readout",
+    "description": "Updated Challenge Kit canonical uniform noise rates (1Q: 0.1%, CX: 0.5%, Readout: 1.0%)",
+}
+
+
+def get_canonical_noise_config() -> Dict[str, Any]:
+    """Returns a copy of the canonical synthetic noise configuration."""
+    return dict(CANONICAL_SYNTHETIC_NOISE_CONFIG)
+
+
 def build_noise_model(
     spec: ProcessorHardwareSpec,
     noise_config: Dict[str, Any],
@@ -175,12 +189,14 @@ class ProcessorBackendRunner(BaseBackendRunner):
         Returns:
             ProcessorExecutionResult: Real architecture compilation metrics and sampled counts.
         """
-        # Build preset pass manager using processor topology and native basis gates
+        # Build preset pass manager using processor topology and native basis gates with SABRE layout & routing
         pass_manager = generate_preset_pass_manager(
             coupling_map=self._coupling_map,
             basis_gates=self._spec.basis_gates,
             optimization_level=optimization_level,
             seed_transpiler=self.seed_transpiler,
+            layout_method="sabre",
+            routing_method="sabre",
         )
 
         state = {"max_swaps": 0}
@@ -232,6 +248,9 @@ class ProcessorBackendRunner(BaseBackendRunner):
             "execution_mode": self._execution_mode,
             "noise_applied": self._noise_applied,
             "backend_name": self.backend_name,
+            "optimization_level": optimization_level,
+            "layout_method": "sabre",
+            "routing_method": "sabre",
         }
 
         return ProcessorExecutionResult(

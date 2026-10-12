@@ -1,0 +1,7 @@
+comparison,case_1,case_2,delta_mean_cut,welch_t_stat,welch_df,p_val_cut,significant_cut_p05,cohens_d,delta_p_opt,two_prop_z_stat,p_val_popt,significant_popt_p05
+Processor A: Ideal vs Noisy,A_ideal,A_noisy,0.1772,7.0974,8078.3,1.2710e-12,YES,0.1568,0.0461,4.2556,2.0845e-05,YES
+Processor B: Ideal vs Noisy,B_ideal,B_noisy,0.1633,6.5609,8088.5,5.3479e-11,YES,0.145,0.0425,3.9151,9.0382e-05,YES
+Processor D: Ideal vs Noisy,D_ideal,D_noisy,0.1416,5.7362,8113.8,9.6804e-09,YES,0.1268,0.0383,3.5297,4.1599e-04,YES
+Processor D vs Processor A (Noisy),D_noisy,A_noisy,0.0356,1.3642,8186.4,1.7251e-01,NO,0.0301,0.0078,0.7267,4.6743e-01,NO
+Processor D vs Processor B (Noisy),D_noisy,B_noisy,0.0217,0.834,8188.1,4.0428e-01,NO,0.0184,0.0042,0.3857,6.9972e-01,NO
+Processor B vs Processor A (Noisy),B_noisy,A_noisy,0.0139,0.5286,8189.7,5.9708e-01,NO,0.0117,0.0037,0.341,7.3312e-01,NO

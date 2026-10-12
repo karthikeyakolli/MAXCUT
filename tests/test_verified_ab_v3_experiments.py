@@ -60,28 +60,28 @@ class TestVerifiedABV3Experiments(unittest.TestCase):
             cls.summary = {}
 
     def test_01_processor_a_target_spec(self):
-        """Verify Processor A is genuine 5-physical-qubit processor with T-tree topology."""
+        """Verify Processor A is genuine 5-physical-qubit processor with linear-chain topology."""
         self.assertEqual(self.proc_a.num_qubits, 5)
         self.assertEqual(self.proc_a.spec.num_qubits, 5)
         self.assertIn("t1_us_mean", self.proc_a.spec.qubit_properties)
         self.assertIn("2q_error_mean", self.proc_a.spec.qubit_properties)
         self.assertEqual(len(self.proc_a.spec.coupling_map), 8)  # 4 undirected edges * 2
-        self.assertEqual(self.proc_a.spec.basis_gates, ["rz", "sx", "x", "ecr"])
+        self.assertEqual(self.proc_a.spec.basis_gates, ["rz", "sx", "x", "cx"])
         meta = self.proc_a.get_metadata()
-        self.assertEqual(meta["architecture_family"], "5Q-Baseline-Tree")
-        self.assertEqual(meta["native_2q_gate"], "ecr")
+        self.assertEqual(meta["architecture_family"], "5Q-Linear-Chain")
+        self.assertEqual(meta["native_2q_gate"], "cx")
 
     def test_02_processor_b_target_spec(self):
-        """Verify Processor B is genuine 7-physical-qubit processor with heavy-hex topology."""
-        self.assertEqual(self.proc_b.num_qubits, 7)
-        self.assertEqual(self.proc_b.spec.num_qubits, 7)
+        """Verify Processor B is genuine 9-physical-qubit processor with sparse tree topology."""
+        self.assertEqual(self.proc_b.num_qubits, 9)
+        self.assertEqual(self.proc_b.spec.num_qubits, 9)
         self.assertIn("t1_us_mean", self.proc_b.spec.qubit_properties)
         self.assertIn("2q_error_mean", self.proc_b.spec.qubit_properties)
-        self.assertEqual(len(self.proc_b.spec.coupling_map), 12)  # 6 undirected edges * 2
-        self.assertEqual(self.proc_b.spec.basis_gates, ["rz", "sx", "x", "cz"])
+        self.assertEqual(len(self.proc_b.spec.coupling_map), 16)  # 8 undirected edges * 2
+        self.assertEqual(self.proc_b.spec.basis_gates, ["rz", "sx", "x", "cx"])
         meta = self.proc_b.get_metadata()
-        self.assertEqual(meta["architecture_family"], "Heavy-Hex-7")
-        self.assertEqual(meta["native_2q_gate"], "cz")
+        self.assertEqual(meta["architecture_family"], "9Q-Sparse-Tree")
+        self.assertEqual(meta["native_2q_gate"], "cx")
 
     def test_03_original_problem_graph_and_classical_optimum(self):
         """Verify the 6-vertex, 8-edge challenge graph remains completely unchanged and C_max = 6.0."""

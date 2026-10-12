@@ -9,7 +9,11 @@ from maxcut.qaoa.decoding import (
     decode_reduced_qiskit_counts,
     evaluate_measurement_distribution,
 )
-from maxcut.qaoa.optimizer import QAOAOptimizationResult, QAOAOptimizer
+from maxcut.qaoa.optimizer import (
+    QAOAOptimizationResult,
+    QAOAMultistartResult,
+    QAOAOptimizer,
+)
 
 __all__ = [
     "QAOAAnsatz",
@@ -20,4 +24,5 @@ __all__ = [
     "evaluate_measurement_distribution",
     "QAOAOptimizer",
     "QAOAOptimizationResult",
+    "QAOAMultistartResult",
 ]

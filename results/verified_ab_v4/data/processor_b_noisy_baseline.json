@@ -1,0 +1,201 @@
+{
+  "experiment_id": "verified_ab_v4_processor_b_noisy_baseline",
+  "experiment_case": "Processor B \u2014 Noisy Baseline",
+  "execution_mode": "aer_noisy_simulation",
+  "is_physical_hardware": false,
+  "is_noisy_simulation": true,
+  "noise_applied": true,
+  "noise_config": {
+    "single_qubit_error": 0.001,
+    "two_qubit_error": 0.005,
+    "readout_error": 0.01,
+    "model_type": "uniform_depolarizing_symmetric_readout"
+  },
+  "problem_metadata": {
+    "name": "O1_MaxCut_Challenge",
+    "num_nodes": 6,
+    "num_edges": 8,
+    "is_weighted": false,
+    "total_weight": 8.0,
+    "classical_optimum": 6.0,
+    "source_path": "C:\\Users\\OMEN\\.gemini\\antigravity-ide\\scratch\\MAXCUT\\instances\\challenge\\o1_maxcut_instance.json"
+  },
+  "backend_metadata": {
+    "backend_name": "Processor_B",
+    "target_type": "hardware_processor",
+    "backend_physical_qubits": 9,
+    "active_physical_qubits_count": 5,
+    "active_physical_qubits": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "logical_circuit_width": 5,
+    "basis_gates": [
+      "rz",
+      "sx",
+      "x",
+      "cx"
+    ],
+    "coupling_map": [
+      [
+        0,
+        1
+      ],
+      [
+        1,
+        0
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        2,
+        1
+      ],
+      [
+        2,
+        3
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        2,
+        4
+      ],
+      [
+        4,
+        2
+      ],
+      [
+        4,
+        5
+      ],
+      [
+        5,
+        4
+      ],
+      [
+        5,
+        6
+      ],
+      [
+        6,
+        5
+      ],
+      [
+        4,
+        7
+      ],
+      [
+        7,
+        4
+      ],
+      [
+        7,
+        8
+      ],
+      [
+        8,
+        7
+      ]
+    ],
+    "coupling_edge_count": 16,
+    "qubit_properties": {
+      "t1_us_mean": 240.0,
+      "t2_us_mean": 160.0,
+      "2q_error_mean": 0.005,
+      "1q_error_mean": 0.001,
+      "readout_error_mean": 0.01
+    },
+    "native_2q_gate": "cx",
+    "architecture_family": "9Q Sparse Tree CX",
+    "configuration_hash": "341d471380e28d49",
+    "spec_source": "C:\\Users\\OMEN\\.gemini\\antigravity-ide\\scratch\\MAXCUT\\processors\\processor_b\\hardware_spec.json",
+    "provenance_status": "FROZEN BENCHMARK TARGET (PHASES 0-5 COMPLIANT)"
+  },
+  "algorithm_parameters": {
+    "formulation": "5_qubit_symmetry_reduced",
+    "fixed_node": 0,
+    "depth_p": 1,
+    "shots": 4096,
+    "optimizer_name": "COBYLA",
+    "optimal_parameters": [
+      2.527058471368481,
+      2.698287157638429
+    ],
+    "optimal_gamma": [
+      2.527058471368481
+    ],
+    "optimal_beta": [
+      2.698287157638429
+    ],
+    "analytic_ideal_expected_cut": 5.039980068035836,
+    "analytic_ideal_p_opt": 0.4156637793083864,
+    "shared_parameter_rule_enforced": true
+  },
+  "results": {
+    "expected_cut": 4.892333984375,
+    "cut_variance": 1.4113600212721307,
+    "sample_std_error": 0.018562605358445547,
+    "confidence_interval_95": [
+      4.855952020376661,
+      4.928715948373339
+    ],
+    "classical_optimal_cut": 6.0,
+    "approximation_ratio": 0.8153889973958334,
+    "best_sampled_cut": 6.0,
+    "best_sampled_bitstring": "001100",
+    "most_frequent_bitstring": "010011",
+    "ground_state_success_probability": 0.384521484375,
+    "ground_state_success_shots": 1575,
+    "ground_state_wilson_ci_95": [
+      0.3697380366008102,
+      0.3995213336695432
+    ],
+    "num_unique_bitstrings": 32,
+    "total_shots_sampled": 4096,
+    "is_classical_optimum_achieved": true
+  },
+  "cut_distribution": {
+    "0.0": 33,
+    "3.0": 326,
+    "4.0": 737,
+    "6.0": 1575,
+    "5.0": 1271,
+    "2.0": 154
+  },
+  "circuit_compilation_metrics": {
+    "transpiled_depth": 52,
+    "transpiled_total_gates": 78,
+    "transpiled_2q_gates": 15,
+    "basis_synthesis_2q_gates": 12,
+    "routing_2q_gates": 3,
+    "routing_swap_count": 1,
+    "native_2q_gate": "cx",
+    "physical_qubits_used": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ],
+    "active_qubits_count": 5,
+    "total_backend_qubits": 9
+  },
+  "timing": {
+    "execution_duration_seconds": 0.002209700000094017,
+    "execution_timestamp_utc": "2026-10-12T14:01:00.359512+00:00"
+  },
+  "transpiler_settings": {
+    "optimization_level": 1,
+    "routing_algorithm": "SABRE",
+    "seed_transpiler": 42,
+    "seed_simulator": 42
+  }
+}

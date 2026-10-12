@@ -33,21 +33,24 @@ class TestExperimentFramework(unittest.TestCase):
             edges=[(0, 1, 1.0), (1, 2, 1.0), (2, 0, 1.0)],
         )
 
-        # Realistic mock hardware spec for Processor A (linear topology: 0-1-2)
+        # Realistic mock hardware spec for Processor A (linear topology: 0-1-2-3-4)
         self.proc_a_spec = ProcessorHardwareSpec(
             name="Processor_A",
             num_qubits=5,
             coupling_map=[(0, 1), (1, 0), (1, 2), (2, 1), (2, 3), (3, 2), (3, 4), (4, 3)],
-            basis_gates=["rz", "sx", "x", "ecr"],
+            basis_gates=["rz", "sx", "x", "cx"],
             qubit_properties={"t1_us_mean": 200.0, "t2_us_mean": 120.0},
         )
 
-        # Realistic mock hardware spec for Processor B (heavy-hex / T-shape: 0-1, 1-2, 1-3)
+        # Realistic mock hardware spec for Processor B (sparse tree topology)
         self.proc_b_spec = ProcessorHardwareSpec(
             name="Processor_B",
-            num_qubits=5,
-            coupling_map=[(0, 1), (1, 0), (1, 2), (2, 1), (1, 3), (3, 1), (3, 4), (4, 3)],
-            basis_gates=["rz", "sx", "x", "cz"],
+            num_qubits=9,
+            coupling_map=[
+                (0, 1), (1, 0), (1, 2), (2, 1), (2, 3), (3, 2), (2, 4), (4, 2),
+                (4, 5), (5, 4), (5, 6), (6, 5), (4, 7), (7, 4), (7, 8), (8, 7)
+            ],
+            basis_gates=["rz", "sx", "x", "cx"],
             qubit_properties={"t1_us_mean": 250.0, "t2_us_mean": 150.0},
         )
 
