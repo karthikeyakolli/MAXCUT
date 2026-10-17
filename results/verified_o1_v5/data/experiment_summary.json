@@ -1,0 +1,183 @@
+{
+  "version": "v5",
+  "status": "AUTHORITATIVE_FINAL_RELEASE",
+  "execution_date_utc": "2026-10-17T15:00:14.974670+00:00",
+  "instance": {
+    "name": "O1_MaxCut_Weighted_V5",
+    "num_nodes": 6,
+    "num_edges": 8,
+    "is_weighted": true,
+    "total_weight": 24.0,
+    "weights": [
+      1.0,
+      2.0,
+      3.0,
+      4.0,
+      5.0,
+      2.0,
+      4.0,
+      3.0
+    ],
+    "hash": "e96147a93b3a72ab"
+  },
+  "classical_ground_truth": {
+    "c_max": 20.0,
+    "optimal_cut_ratio": 0.8333333333333334,
+    "optimal_bitstrings": [
+      "110011",
+      "001100"
+    ],
+    "num_optimal_bitstrings": 2
+  },
+  "qaoa_optimization": {
+    "p": 1,
+    "optimizer": "COBYLA",
+    "num_restarts": 10,
+    "optimal_gamma": 6.087282143723531,
+    "optimal_beta": 1.942980822511567,
+    "analytic_expected_cut": 16.818177627282356,
+    "analytic_p_opt": 0.13568685026621974
+  },
+  "processors": {
+    "processor_a": {
+      "qubits": 5,
+      "capacity_status": "CAPACITY_EXCEEDED_FULL_6Q",
+      "spec_hash": "aa9e30240af51a17"
+    },
+    "processor_b": {
+      "qubits": 9,
+      "capacity_status": "COMPLIANT_FULL_6Q",
+      "spec_hash": "341d471380e28d49"
+    },
+    "processor_d": {
+      "qubits": 8,
+      "capacity_status": "COMPLIANT_FULL_6Q",
+      "spec_hash": "a60ecf34eb463a10"
+    }
+  },
+  "benchmark_results": [
+    {
+      "Experiment Case": "Processor B \u2014 Ideal Reference",
+      "Target Backend": "Processor_B",
+      "Architecture Family": "9Q-Sparse-Tree",
+      "Physical Qubits": 9,
+      "Active Qubits": 6,
+      "Mapped Qubits": "[2, 3, 4, 5, 6, 7]",
+      "Mode": "ideal",
+      "Circuit Depth": 52,
+      "Total Gates": 88,
+      "Native 2Q CX": 25,
+      "Basis 2Q CX": 16,
+      "Routing 2Q Overhead": 9,
+      "Routing SWAPs": 3,
+      "Mean Cut <C>": 16.9321,
+      "Std Error": 0.0512,
+      "Approx Ratio": 0.8466,
+      "Best Cut": 20.0,
+      "P(opt)": 0.146,
+      "P(opt) 95% CI": "[0.1355, 0.1571]",
+      "Shots": 4096
+    },
+    {
+      "Experiment Case": "Processor B \u2014 Noisy Baseline",
+      "Target Backend": "Processor_B",
+      "Architecture Family": "9Q-Sparse-Tree",
+      "Physical Qubits": 9,
+      "Active Qubits": 6,
+      "Mapped Qubits": "[2, 3, 4, 5, 6, 7]",
+      "Mode": "noisy",
+      "Circuit Depth": 52,
+      "Total Gates": 88,
+      "Native 2Q CX": 25,
+      "Basis 2Q CX": 16,
+      "Routing 2Q Overhead": 9,
+      "Routing SWAPs": 3,
+      "Mean Cut <C>": 16.4282,
+      "Std Error": 0.056,
+      "Approx Ratio": 0.8214,
+      "Best Cut": 20.0,
+      "P(opt)": 0.1292,
+      "P(opt) 95% CI": "[0.1192, 0.1398]",
+      "Shots": 4096
+    },
+    {
+      "Experiment Case": "Processor D \u2014 Ideal Reference",
+      "Target Backend": "Processor_D",
+      "Architecture Family": "8Q Chorded Ring Mesh",
+      "Physical Qubits": 8,
+      "Active Qubits": 6,
+      "Mapped Qubits": "[0, 1, 2, 3, 4, 7]",
+      "Mode": "ideal",
+      "Circuit Depth": 41,
+      "Total Gates": 85,
+      "Native 2Q CX": 22,
+      "Basis 2Q CX": 16,
+      "Routing 2Q Overhead": 6,
+      "Routing SWAPs": 2,
+      "Mean Cut <C>": 16.7678,
+      "Std Error": 0.0529,
+      "Approx Ratio": 0.8384,
+      "Best Cut": 20.0,
+      "P(opt)": 0.124,
+      "P(opt) 95% CI": "[0.1143, 0.1345]",
+      "Shots": 4096
+    },
+    {
+      "Experiment Case": "Processor D \u2014 Noisy Baseline",
+      "Target Backend": "Processor_D",
+      "Architecture Family": "8Q Chorded Ring Mesh",
+      "Physical Qubits": 8,
+      "Active Qubits": 6,
+      "Mapped Qubits": "[0, 1, 2, 3, 4, 7]",
+      "Mode": "noisy",
+      "Circuit Depth": 41,
+      "Total Gates": 85,
+      "Native 2Q CX": 22,
+      "Basis 2Q CX": 16,
+      "Routing 2Q Overhead": 6,
+      "Routing SWAPs": 2,
+      "Mean Cut <C>": 16.3276,
+      "Std Error": 0.0567,
+      "Approx Ratio": 0.8164,
+      "Best Cut": 20.0,
+      "P(opt)": 0.1121,
+      "P(opt) 95% CI": "[0.1028, 0.1221]",
+      "Shots": 4096
+    }
+  ],
+  "pairwise_hypothesis_tests": [
+    {
+      "Comparison": "Processor B: Ideal vs. Noisy",
+      "Delta Mean Cut": 0.5039,
+      "Relative Cut Degradation (%)": 2.98,
+      "Welch t-stat": 6.646,
+      "t-test p-value": 3.0119018390450947e-11,
+      "Delta P(opt)": 0.0168,
+      "2-Prop z-stat": 2.2132,
+      "z-test p-value": 0.026881977847472482,
+      "Significant (alpha=0.05)": true
+    },
+    {
+      "Comparison": "Processor D: Ideal vs. Noisy",
+      "Delta Mean Cut": 0.4402,
+      "Relative Cut Degradation (%)": 2.63,
+      "Welch t-stat": 5.6782,
+      "t-test p-value": 1.3611269888968991e-08,
+      "Delta P(opt)": 0.012,
+      "2-Prop z-stat": 1.6779,
+      "z-test p-value": 0.09337204265349364,
+      "Significant (alpha=0.05)": true
+    },
+    {
+      "Comparison": "Processor D vs. Processor B (Noisy)",
+      "Delta Mean Cut": -0.1006,
+      "Relative Cut Degradation (%)": -0.35,
+      "Welch t-stat": -1.2629,
+      "t-test p-value": 0.20661454902024445,
+      "Delta P(opt)": -0.0171,
+      "2-Prop z-stat": -2.3748,
+      "z-test p-value": 0.017558292871077574,
+      "Significant (alpha=0.05)": false
+    }
+  ]
+}

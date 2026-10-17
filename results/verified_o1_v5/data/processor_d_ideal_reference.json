@@ -1,0 +1,128 @@
+{
+  "experiment_id": "verified_o1_v5_processor_d_ideal_reference",
+  "experiment_case": "Processor D \u2014 Ideal Reference",
+  "execution_mode": "aer_hardware_topology_emulation",
+  "is_physical_hardware": false,
+  "is_noisy_simulation": false,
+  "noise_applied": false,
+  "noise_config": null,
+  "problem_metadata": {
+    "name": "O1_MaxCut_Weighted_V5",
+    "num_nodes": 6,
+    "num_edges": 8,
+    "is_weighted": true,
+    "total_weight": 24.0,
+    "classical_optimum": 20.0,
+    "optimal_bitstrings": [
+      "110011",
+      "001100"
+    ],
+    "graph_hash": "e96147a93b3a72ab",
+    "source_path": "instances/participant/o1_maxcut_weighted_v5.json"
+  },
+  "backend_metadata": {
+    "backend_name": "Processor_D",
+    "target_type": "hardware_processor",
+    "backend_physical_qubits": 8,
+    "active_physical_qubits_count": 6,
+    "active_physical_qubits": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      7
+    ],
+    "logical_circuit_width": 6,
+    "native_2q_gate": "cx",
+    "architecture_family": "8Q Chorded Ring Mesh",
+    "configuration_hash": "a60ecf34eb463a10"
+  },
+  "algorithm_parameters": {
+    "formulation": "full_6_variable",
+    "depth_p": 1,
+    "shots": 4096,
+    "optimizer_name": "COBYLA",
+    "optimal_gamma": [
+      6.087282143723531
+    ],
+    "optimal_beta": [
+      1.942980822511567
+    ],
+    "analytic_ideal_expected_cut": 16.818177627282356,
+    "analytic_ideal_p_opt": 0.13568685026621974
+  },
+  "results": {
+    "expected_cut": 16.767822265625,
+    "cut_variance": 11.456947246546855,
+    "sample_std_error": 0.05288767589300912,
+    "confidence_interval_95": [
+      16.664164536381737,
+      16.871479994868263
+    ],
+    "classical_optimal_cut": 20.0,
+    "approximation_ratio": 0.83839111328125,
+    "best_sampled_cut": 20.0,
+    "best_sampled_bitstring": "001100",
+    "most_frequent_bitstring": "011001",
+    "ground_state_success_probability": 0.1240234375,
+    "ground_state_success_shots": 508,
+    "ground_state_wilson_ci_95": [
+      0.11428023243457143,
+      0.13447120565495121
+    ],
+    "num_unique_bitstrings": 64,
+    "total_shots_sampled": 4096,
+    "is_classical_optimum_achieved": true
+  },
+  "cut_distribution": {
+    "15.0": 89,
+    "14.0": 159,
+    "10.0": 146,
+    "16.0": 695,
+    "12.0": 147,
+    "9.0": 107,
+    "11.0": 116,
+    "19.0": 1461,
+    "17.0": 228,
+    "8.0": 12,
+    "20.0": 508,
+    "7.0": 16,
+    "18.0": 321,
+    "3.0": 31,
+    "13.0": 51,
+    "0.0": 9
+  },
+  "circuit_compilation_metrics": {
+    "transpiled_depth": 41,
+    "transpiled_total_gates": 85,
+    "transpiled_2q_gates": 22,
+    "basis_synthesis_2q_gates": 16,
+    "routing_2q_gates": 6,
+    "routing_swap_count": 2,
+    "explicit_swap_count": 0,
+    "native_2q_gate": "cx",
+    "physical_qubits_used": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      7
+    ],
+    "active_qubits_count": 6,
+    "total_backend_qubits": 8,
+    "initial_layout": {
+      "0": 0,
+      "1": 7,
+      "2": 2,
+      "3": 1,
+      "4": 3,
+      "5": 4
+    }
+  },
+  "timing": {
+    "execution_duration_seconds": 0.018497000004572328,
+    "execution_timestamp_utc": "2026-10-17T15:00:14.376295+00:00"
+  }
+}

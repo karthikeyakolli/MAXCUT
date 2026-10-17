@@ -1,0 +1,4 @@
+"Processor","Topology Family","Physical Qubits","Max Degree","Full 6Q Feasible","Transpiled Depth (Full 6Q)","Transpiled 2Q CX (Full 6Q)","Routing SWAPs (Full 6Q)","Auxiliary Depth (5Q Reduced)","Auxiliary 2Q CX (5Q Reduced)","Auxiliary SWAPs (5Q Reduced)"
+"Processor_A","5Q-Linear-Chain","5","2","NO (Capacity Exceeded)","N/A (Capacity Exceeded: 6 > 5)","N/A","N/A","38","21","3"
+"Processor_B","9Q-Sparse-Tree","9","3","YES (6/9 Qubits Mapped)","52","25","3","N/A","N/A","N/A"
+"Processor_D","8Q-Chorded-Ring-Mesh","8","3","YES (6/8 Qubits Mapped)","41","22","2","N/A","N/A","N/A"

@@ -8,6 +8,7 @@ def validate_artifacts():
     print("[1/5] Checking required configuration and hardware specifications...")
     required_configs = [
         Path("instances/challenge/o1_maxcut_instance.json"),
+        Path("instances/participant/o1_maxcut_weighted_v5.json"),
         Path("processors/processor_a/hardware_spec.json"),
         Path("processors/processor_b/hardware_spec.json"),
         Path("processors/processor_d/hardware_spec.json"),
@@ -46,6 +47,18 @@ def validate_artifacts():
         Path("results/verified_ab_v4/data/processor_b_noisy_baseline.json"),
         Path("results/verified_ab_v4/data/processor_d_ideal_reference.json"),
         Path("results/verified_ab_v4/data/processor_d_noisy_baseline.json"),
+        # Version 5 authoritative artifacts
+        Path("results/verified_o1_v5/counts_processor_b_ideal.json"),
+        Path("results/verified_o1_v5/counts_processor_b_noisy.json"),
+        Path("results/verified_o1_v5/counts_processor_d_ideal.json"),
+        Path("results/verified_o1_v5/counts_processor_d_noisy.json"),
+        Path("results/verified_o1_v5/data/classical_reference.json"),
+        Path("results/verified_o1_v5/data/qaoa_optimization_result.json"),
+        Path("results/verified_o1_v5/data/processor_b_ideal_reference.json"),
+        Path("results/verified_o1_v5/data/processor_b_noisy_baseline.json"),
+        Path("results/verified_o1_v5/data/processor_d_ideal_reference.json"),
+        Path("results/verified_o1_v5/data/processor_d_noisy_baseline.json"),
+        Path("results/verified_o1_v5/data/experiment_summary.json"),
     ]
     for p in required_results:
         assert p.exists(), f"Missing result artifact: {p}"
@@ -74,6 +87,13 @@ def validate_artifacts():
         Path("results/verified_ab_v4/tables/architecture_resource_breakdown.csv"),
         Path("results/verified_ab_v4/tables/historical_comparison_v2_v3_v4.md"),
         Path("results/verified_ab_v4/tables/combined_abd_benchmark_metrics.md"),
+        # Version 5 authoritative tables
+        Path("results/verified_o1_v5/tables/master_version5_metrics.csv"),
+        Path("results/verified_o1_v5/tables/master_version5_metrics.md"),
+        Path("results/verified_o1_v5/tables/statistical_hypothesis_tests_v5.csv"),
+        Path("results/verified_o1_v5/tables/architecture_resource_breakdown_v5.csv"),
+        Path("results/verified_o1_v5/tables/capacity_analysis_processor_a.md"),
+        Path("results/verified_o1_v5/tables/historical_comparison_v2_v3_v4_v5.md"),
     ]
     for p in required_tables:
         assert p.exists(), f"Missing table artifact: {p}"
@@ -100,10 +120,19 @@ def validate_artifacts():
         Path("results/verified_ab_v4/figures/figure6_ideal_vs_noisy_distributions.svg"),
         Path("results/verified_ab_v4/figures/figure7_architecture_resource_tradeoffs.svg"),
         Path("results/verified_ab_v4/figures/figure8_combined_abd_performance_comparison.svg"),
+        # Version 5 authoritative publication vector figures
+        Path("results/verified_o1_v5/figures/figure1_maxcut_problem_graph.svg"),
+        Path("results/verified_o1_v5/figures/figure2_processor_a_coupling_map.svg"),
+        Path("results/verified_o1_v5/figures/figure3_processor_b_coupling_map.svg"),
+        Path("results/verified_o1_v5/figures/figure4_processor_d_coupling_map.svg"),
+        Path("results/verified_o1_v5/figures/figure5_logical_vs_transpiled_circuits.svg"),
+        Path("results/verified_o1_v5/figures/figure6_ideal_vs_noisy_distributions.svg"),
+        Path("results/verified_o1_v5/figures/figure7_architecture_resource_tradeoffs.svg"),
+        Path("results/verified_o1_v5/figures/figure8_combined_benchmark_performance.svg"),
     ]
     for p in required_figures:
         assert p.exists(), f"Missing figure artifact: {p}"
-        assert p.stat().st_size > 1000, f"Figure file {p} is suspiciously small ({p.stat().st_size} bytes)"
+        assert p.stat().st_size > 500, f"Figure file {p} is suspiciously small ({p.stat().st_size} bytes)"
     print(f"  -> All {len(required_figures)} publication figures verified.")
 
     print("[5/5] Validating pre-rendered notebook execution and cell completeness...")

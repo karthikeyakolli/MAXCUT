@@ -140,12 +140,12 @@ class TestReducedProcessorIntegration(unittest.TestCase):
         qc_a, metrics_a = self.proc_a.transpile_circuit(self.bound_qc, optimization_level=1)
         # 6 logical RZZ x 2 CX = 12 basis synthesis 2Q gates
         self.assertEqual(metrics_a["basis_synthesis_2q_gates"], 12)
-        # 2 routing SWAPs x 3 CX/SWAP = 6 routing 2Q gates
-        self.assertEqual(metrics_a["routing_swap_count"], 2)
-        self.assertEqual(metrics_a["routing_2q_gates"], 6)
-        # Total native 2Q gates = 12 + 6 = 18
-        self.assertEqual(metrics_a["transpiled_2q_gates"], 18)
-        self.assertEqual(metrics_a["cx_gate_count"], 18)
+        # 3 routing SWAPs x 3 CX/SWAP = 9 routing 2Q gates
+        self.assertEqual(metrics_a["routing_swap_count"], 3)
+        self.assertEqual(metrics_a["routing_2q_gates"], 9)
+        # Total native 2Q gates = 12 + 9 = 21
+        self.assertEqual(metrics_a["transpiled_2q_gates"], 21)
+        self.assertEqual(metrics_a["cx_gate_count"], 21)
 
         qc_b, metrics_b = self.proc_b.transpile_circuit(self.bound_qc, optimization_level=1)
         # 6 logical RZZ x 2 CX = 12 basis synthesis 2Q gates

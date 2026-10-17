@@ -1,0 +1,134 @@
+{
+  "experiment_id": "verified_o1_v5_processor_d_noisy_baseline",
+  "experiment_case": "Processor D \u2014 Noisy Baseline",
+  "execution_mode": "aer_noisy_simulation",
+  "is_physical_hardware": false,
+  "is_noisy_simulation": true,
+  "noise_applied": true,
+  "noise_config": {
+    "single_qubit_error": 0.001,
+    "two_qubit_error": 0.005,
+    "readout_error": 0.01,
+    "model_type": "uniform_depolarizing_symmetric_readout",
+    "description": "Updated Challenge Kit canonical uniform noise rates (1Q: 0.1%, CX: 0.5%, Readout: 1.0%)"
+  },
+  "problem_metadata": {
+    "name": "O1_MaxCut_Weighted_V5",
+    "num_nodes": 6,
+    "num_edges": 8,
+    "is_weighted": true,
+    "total_weight": 24.0,
+    "classical_optimum": 20.0,
+    "optimal_bitstrings": [
+      "110011",
+      "001100"
+    ],
+    "graph_hash": "e96147a93b3a72ab",
+    "source_path": "instances/participant/o1_maxcut_weighted_v5.json"
+  },
+  "backend_metadata": {
+    "backend_name": "Processor_D",
+    "target_type": "hardware_processor",
+    "backend_physical_qubits": 8,
+    "active_physical_qubits_count": 6,
+    "active_physical_qubits": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      7
+    ],
+    "logical_circuit_width": 6,
+    "native_2q_gate": "cx",
+    "architecture_family": "8Q Chorded Ring Mesh",
+    "configuration_hash": "a60ecf34eb463a10"
+  },
+  "algorithm_parameters": {
+    "formulation": "full_6_variable",
+    "depth_p": 1,
+    "shots": 4096,
+    "optimizer_name": "COBYLA",
+    "optimal_gamma": [
+      6.087282143723531
+    ],
+    "optimal_beta": [
+      1.942980822511567
+    ],
+    "analytic_ideal_expected_cut": 16.818177627282356,
+    "analytic_ideal_p_opt": 0.13568685026621974
+  },
+  "results": {
+    "expected_cut": 16.32763671875,
+    "cut_variance": 13.15856203258547,
+    "sample_std_error": 0.056679269214913904,
+    "confidence_interval_95": [
+      16.216547618259536,
+      16.438725819240464
+    ],
+    "classical_optimal_cut": 20.0,
+    "approximation_ratio": 0.8163818359375,
+    "best_sampled_cut": 20.0,
+    "best_sampled_bitstring": "110011",
+    "most_frequent_bitstring": "011001",
+    "ground_state_success_probability": 0.112060546875,
+    "ground_state_success_shots": 459,
+    "ground_state_wilson_ci_95": [
+      0.102761523717694,
+      0.12208655103831347
+    ],
+    "num_unique_bitstrings": 64,
+    "total_shots_sampled": 4096,
+    "is_classical_optimum_achieved": true
+  },
+  "cut_distribution": {
+    "10.0": 205,
+    "14.0": 157,
+    "16.0": 678,
+    "9.0": 160,
+    "11.0": 131,
+    "19.0": 1320,
+    "18.0": 300,
+    "3.0": 31,
+    "15.0": 109,
+    "17.0": 238,
+    "20.0": 459,
+    "8.0": 22,
+    "7.0": 22,
+    "12.0": 165,
+    "13.0": 89,
+    "0.0": 10
+  },
+  "circuit_compilation_metrics": {
+    "transpiled_depth": 41,
+    "transpiled_total_gates": 85,
+    "transpiled_2q_gates": 22,
+    "basis_synthesis_2q_gates": 16,
+    "routing_2q_gates": 6,
+    "routing_swap_count": 2,
+    "explicit_swap_count": 0,
+    "native_2q_gate": "cx",
+    "physical_qubits_used": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      7
+    ],
+    "active_qubits_count": 6,
+    "total_backend_qubits": 8,
+    "initial_layout": {
+      "0": 0,
+      "1": 7,
+      "2": 2,
+      "3": 1,
+      "4": 3,
+      "5": 4
+    }
+  },
+  "timing": {
+    "execution_duration_seconds": 0.024011699999391567,
+    "execution_timestamp_utc": "2026-10-17T15:00:14.409290+00:00"
+  }
+}

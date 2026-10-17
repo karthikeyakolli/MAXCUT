@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 500" width="840" height="500">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .title { font-family: system-ui, -apple-system, sans-serif; font-size: 20px; font-weight: 700; fill: #f8fafc; }
+      .subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; fill: #94a3b8; }
+      .node-text { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 700; fill: #ffffff; text-anchor: middle; dominant-baseline: central; }
+      .sub-text { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; fill: #94a3b8; text-anchor: middle; }
+      .ring-edge { stroke: #10b981; stroke-width: 3.5; }
+      .chord-edge { stroke: #ec4899; stroke-width: 3.5; stroke-dasharray: 6,4; }
+      .spectator-edge { stroke: #475569; stroke-width: 2.5; stroke-dasharray: 4,4; }
+      .stat-card { fill: #1e293b; stroke: #334155; stroke-width: 1.5; rx: 8; }
+      .card-header { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 600; fill: #10b981; }
+      .card-body { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #e2e8f0; }
+    </style>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <text x="40" y="40" class="title">Figure 4: Processor D Custom Coupling Map (8Q Chorded Ring Mesh)</text>
+  <text x="40" y="65" class="subtitle">Architecture: 8 Qubits, 10 Links, Max Degree &lt;= 3 | Active Layout: {0, 1, 2, 3, 4, 7} | Transpiled Depth 41 (-21.2% vs B)</text>
+
+  <!-- Physical Coupling Links -->
+  <!-- Ring links -->
+  <line x1="200" y1="120" x2="380" y2="120" class="ring-edge" /> <!-- (0,1) -->
+  <line x1="380" y1="120" x2="380" y2="240" class="ring-edge" /> <!-- (1,3) -->
+  <line x1="380" y1="240" x2="290" y2="280" class="ring-edge" /> <!-- (3,4) -->
+  <line x1="290" y1="280" x2="200" y2="240" class="spectator-edge" /> <!-- (4,5) -->
+  <line x1="200" y1="240" x2="110" y2="240" class="spectator-edge" /> <!-- (5,6) -->
+  <line x1="110" y1="240" x2="110" y2="120" class="spectator-edge" /> <!-- (6,7) -->
+  <line x1="110" y1="120" x2="200" y2="120" class="ring-edge" /> <!-- (7,0) -->
+
+  <!-- Chords on active core -->
+  <line x1="200" y1="120" x2="290" y2="170" class="chord-edge" /> <!-- (0,2) -->
+  <line x1="290" y1="170" x2="380" y2="240" class="chord-edge" /> <!-- (2,3) -->
+  <line x1="290" y1="170" x2="290" y2="280" class="chord-edge" /> <!-- (2,4) -->
+
+  <!-- Spectator Nodes (5, 6) -->
+  <g transform="translate(200, 240)">
+    <circle r="22" fill="#334155" stroke="#64748b" stroke-width="2" />
+    <text class="node-text">Q5</text>
+    <text y="34" class="sub-text">Spectator</text>
+  </g>
+  <g transform="translate(110, 240)">
+    <circle r="22" fill="#334155" stroke="#64748b" stroke-width="2" />
+    <text class="node-text">Q6</text>
+    <text y="34" class="sub-text">Spectator</text>
+  </g>
+
+  <!-- Active Nodes: Q0, Q1, Q2, Q3, Q4, Q7 -->
+  <g transform="translate(200, 120)">
+    <circle r="24" fill="#059669" stroke="#34d399" stroke-width="3" />
+    <text class="node-text">Q0</text>
+    <text y="-34" class="sub-text">Mapped (deg 3)</text>
+  </g>
+  <g transform="translate(380, 120)">
+    <circle r="24" fill="#059669" stroke="#34d399" stroke-width="3" />
+    <text class="node-text">Q1</text>
+    <text y="-34" class="sub-text">Mapped (deg 2)</text>
+  </g>
+  <g transform="translate(290, 170)">
+    <circle r="24" fill="#059669" stroke="#34d399" stroke-width="3" />
+    <text class="node-text">Q2</text>
+    <text y="36" class="sub-text">Mapped (deg 3)</text>
+  </g>
+  <g transform="translate(380, 240)">
+    <circle r="24" fill="#059669" stroke="#34d399" stroke-width="3" />
+    <text class="node-text">Q3</text>
+    <text y="36" class="sub-text">Mapped (deg 3)</text>
+  </g>
+  <g transform="translate(290, 280)">
+    <circle r="24" fill="#059669" stroke="#34d399" stroke-width="3" />
+    <text class="node-text">Q4</text>
+    <text y="36" class="sub-text">Mapped (deg 3)</text>
+  </g>
+  <g transform="translate(110, 120)">
+    <circle r="24" fill="#059669" stroke="#34d399" stroke-width="3" />
+    <text class="node-text">Q7</text>
+    <text y="-34" class="sub-text">Mapped (deg 2)</text>
+  </g>
+
+  <!-- Metric Panels Below -->
+  <rect x="40" y="370" width="230" height="105" class="stat-card" />
+  <text x="55" y="395" class="card-header">Hardware Specification</text>
+  <text x="55" y="418" class="card-body">• Physical Qubits: 8 (&lt;= 12 budget)</text>
+  <text x="55" y="438" class="card-body">• Physical Links: 10 (20 CX pairs)</text>
+  <text x="55" y="458" class="card-body">• Max Degree: Exactly 3 (Planar OK)</text>
+
+  <rect x="290" y="370" width="240" height="105" class="stat-card" />
+  <text x="305" y="395" class="card-header">Compilation Overhead (6Q)</text>
+  <text x="305" y="418" class="card-body">• Transpiled Depth: 41 (-21.2% vs B)</text>
+  <text x="305" y="438" class="card-body">• Total CX: 22 (-12.0% vs B)</text>
+  <text x="305" y="458" class="card-body">• Routing SWAPs: 2 (2 SWAPs vs 3 on B)</text>
+
+  <rect x="550" y="370" width="250" height="105" class="stat-card" />
+  <text x="565" y="395" class="card-header">Solution Quality (Noisy)</text>
+  <text x="565" y="418" class="card-body">• Mean Cut &lt;C&gt;: 16.3276 ± 0.0567</text>
+  <text x="565" y="438" class="card-body">• Approx Ratio: 81.64%</text>
+  <text x="565" y="458" class="card-body">• P(opt): 11.21% (459/4096)</text>
+</svg>

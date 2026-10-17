@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 460" width="840" height="460">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .title { font-family: system-ui, -apple-system, sans-serif; font-size: 20px; font-weight: 700; fill: #f8fafc; }
+      .subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; fill: #94a3b8; }
+      .panel-title { font-family: system-ui, -apple-system, sans-serif; font-size: 14px; font-weight: 600; fill: #38bdf8; }
+      .bar-label { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #cbd5e1; }
+      .bar-val { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; font-weight: 700; fill: #ffffff; text-anchor: middle; dominant-baseline: central; }
+      .stat-card { fill: #1e293b; stroke: #334155; stroke-width: 1.5; rx: 8; }
+    </style>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <text x="40" y="40" class="title">Figure 7: Hardware Architecture Resource &amp; Routing Overhead Trade-Offs</text>
+  <text x="40" y="65" class="subtitle">Multi-panel comparison of compilation scaling: Depth, 2Q CX Count, and Routing SWAP Overhead</text>
+
+  <!-- Panel 1: Circuit Depth -->
+  <rect x="40" y="90" width="365" height="150" class="stat-card" />
+  <text x="55" y="115" class="panel-title">Panel A: Transpiled Circuit Depth (Full 6Q)</text>
+
+  <text x="55" y="145" class="bar-label">Proc A (5Q)</text>
+  <rect x="150" y="132" width="235" height="18" fill="#ef4444" rx="3" />
+  <text x="267" y="141" class="bar-val">Infeasible (6 &gt; 5)</text>
+
+  <text x="55" y="175" class="bar-label">Proc B (9Q)</text>
+  <rect x="150" y="162" width="220" height="18" fill="#f59e0b" rx="3" />
+  <text x="260" y="171" class="bar-val">52 Gates (Baseline)</text>
+
+  <text x="55" y="205" class="bar-label">Proc D (8Q)</text>
+  <rect x="150" y="192" width="173" height="18" fill="#10b981" rx="3" />
+  <text x="236" y="201" class="bar-val">41 Gates (-21.2%)</text>
+
+  <!-- Panel 2: Two-Qubit CX Gates -->
+  <rect x="435" y="90" width="365" height="150" class="stat-card" />
+  <text x="450" y="115" class="panel-title">Panel B: Native 2Q CX Gates (Full 6Q)</text>
+
+  <text x="450" y="145" class="bar-label">Proc A (5Q)</text>
+  <rect x="545" y="132" width="235" height="18" fill="#ef4444" rx="3" />
+  <text x="662" y="141" class="bar-val">Infeasible (6 &gt; 5)</text>
+
+  <text x="450" y="175" class="bar-label">Proc B (9Q)</text>
+  <rect x="545" y="162" width="220" height="18" fill="#f59e0b" rx="3" />
+  <text x="655" y="171" class="bar-val">25 CX (+56.2% routing)</text>
+
+  <text x="450" y="205" class="bar-label">Proc D (8Q)</text>
+  <rect x="545" y="192" width="194" height="18" fill="#10b981" rx="3" />
+  <text x="642" y="201" class="bar-val">22 CX (-12.0% vs B)</text>
+
+  <!-- Panel 3: Routing SWAPs -->
+  <rect x="40" y="260" width="365" height="150" class="stat-card" />
+  <text x="55" y="285" class="panel-title">Panel C: Routing SWAP Count (Full 6Q)</text>
+
+  <text x="55" y="315" class="bar-label">Proc A (5Q)</text>
+  <rect x="150" y="302" width="235" height="18" fill="#ef4444" rx="3" />
+  <text x="267" y="311" class="bar-val">Infeasible (6 &gt; 5)</text>
+
+  <text x="55" y="345" class="bar-label">Proc B (9Q)</text>
+  <rect x="150" y="332" width="200" height="18" fill="#f59e0b" rx="3" />
+  <text x="250" y="341" class="bar-val">3 SWAPs (9 Routing CX)</text>
+
+  <text x="55" y="375" class="bar-label">Proc D (8Q)</text>
+  <rect x="150" y="362" width="133" height="18" fill="#10b981" rx="3" />
+  <text x="216" y="371" class="bar-val">2 SWAPs (6 Routing CX)</text>
+
+  <!-- Panel 4: Approximation Ratio -->
+  <rect x="435" y="260" width="365" height="150" class="stat-card" />
+  <text x="450" y="285" class="panel-title">Panel D: Noisy Approximation Ratio (Mean Cut / 20.0)</text>
+
+  <text x="450" y="315" class="bar-label">Proc A (5Q)</text>
+  <rect x="545" y="302" width="235" height="18" fill="#ef4444" rx="3" />
+  <text x="662" y="311" class="bar-val">Infeasible (6 &gt; 5)</text>
+
+  <text x="450" y="345" class="bar-label">Proc B (9Q)</text>
+  <rect x="545" y="332" width="205" height="18" fill="#f59e0b" rx="3" />
+  <text x="647" y="341" class="bar-val">82.14% (Cut: 16.43)</text>
+
+  <text x="450" y="375" class="bar-label">Proc D (8Q)</text>
+  <rect x="545" y="362" width="204" height="18" fill="#10b981" rx="3" />
+  <text x="647" y="371" class="bar-val">81.64% (Cut: 16.33)</text>
+</svg>

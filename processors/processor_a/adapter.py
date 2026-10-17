@@ -6,7 +6,7 @@ Supports both ideal topology emulation and authentic noise-aware simulation.
 """
 
 from pathlib import Path
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from qiskit.circuit import QuantumCircuit
 from qiskit.transpiler import CouplingMap

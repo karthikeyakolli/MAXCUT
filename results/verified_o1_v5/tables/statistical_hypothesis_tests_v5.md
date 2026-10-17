@@ -1,0 +1,7 @@
+# Pairwise Statistical Hypothesis Tests (Version 5 Benchmark)
+
+| Comparison | Delta Mean Cut | Relative Cut Degradation (%) | Welch t-stat | t-test p-value | Delta P(opt) | 2-Prop z-stat | z-test p-value | Significant (alpha=0.05) |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Processor B: Ideal vs. Noisy | 0.5039 | 2.98 | 6.646 | 3.0119018390450947e-11 | 0.0168 | 2.2132 | 0.026881977847472482 | True |
+| Processor D: Ideal vs. Noisy | 0.4402 | 2.63 | 5.6782 | 1.3611269888968991e-08 | 0.012 | 1.6779 | 0.09337204265349364 | True |
+| Processor D vs. Processor B (Noisy) | -0.1006 | -0.35 | -1.2629 | 0.20661454902024445 | -0.0171 | -2.3748 | 0.017558292871077574 | False |

@@ -1,0 +1,263 @@
+{
+  "optimizer_name": "COBYLA",
+  "p": 1,
+  "num_restarts": 10,
+  "selected_restart_index": 3,
+  "optimal_gamma": [
+    6.087282143723531
+  ],
+  "optimal_beta": [
+    1.942980822511567
+  ],
+  "optimal_parameters": [
+    6.087282143723531,
+    1.942980822511567
+  ],
+  "best_objective_value": -16.818177627282356,
+  "best_expected_cut": 16.818177627282356,
+  "total_evaluations": 382,
+  "total_execution_time_seconds": 0.4770372999992105,
+  "restarts": [
+    {
+      "restart_index": 0,
+      "seed": 42,
+      "initial_parameters": [
+        2.353304971691044,
+        2.9867570806801083
+      ],
+      "optimal_parameters": [
+        3.3276540647805106,
+        2.7311266923625817
+      ],
+      "optimal_gamma": [
+        3.3276540647805106
+      ],
+      "optimal_beta": [
+        2.7311266923625817
+      ],
+      "final_objective_value": -15.252768040175496,
+      "final_expected_cut": 15.252768040175496,
+      "num_evaluations": 39,
+      "execution_time_seconds": 0.055214399995747954,
+      "converged": true,
+      "message": "Return from COBYLA because the trust region radius reaches its lower bound."
+    },
+    {
+      "restart_index": 1,
+      "seed": 43,
+      "initial_parameters": [
+        0.7229091610641774,
+        1.913438965347778
+      ],
+      "optimal_parameters": [
+        1.692921611014423,
+        1.8986968712134245
+      ],
+      "optimal_gamma": [
+        1.692921611014423
+      ],
+      "optimal_beta": [
+        1.8986968712134245
+      ],
+      "final_objective_value": -14.217071372539449,
+      "final_expected_cut": 14.217071372539449,
+      "num_evaluations": 31,
+      "execution_time_seconds": 0.03486319999501575,
+      "converged": true,
+      "message": "Return from COBYLA because the trust region radius reaches its lower bound."
+    },
+    {
+      "restart_index": 2,
+      "seed": 44,
+      "initial_parameters": [
+        5.245467922310245,
+        0.329226671613212
+      ],
+      "optimal_parameters": [
+        6.087304960938309,
+        0.37212986443469537
+      ],
+      "optimal_gamma": [
+        6.087304960938309
+      ],
+      "optimal_beta": [
+        0.37212986443469537
+      ],
+      "final_objective_value": -16.818177352623117,
+      "final_expected_cut": 16.818177352623117,
+      "num_evaluations": 41,
+      "execution_time_seconds": 0.047628400003304705,
+      "converged": true,
+      "message": "Return from COBYLA because the trust region radius reaches its lower bound."
+    },
+    {
+      "restart_index": 3,
+      "seed": 45,
+      "initial_parameters": [
+        6.214142610101336,
+        1.726445676674399
+      ],
+      "optimal_parameters": [
+        6.087282143723531,
+        1.942980822511567
+      ],
+      "optimal_gamma": [
+        6.087282143723531
+      ],
+      "optimal_beta": [
+        1.942980822511567
+      ],
+      "final_objective_value": -16.818177627282356,
+      "final_expected_cut": 16.818177627282356,
+      "num_evaluations": 41,
+      "execution_time_seconds": 0.050688900002569426,
+      "converged": true,
+      "message": "Return from COBYLA because the trust region radius reaches its lower bound."
+    },
+    {
+      "restart_index": 4,
+      "seed": 46,
+      "initial_parameters": [
+        4.9249639098747275,
+        1.9943889071864391
+      ],
+      "optimal_parameters": [
+        4.931056993752128,
+        2.017666757304169
+      ],
+      "optimal_gamma": [
+        4.931056993752128
+      ],
+      "optimal_beta": [
+        2.017666757304169
+      ],
+      "final_objective_value": -14.706874447254965,
+      "final_expected_cut": 14.706874447254965,
+      "num_evaluations": 36,
+      "execution_time_seconds": 0.044250700004340615,
+      "converged": true,
+      "message": "Return from COBYLA because the trust region radius reaches its lower bound."
+    },
+    {
+      "restart_index": 5,
+      "seed": 47,
+      "initial_parameters": [
+        0.7130690991364421,
+        3.0614289305290208
+      ],
+      "optimal_parameters": [
+        1.3521108866162488,
+        4.265670675481404
+      ],
+      "optimal_gamma": [
+        1.3521108866162488
+      ],
+      "optimal_beta": [
+        4.265670675481404
+      ],
+      "final_objective_value": -14.70687384813782,
+      "final_expected_cut": 14.70687384813782,
+      "num_evaluations": 42,
+      "execution_time_seconds": 0.05178719999821624,
+      "converged": true,
+      "message": "Return from COBYLA because the trust region radius reaches its lower bound."
+    },
+    {
+      "restart_index": 6,
+      "seed": 48,
+      "initial_parameters": [
+        0.10989461333320842,
+        2.8009600263105496
+      ],
+      "optimal_parameters": [
+        0.19593625249708974,
+        2.7694266221720736
+      ],
+      "optimal_gamma": [
+        0.19593625249708974
+      ],
+      "optimal_beta": [
+        2.7694266221720736
+      ],
+      "final_objective_value": -16.818177341085764,
+      "final_expected_cut": 16.818177341085764,
+      "num_evaluations": 36,
+      "execution_time_seconds": 0.04206940000585746,
+      "converged": true,
+      "message": "Return from COBYLA because the trust region radius reaches its lower bound."
+    },
+    {
+      "restart_index": 7,
+      "seed": 49,
+      "initial_parameters": [
+        1.8910154470171816,
+        0.7761676362736721
+      ],
+      "optimal_parameters": [
+        2.9555517801923616,
+        1.9813048995050309
+      ],
+      "optimal_gamma": [
+        2.9555517801923616
+      ],
+      "optimal_beta": [
+        1.9813048995050309
+      ],
+      "final_objective_value": -15.25276809882787,
+      "final_expected_cut": 15.25276809882787,
+      "num_evaluations": 43,
+      "execution_time_seconds": 0.05721689999336377,
+      "converged": true,
+      "message": "Return from COBYLA because the trust region radius reaches its lower bound."
+    },
+    {
+      "restart_index": 8,
+      "seed": 50,
+      "initial_parameters": [
+        3.107673792151342,
+        0.7165442053459881
+      ],
+      "optimal_parameters": [
+        3.6207944894934885,
+        1.787320499409711
+      ],
+      "optimal_gamma": [
+        3.6207944894934885
+      ],
+      "optimal_beta": [
+        1.787320499409711
+      ],
+      "final_objective_value": -12.608829896842407,
+      "final_expected_cut": 12.608829896842407,
+      "num_evaluations": 41,
+      "execution_time_seconds": 0.048691299998608883,
+      "converged": true,
+      "message": "Return from COBYLA because the trust region radius reaches its lower bound."
+    },
+    {
+      "restart_index": 9,
+      "seed": 51,
+      "initial_parameters": [
+        4.245745701491584,
+        0.14046746313474356
+      ],
+      "optimal_parameters": [
+        4.208771545957692,
+        0.37383070114064265
+      ],
+      "optimal_gamma": [
+        4.208771545957692
+      ],
+      "optimal_beta": [
+        0.37383070114064265
+      ],
+      "final_objective_value": -14.182989096998313,
+      "final_expected_cut": 14.182989096998313,
+      "num_evaluations": 32,
+      "execution_time_seconds": 0.0357164000015473,
+      "converged": true,
+      "message": "Return from COBYLA because the trust region radius reaches its lower bound."
+    }
+  ],
+  "formulation": "standard_6q"
+}

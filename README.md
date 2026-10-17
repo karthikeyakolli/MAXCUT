@@ -1,162 +1,220 @@
 # Qiskit Fall Fest 2026 — Track O1 Quantum Optimization (Max-Cut)
-## Authoritative Comparative Architectural Benchmark: Processor A vs. Processor B vs. Custom Processor D
+## PS-O1: Max-Cut on a Weighted Graph — Complete Authoritative Final Benchmark
+### Controlled Hardware Comparison: Processor A vs. Processor B vs. Custom Processor D
 
-**Track Selection:** Quantum Optimization — **Problem Code: O1**  
-**Selected Problem:** Maximum Cut (Max-Cut) on Canonical 6-Vertex Challenge Graph  
-**Algorithm:** Quantum Approximate Optimization Algorithm (QAOA, $p=1$) vs. Exact Classical Exhaustive Ground Truth  
-**Target Architectures:**
-- **Processor A:** 5 Physical Qubits, Linear Chain, Native `cx` Entangler
-- **Processor B:** 9 Physical Qubits, Sparse Tree, Native `cx` Entangler
-- **Processor D (Custom):** 8 Physical Qubits, Chorded Ring Mesh (Degree $\le 3$), Native `cx` Entangler
-**Logical Formulation:** 5-Qubit Exact $\mathbb{Z}_2$ Complement-Symmetry Reduced QAOA ($x_0 = 0$)  
-**Benchmark Protocols:** 4096 shots per case, Seed 42, Uniform Synthetic Noise ($p_{1Q}=0.001, p_{CX}=0.005, p_{RO}=0.01$)  
-**Automated Regression Suite:** 34 Passing Unit/Regression Tests (`python -m unittest discover -s tests -p "test_phase*.py"`)  
-**Official Repository:** [https://github.com/karthikeyakolli/MAXCUT](https://github.com/karthikeyakolli/MAXCUT)  
+**Competition Event:** Qiskit Fall Fest 2026
+**Track:** Quantum Optimization — **Problem ID: PS-O1**
+**Repository Owner / Team:** [Karthikeya Kolli](https://github.com/karthikeyakolli)
+**Repository:** [https://github.com/karthikeyakolli/MAXCUT](https://github.com/karthikeyakolli/MAXCUT)
+**Problem Statement:** PS-O1 — Max-Cut on a Weighted Graph
+**Selected Problem Instance:** Canonical 6-Vertex Participant-Created Weighted Graph [`instances/participant/o1_maxcut_weighted_v5.json`](instances/participant/o1_maxcut_weighted_v5.json)
+**Edge Weight Range & Sequence:** Nonuniform integer edge weights in $[1, 5]$ with reproducible sequence `[1, 2, 3, 4, 5, 2, 4, 3]`
+**Exact Classical Ground Truth:** $C_{\max} = 20.0000$ (Optimal Cut Ratio: $83.33\%$, 2 optimal states: `001100`, `110011`)
+**Primary Quantum Formulation:** Full 6-Variable Logical QAOA ($p=1$) with Multistart Classical Variational Optimization
+**Evaluated Processor Architectures:**
+- **Processor A:** 5 Physical Qubits, Nearest-Neighbor Linear Chain, Native `cx` Entangler — *Hardware Capacity Infeasible for Full 6Q Problem; strictly segregated auxiliary 5Q experiment*
+- **Processor B:** 9 Physical Qubits, Sparse Tree, Native `cx` Entangler — *Updated Challenge Kit Topology, 6 Active Mapped Physical Qubits*
+- **Processor D (Custom):** 8 Physical Qubits, Chorded Ring Mesh (Planar, Degree $\le 3$), Native `cx` Entangler — *Resolves Processor B tree routing bottleneck*
+**Authoritative Result Suite:** `results/verified_o1_v5/` (All historical archives `v2`, `v3`, `v4` preserved intact)
+**Automated Regression Suite:** 163 Passing Tests (`pytest -v tests`)
+**Artifact Integrity Validation:** 100% Passing (`python scripts/validate_artifacts.py`)
 
 ---
 
 > ### AI-Assistance Disclosure
-> In compliance with hackathon submission guidelines: AI pair programming tools (Google Antigravity / Gemini) were utilized for code scaffolding, automated test generation, and documentation linting. All mathematical proofs, symmetry reductions, hardware adapter implementations, and empirical benchmark evaluations were designed, derived, and verified by the authors through deterministic test suites and direct data artifact audits.
+> In compliance with hackathon submission guidelines: AI pair programming tools (Google Antigravity / Gemini) were utilized for code scaffolding, automated test generation, and documentation linting. All mathematical proofs, exact classical brute-force verifications, QAOA ansatz constructions, hardware adapter implementations, noise models, and empirical benchmark evaluations were designed, derived, executed, and verified by the authors through deterministic test suites and direct data artifact audits. All reported numbers originate directly from executed computational artifacts stored in `results/verified_o1_v5/`.
 
 ---
 
-## 1. Problem Definition & Canonical Instance
+> [!IMPORTANT]
+> ### Quantum Advantage Disclaimer: NOT DEMONSTRATED
+> This 6-vertex weighted Max-Cut instance does **not** demonstrate quantum advantage over classical computation.
+>
+> The exact classical exhaustive solver evaluates all 64 candidate partitions in **$0.106\,\text{ms}$** ($0.000106\,\text{s}$), certifying the global maximum cut $C_{\max} = 20.0000$ with $100\%$ certainty. In contrast, depth $p=1$ QAOA on noisy quantum processors produces approximation ratios of $81.6\%\text{--}82.1\%$ and requires transpilation, routing, and error-mitigation overhead. This project demonstrates **architectural compilation and noise resilience trade-offs**, not quantum supremacy.
 
-The **Maximum Cut (Max-Cut)** problem is a canonical NP-hard combinatorial optimization challenge. Given an undirected graph $G = (V, E)$ with edge weights $w_{uv}$, the objective is to partition the vertices $V$ into two complementary subsets $S$ and $\bar{S}$ to maximize the total weight of cut edges crossing the boundary:
+---
 
-$$C(x) = \sum_{(u, v) \in E} w_{uv} (x_u \oplus x_v) = \sum_{(u, v) \in E} w_{uv} [x_u(1 - x_v) + x_v(1 - x_u)]$$
+## 1. Problem Definition & Weighted Graph Instance
 
-where binary decision variable $x_u = 0$ denotes $u \in S$ and $x_u = 1$ denotes $u \in \bar{S}$.
+The **Maximum Cut (Max-Cut)** problem is a fundamental NP-hard combinatorial optimization challenge. Given an undirected weighted graph $G = (V, E, w)$ with vertex set $V$, edge set $E$, and integer edge weights $w_{ij}$, the objective is to partition $V$ into two complementary subsets $S_1$ and $S_2$ to maximize the total weight of cut edges crossing the partition boundary:
 
-For the **O1 Max-Cut** benchmark, the official organizer instance [`instances/challenge/o1_maxcut_instance.json`](instances/challenge/o1_maxcut_instance.json) is ingested directly without modification:
-* **Vertices:** $|V| = 6$ ($V = \{0, 1, 2, 3, 4, 5\}$).
-* **Edges:** $|E| = 8$ edges with uniform integer weights $w_{uv} = 1.0$ (total graph weight $W = 8.00$).
-* **Edge Set:** $(0, 1), (0, 2), (1, 2), (1, 3), (2, 4), (3, 4), (3, 5), (4, 5)$.
-* **Graph Structure:** Connected planar graph with maximum degree 4 (node 3) and minimum degree 2 (node 0, node 5).
-* **Schema Integrity:** Preserved canonical JSON, 0 self-loops, 0 multigraph edges.
+$$C(x) = \sum_{(i, j) \in E} w_{ij} (x_i \oplus x_j) = \sum_{(i, j) \in E} w_{ij} (x_i + x_j - 2x_i x_j)$$
+
+where binary variable $x_i \in \{0, 1\}$ assigns vertex $i$ to subset $S_1$ ($x_i=0$) or $S_2$ ($x_i=1$).
+
+### Canonical 6-Vertex Weighted Problem Graph
+In accordance with updated PS-O1 requirements permitting participant-selected 6-vertex weighted graphs with integer edge weights in $[1, 5]$, we evaluate the canonical non-uniform instance [`instances/participant/o1_maxcut_weighted_v5.json`](instances/participant/o1_maxcut_weighted_v5.json):
+* **Vertices ($|V|=6$):** $V = \{0, 1, 2, 3, 4, 5\}$
+* **Edges ($|E|=8$):** Canonical sorted edge list with reproducible integer weights:
+  $e_0 = (0, 1, 1), e_1 = (0, 2, 2), e_2 = (1, 2, 3), e_3 = (1, 3, 4), e_4 = (2, 4, 5), e_5 = (3, 4, 2), e_6 = (3, 5, 4), e_7 = (4, 5, 3)$
+* **Total Graph Weight ($W$):** $W = \sum_{(i,j) \in E} w_{ij} = 24.0$
+* **Schema Integrity:** 0 self-loops, 0 multigraph edges, integer weights $\in [1, 5]$, hash `e96147a93b3a72ab`.
 
 ---
 
 ## 2. Exact Classical Reference Ground Truth
 
-To establish an authoritative ground truth for quantum evaluation, an exact exhaustive combinatorial solver was executed across all $2^6 = 64$ computational states ([`results/data/classical_reference.json`](results/data/classical_reference.json)):
-* **Exact Global Maximum Cut:** $C_{\max} = 6.0000$ (75.0% of total edge weight $W = 8.00$).
-* **Classical Solution Runtime:** $< 0.5\text{ ms}$ on standard CPU ($0.000425\text{ s}$).
-* **Optimal Subspace Degeneracy:** Exactly **10 bitstrings** achieve $C(x) = 6.0000$, forming 5 complementary pairs under bitwise spin inversion ($\mathbb{Z}_2$ symmetry):  
-  `001100` / `110011`, `101100` / `010011`, `010010` / `101101`, `110010` / `001101`, `100110` / `011001`.
-* **Primary Partition Assignment:** $S_1 = \{0, 1, 4, 5\}$ and $S_2 = \{2, 3\}$ (bitstring `001100`).
+To establish an authoritative ground truth for quantum evaluation, an exact exhaustive combinatorial solver was executed across all $2^6 = 64$ computational states ([`results/verified_o1_v5/data/classical_reference.json`](results/verified_o1_v5/data/classical_reference.json)):
+* **Exact Global Maximum Cut:** $C_{\max} = 20.0000$ (Cut Ratio: $20.0 / 24.0 = 83.33\%$).
+* **Classical Solution Runtime:** $0.106\,\text{ms}$ on standard CPU ($0.000106\text{ s}$).
+* **Optimal Solution States (2):** Exactly two complementary assignments achieve $C(x) = 20.0000$:
+  - `001100`: Partition $S_1 = \{0, 1, 4, 5\}$, $S_2 = \{2, 3\}$
+  - `110011`: Partition $S_1 = \{2, 3\}$, $S_2 = \{0, 1, 4, 5\}$
+* **Cut Edges (6 of 8 cut):**
+  $(0,2)[w=2] + (1,2)[w=3] + (1,3)[w=4] + (2,4)[w=5] + (3,4)[w=2] + (3,5)[w=4] = 2 + 3 + 4 + 5 + 2 + 4 = 20.0$.
+* **Uncut Edges (2 internal):** $(0,1)[w=1] + (4,5)[w=3] = 4.0$.
+* **Global-Complement Symmetry:** Verified $\sim `001100` = `110011`$.
 
 ---
 
-## 3. Five-Variable Reduction & Mathematical Justification
+## 3. Mathematical Formulation: QUBO, Ising & QAOA Ansatz
 
-### Motivation & Physical Basis
-The primary benchmark target (Processor A) provides 5 physical qubits. An unreduced 6-vertex formulation requires 6 physical qubits.
+### QUBO & Ising Minimization Mapping
+1. **QUBO Objective (Minimization):**
+   $$f_{\text{QUBO}}(x) = -C(x) = \sum_{(i,j) \in E} w_{ij} (2 x_i x_j - x_i - x_j)$$
+2. **Ising Spin Transformation:**
+   Substituting $x_i = \frac{I - Z_i}{2}$ into $-C(x)$ yields the Cost Hamiltonian:
+   $$H_C = \sum_{(i,j) \in E} \frac{w_{ij}}{2} Z_i Z_j - \left(\frac{1}{2} \sum_{(i,j) \in E} w_{ij}\right) I = \sum_{(i,j) \in E} \frac{w_{ij}}{2} Z_i Z_j - 12.0 \cdot I$$
+   For any computational basis state $|x\rangle$:
+   $$\langle x | H_C | x \rangle = -C(x)$$
+   Minimizing $\langle H_C \rangle$ directly maximizes expected cut $\langle C \rangle$. Exhaustive numerical verification confirms exact equivalence for all 64 assignments.
 
-Because Max-Cut is strictly invariant under global bitwise spin inversion ($x \mapsto \mathbf{1} \oplus x$), fixing $x_0 = 0$ preserves the entire solution space while halving the computational Hilbert space from $2^6 = 64$ to $2^5 = 32$:
-* The 5 remaining vertices $x_1, \dots, x_5$ map bijectively to 5 quantum variables $q_0, \dots, q_4$.
-* Non-incident edges ($(u, v)$ with $u, v \ge 1$) remain standard two-body Ising terms: $x_u \oplus x_v = \frac{I - Z_u Z_v}{2}$.
-* Incident edges ($(0, v)$ with $x_0 = 0$) simplify to linear longitudinal fields: $0 \oplus x_v = x_v = \frac{I - Z_v}{2}$.
-
-Substituting into the minimization cost Hamiltonian ($H_C = -C(x)$):
-$$H_C^{(5Q)} = \frac{1}{2} \sum_{(u, v) \in E, u, v \ge 1} Z_u Z_v + \frac{1}{2} Z_1 + \frac{1}{2} Z_2 - 4.0 \cdot I$$
-
-The 10 global classical optima condense bijectively to exactly 5 unique 5-variable assignments, preserving $C_{\max} = 6.0000$ with $100\%$ mathematical equivalence.
+### QAOA Protocol ($p=1$)
+1. **Ansatz State:** $|\psi(\gamma, \beta)\rangle = U_M(\beta) U_C(\gamma) |+\rangle^{\otimes 6} = \left(\prod_{i=0}^5 e^{-i \beta X_i}\right) \left(\prod_{(i,j) \in E} e^{-i \gamma \frac{w_{ij}}{2} Z_i Z_j}\right) |+\rangle^{\otimes 6}$
+2. **Multistart Variational Optimization:**
+   Executed 10 independent random restarts with classical optimizer COBYLA in $[0, 2\pi) \times [0, \pi)$ with base seed 42:
+   - **Optimal Parameters:** $\gamma^* = 6.087282\,\text{rad}$, $\beta^* = 1.942981\,\text{rad}$
+   - **Theoretical Expected Cut:** $\langle C \rangle = 16.8182$ (Approximation Ratio: $84.09\%$)
+   - **Analytic Ground-State Probability:** $P(\text{opt}) = 13.57\%$
 
 ---
 
-## 4. Hardware Processor Architectures
-
-All comparative evaluations target genuine physical topologies specified in [`processors/`](processors/):
+## 4. Hardware Processor Architectures & Capacity Analysis
 
 ```
-+-----------------------------------------------------------------------------------------------------+
-|                                   TARGET HARDWARE ARCHITECTURES                                     |
-+-------------+----------------------+----------+---------+--------------------+---------+------------+
-| Target      | Architecture Family  | Phys Q   | Act Q   | Physical Edges     | Max Deg | Spec Hash  |
-+-------------+----------------------+----------+---------+--------------------+---------+------------+
-| Processor A | 5Q Linear Chain CX   | 5        | 5       | 4 (8 CX pairs)     | 2       | aa9e30240a |
-| Processor B | 9Q Sparse Tree CX    | 9        | 5       | 8 (16 CX pairs)    | 3       | 341d471380 |
-| Processor D | 8Q Chorded Mesh CX   | 8        | 5       | 10 (20 CX pairs)   | 3       | a60ecf34eb |
-+-------------+----------------------+----------+---------+--------------------+---------+------------+
++---------------------------------------------------------------------------------------------------------------+
+|                                      TARGET HARDWARE ARCHITECTURES                                            |
++-------------+-----------------------+----------+--------------------+---------+---------+-------+-------------+
+| Target      | Architecture Family   | Phys Q   | Mapped Core        | Phys L  | Max Deg | SWAPs | Status      |
++-------------+-----------------------+----------+--------------------+---------+---------+-------+-------------+
+| Processor A | 5Q Linear Chain CX    | 5        | INFEASIBLE (6 > 5) | 4 links | 2       | N/A   | Capacity Ref|
+| Processor B | 9Q Sparse Tree CX     | 9        | [2, 3, 4, 5, 6, 7] | 8 links | 3       | 3     | Compliant   |
+| Processor D | 8Q Chorded Mesh CX    | 8        | [0, 1, 2, 3, 4, 7] | 10 links| 3       | 2     | Optimized   |
++-------------+-----------------------+----------+--------------------+---------+---------+-------+-------------+
 ```
 
-### Processor D Design Rationale
-Processor D was engineered to eliminate the **routing SWAP bottleneck** measured on Processors A and B:
-- **Processor A (5Q Chain):** Requires 2 routing SWAPs (+6 CX gates, $+50\%$ 2Q overhead) and dilates depth to 58.
-- **Processor B (9Q Tree):** Requires 1 routing SWAP (+3 CX gates, $+25\%$ 2Q overhead) and dilates depth to 52.
-- **Processor D (8Q Chorded Mesh):** Embeds planar chords that directly match all 6 problem interactions, achieving **0 SWAPs, 12 CX gates, and depth 36** (a **$37.9\%$ depth reduction** vs A) while strictly respecting physical transmon degree $\le 3$.
+### Processor A Capacity Constraint Handling
+- **Hardware Limitation:** Processor A possesses 5 physical qubits arranged in a nearest-neighbor linear chain: `(0,1), (1,2), (2,3), (3,4)`.
+- **Benchmark Policy:** The 6-variable problem strictly requires 6 physical qubits. The transpiler correctly raises `TranspilerError: More virtual qubits (6) exist than physical (5)`.
+- **Honest Compliance:** We do not disguise a 5-variable circuit as a full 6-variable execution, nor do we alter Processor A's topology. Processor A serves as a capacity baseline.
+- **Auxiliary Experiment:** A separate 5-variable symmetry-reduced experiment ($x_0=0$) is documented strictly as an auxiliary benchmark (transpiled depth 61, 21 CX, 3 SWAPs).
+
+### Processor B Topology & Compilation
+- **Specification:** Official 9-qubit sparse tree topology with bidirectional CX connectivity.
+- **Compilation:** Virtual qubits mapped to active sub-tree `[2, 3, 4, 5, 6, 7]`. Incurs 3 routing SWAPs (9 routing CX gates, $+56.2\%$ CX overhead) due to cycle-closing edges, producing transpiled circuit depth of 52 and 25 CX gates.
+
+### Processor D Custom Architecture Rationale
+- **Design Budget:** 8 physical qubits ($\le 12$ budget rule compliant).
+- **Topology:** Chorded ring mesh with outer ring `(0,1), (1,3), (3,4), (4,5), (5,6), (6,7), (7,0)` and planar internal chords `(0,2), (2,3), (2,4)`. Strictly maintains transmon maximum vertex degree $\le 3$.
+- **Measured Advantage:** Directly eliminates routing bottlenecks, achieving transpiled depth **41** (**21.2% depth reduction** vs. B) and **22 CX gates** (**12.0% reduction** vs. B) with only 2 routing SWAPs.
 
 ---
 
-## 5. Master Comparative Results
+## 5. Master Authoritative Benchmark Results (Version 5)
 
-Evaluated with 4096 shots per case ($N = 24,576$ total shots), seed 42, native basis `["rz", "sx", "x", "cx"]`, and uniform synthetic noise ($p_{1Q}=0.001, p_{CX}=0.005, p_{RO}=0.01$):
+All experiments evaluated under frozen benchmark controls: 4096 shots per case, seed 42, transpiler optimization level 1 (SABRE), native basis `["rz", "sx", "x", "cx"]`, and uniform depolarizing noise ($p_{1Q}=0.001, p_{CX}=0.005, p_{RO}=0.01$):
 
-| Experiment Case | Target Backend | Circuit Depth | 2Q Gates (CX) | Routing SWAPs | Mean Cut $\langle C \rangle$ | Standard Error | Approx Ratio $\alpha$ | Success Prob $P(\text{opt})$ | Relative Noise Degradation |
-| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Processor A — Ideal** | `Processor_A` | 58 | 18 | 2 | 5.0557 | 0.0166 | 84.26% | 0.4270 (1749/4096) | Baseline |
-| **Processor A — Noisy** | `Processor_A` | 58 | 18 | 2 | 4.8784 | 0.0187 | 81.31% | 0.3809 (1560/4096) | $-3.51\%$ ($\Delta = -0.1772$) |
-| **Processor B — Ideal** | `Processor_B` | 52 | 15 | 1 | 5.0557 | 0.0166 | 84.26% | 0.4270 (1749/4096) | Baseline |
-| **Processor B — Noisy** | `Processor_B` | 52 | 15 | 1 | 4.8923 | 0.0186 | 81.54% | 0.3845 (1575/4096) | $-3.23\%$ ($\Delta = -0.1633$) |
-| **Processor D — Ideal** | `Processor_D` | 36 | 12 | 0 | 5.0557 | 0.0166 | 84.26% | 0.4270 (1749/4096) | Baseline |
-| **Processor D — Noisy** | `Processor_D` | **36** | **12** | **0** | **4.9141** | **0.0183** | **81.90%** | **0.3887 (1592/4096)**| **$-2.80\%$ ($\Delta = -0.1416$)** |
+| Experiment Case | Target Backend | Mode | Depth | 2Q CX | Routing SWAPs | Mean Cut $\langle C \rangle$ | Standard Error | Approx Ratio $\alpha$ | Success Prob $P(\text{opt})$ | 95% Wilson CI $P(\text{opt})$ |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Processor B — Ideal** | `Processor_B` (9Q) | Ideal | 52 | 25 | 3 | 16.9321 | 0.0512 | 84.66% | 0.1460 (598/4096) | [0.1355, 0.1571] |
+| **Processor B — Noisy** | `Processor_B` (9Q) | Noisy | 52 | 25 | 3 | 16.4282 | 0.0560 | 82.14% | 0.1292 (529/4096) | [0.1192, 0.1398] |
+| **Processor D — Ideal** | `Processor_D` (8Q) | Ideal | 41 | 22 | 2 | 16.7678 | 0.0529 | 83.84% | 0.1240 (508/4096) | [0.1143, 0.1345] |
+| **Processor D — Noisy** | `Processor_D` (8Q) | Noisy | 41 | 22 | 2 | 16.3276 | 0.0567 | 81.64% | 0.1121 (459/4096) | [0.1028, 0.1221] |
+
+*Serialized in [`results/verified_o1_v5/tables/master_version5_metrics.md`](results/verified_o1_v5/tables/master_version5_metrics.md) and [`master_version5_metrics.csv`](results/verified_o1_v5/tables/master_version5_metrics.csv).*
+
+### Statistical Significance (Welch's $t$-test & 2-Proportion $z$-test)
+- **Noise Impact on Processor B:** $\Delta \langle C \rangle = -0.5039$ ($t = 6.645$, $p = 3.25 \times 10^{-11}$, statistically significant at $\alpha = 0.05$).
+- **Noise Impact on Processor D:** $\Delta \langle C \rangle = -0.4402$ ($t = 5.679$, $p = 1.40 \times 10^{-8}$, statistically significant at $\alpha = 0.05$).
+- **Noisy Comparison (D vs. B):** Difference in mean cut $\Delta = -0.1006$ ($t = -1.263$, $p = 0.2066$) is not statistically significant, while Processor D delivers a 21.2% reduction in circuit depth and 12.0% reduction in 2Q gate overhead.
 
 ---
 
 ## 6. Scientific Interpretation & Quantum Advantage Disclaimer
 
-### Hardware Trade-Offs
-1. **Depth vs Noise Resilience:** As circuit depth and CX counts drop from Processor A (58 depth, 18 CX) $\to$ Processor B (52 depth, 15 CX) $\to$ Processor D (36 depth, 12 CX), relative degradation under noise is reduced monotonically from $-3.51\% \to -3.23\% \to -2.80\%$.
-2. **Fabrication Feasibility:** Processor D achieves zero SWAPs without unphysical all-to-all connectivity by keeping maximum physical vertex degree $\le 3$.
+### Hardware Architecture Trade-Offs
+1. **Compilation Overhead:** On tree topologies like Processor B, cycle-closing problem interactions require routing SWAPs that significantly inflate circuit depth. Adding strategic chords in Processor D reduces routing overhead while preserving physical planar fabricability.
+2. **Noise Resilience:** Noisy simulation demonstrates that both processors reliably identify the global optimum ($C_{\max} = 20.0$), sampling an optimal cut in over $11.2\%\text{--}12.9\%$ of shots ($>450$ counts out of 4096).
 
 ### Quantum Advantage Disclaimer
 > [!IMPORTANT]
-> **Definitive Quantum Advantage Disclaimer:**  
-> This 6-vertex Max-Cut instance does **not** demonstrate quantum advantage over classical computation.  
-> 
-> The exact classical exhaustive solver evaluates all 64 partitions in **$0.425\,\text{ms}$**, certifying the global optimum with $100\%$ certainty. In contrast, QAOA on noisy quantum processors produces an approximation ratio of $81.9\%$ and requires substantial transpilation, routing, and error-mitigation overhead. This project demonstrates **architectural benchmarking and compilation optimization**, not quantum supremacy.
+> **Definitive Quantum Advantage Disclaimer:**
+> This 6-vertex Max-Cut instance does **not** demonstrate quantum advantage over classical computation.
+>
+> The exact classical exhaustive solver evaluates all 64 partitions in **$0.106\,\text{ms}$**, certifying the global optimum with $100\%$ certainty. Level-1 QAOA on NISQ hardware achieves an approximation ratio of $81.6\%\text{--}84.7\%$ and requires compilation, routing, and readout overhead. This project demonstrates **variational algorithm design, hardware mapping, and architectural benchmarking**, not quantum supremacy.
 
 ---
 
 ## 7. Historical Record Preservation
 
-To maintain archival integrity, prior benchmark runs remain preserved in their respective directories:
+To maintain complete archival integrity, all historical benchmark runs remain preserved in their original directories:
 - `results/verified_ab_v2/`: Historical version 2 runs (7-qubit ring Processor B, ECR basis, 1024 shots).
 - `results/verified_ab_v3/`: Historical version 3 runs (9-qubit tree Processor B, ECR basis, asymmetric readout, 1024 shots).
-- `results/verified_ab_v4/`: **Authoritative current benchmark** (CX basis, uniform synthetic noise, 4096 shots, custom Processor D).
+- `results/verified_ab_v4/`: Historical version 4 runs (unit-weight graph, 5-qubit symmetry-reduced formulation, 4096 shots).
+- `results/verified_o1_v5/`: **Authoritative current Version 5 benchmark** (PS-O1 compliant weighted graph, exact optimum $C_{\max}=20.0$, full 6-variable execution on B and D, honest capacity handling on A).
 
 ---
 
 ## 8. Quickstart & Reproduction Commands
 
-### Run Standalone Main Pipeline
+### Environment Setup (Verified on Python 3.12)
 ```bash
+# 1. Clone repository
+git clone https://github.com/karthikeyakolli/MAXCUT.git
+cd MAXCUT
+
+# 2. Install dependencies and editable package
+pip install -r requirements.txt
+pip install -e .
+```
+
+### Reproduce Authoritative Version 5 Benchmarks
+```powershell
+# 1. Run Version 5 primary benchmark pipeline (generates results/verified_o1_v5/)
+python scripts/run_verified_o1_v5_experiments.py
+
+# 2. Generate publication vector SVG figures
+python scripts/generate_v5_figures.py
+
+# 3. Build and pre-render interactive notebook
+python scripts/build_and_render_v5_notebook.py
+
+# 4. Run standalone main entrypoint
 python main.py
-```
 
-### Validate All Artifacts
-```bash
+# 5. Run complete automated regression test suite (163 tests)
+python -m pytest -v tests
+
+# 6. Validate full artifact integrity
 python scripts/validate_artifacts.py
-```
-
-### Run Full Test Suite
-```bash
-python -m unittest discover -s tests -p "test_phase*.py"
 ```
 
 ---
 
-## 9. Comprehensive Audit Deliverables
+## 9. Deliverables & Artifacts Index
 
-All phase audits and governance reports are documented in [`docs/audit/`](docs/audit/):
-- [`PHASE_0_REQUIREMENT_FREEZE.md`](docs/audit/PHASE_0_REQUIREMENT_FREEZE.md): Source precedence and frozen requirements.
-- [`PHASE_1_BASELINE_AUDIT.md`](docs/audit/PHASE_1_BASELINE_AUDIT.md): Initial code and architecture audit.
-- [`PHASE_2_MATHEMATICAL_VALIDATION.md`](docs/audit/PHASE_2_MATHEMATICAL_VALIDATION.md): Problem instance and Ising/QUBO proof.
-- [`PHASE_3_PROCESSOR_MIGRATION.md`](docs/audit/PHASE_3_PROCESSOR_MIGRATION.md): Processor A/B topology migration.
-- [`PHASE_4_BENCHMARK_CONFIGURATION.md`](docs/audit/PHASE_4_BENCHMARK_CONFIGURATION.md): CX gate basis and synthetic noise calibration.
-- [`PHASE_5_QAOA_VALIDATION.md`](docs/audit/PHASE_5_QAOA_VALIDATION.md): Shared variational parameter certification.
-- [`PHASE_6_PRIMARY_EXPERIMENTS.md`](docs/audit/PHASE_6_PRIMARY_EXPERIMENTS.md): Primary A/B 4-case benchmark.
-- [`PHASE_7_PROCESSOR_D.md`](docs/audit/PHASE_7_PROCESSOR_D.md): Custom Processor D design and evaluation.
-- [`PHASE_8_ANALYSIS_VALIDATION.md`](docs/audit/PHASE_8_ANALYSIS_VALIDATION.md): Complete statistics, tables, and figures.
-- [`FINAL_HACKATHON_READINESS_REPORT.md`](docs/audit/FINAL_HACKATHON_READINESS_REPORT.md): Final compliance verdict and submission checklist.
+- **Interactive Pre-Rendered Notebook:** [`main.ipynb`](main.ipynb)
+- **Technical Report:** [`report/analysis.md`](report/analysis.md)
+- **Submission Audit Report:** [`docs/audit/FINAL_HACKATHON_READINESS_REPORT.md`](docs/audit/FINAL_HACKATHON_READINESS_REPORT.md)
+- **Problem Instance:** [`instances/participant/o1_maxcut_weighted_v5.json`](instances/participant/o1_maxcut_weighted_v5.json)
+- **Publication Figures (8 SVGs):**
+  - [`Figure 1: Problem Graph & Optimum`](results/verified_o1_v5/figures/figure1_maxcut_problem_graph.svg)
+  - [`Figure 2: Processor A Capacity Analysis`](results/verified_o1_v5/figures/figure2_processor_a_coupling_map.svg)
+  - [`Figure 3: Processor B Coupling Map`](results/verified_o1_v5/figures/figure3_processor_b_coupling_map.svg)
+  - [`Figure 4: Processor D Custom Coupling Map`](results/verified_o1_v5/figures/figure4_processor_d_coupling_map.svg)
+  - [`Figure 5: Logical vs Transpiled Circuits`](results/verified_o1_v5/figures/figure5_logical_vs_transpiled_circuits.svg)
+  - [`Figure 6: Empirical Cut Distributions`](results/verified_o1_v5/figures/figure6_ideal_vs_noisy_distributions.svg)
+  - [`Figure 7: Architecture Resource Trade-Offs`](results/verified_o1_v5/figures/figure7_architecture_resource_tradeoffs.svg)
+  - [`Figure 8: Master Benchmark Summary`](results/verified_o1_v5/figures/figure8_combined_benchmark_performance.svg)
+- **Raw Count Data:** [`results/verified_o1_v5/counts_*.json`](results/verified_o1_v5/) (4096 shots per file)
+- **Compilation Circuits:** [`results/verified_o1_v5/circuits/`](results/verified_o1_v5/circuits/) (QASM export)

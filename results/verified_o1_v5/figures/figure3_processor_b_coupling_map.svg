@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 840 500" width="840" height="500">
+  <defs>
+    <style>
+      .bg { fill: #0f172a; }
+      .title { font-family: system-ui, -apple-system, sans-serif; font-size: 20px; font-weight: 700; fill: #f8fafc; }
+      .subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; fill: #94a3b8; }
+      .node-text { font-family: system-ui, -apple-system, sans-serif; font-size: 15px; font-weight: 700; fill: #ffffff; text-anchor: middle; dominant-baseline: central; }
+      .sub-text { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; fill: #94a3b8; text-anchor: middle; }
+      .active-edge { stroke: #38bdf8; stroke-width: 4; }
+      .spectator-edge { stroke: #475569; stroke-width: 2.5; stroke-dasharray: 4,4; }
+      .stat-card { fill: #1e293b; stroke: #334155; stroke-width: 1.5; rx: 8; }
+      .card-header { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; font-weight: 600; fill: #38bdf8; }
+      .card-body { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #e2e8f0; }
+    </style>
+  </defs>
+
+  <rect width="100%" height="100%" class="bg" />
+
+  <text x="40" y="40" class="title">Figure 3: Processor B Coupling Map (9Q Sparse Tree)</text>
+  <text x="40" y="65" class="subtitle">Architecture: 9 Physical Qubits, 8 Links | Active Sub-Tree: {2, 3, 4, 5, 6, 7} (6 Qubits) | 3 Routing SWAPs</text>
+
+  <!-- Physical Coupling Links -->
+  <!-- Spectator links -->
+  <line x1="80" y1="200" x2="180" y2="200" class="spectator-edge" /> <!-- (0,1) -->
+  <line x1="180" y1="200" x2="280" y2="200" class="spectator-edge" /> <!-- (1,2) -->
+  <line x1="380" y1="300" x2="480" y2="300" class="spectator-edge" /> <!-- (7,8) -->
+
+  <!-- Active sub-tree links -->
+  <line x1="280" y1="200" x2="280" y2="100" class="active-edge" /> <!-- (2,3) -->
+  <line x1="280" y1="200" x2="380" y2="200" class="active-edge" /> <!-- (2,4) -->
+  <line x1="380" y1="200" x2="480" y2="200" class="active-edge" /> <!-- (4,5) -->
+  <line x1="480" y1="200" x2="580" y2="200" class="active-edge" /> <!-- (5,6) -->
+  <line x1="380" y1="200" x2="380" y2="300" class="active-edge" /> <!-- (4,7) -->
+
+  <!-- Spectator Nodes (0, 1, 8) -->
+  <g transform="translate(80, 200)">
+    <circle r="22" fill="#334155" stroke="#64748b" stroke-width="2" />
+    <text class="node-text">Q0</text>
+    <text y="36" class="sub-text">Spectator</text>
+  </g>
+  <g transform="translate(180, 200)">
+    <circle r="22" fill="#334155" stroke="#64748b" stroke-width="2" />
+    <text class="node-text">Q1</text>
+    <text y="36" class="sub-text">Spectator</text>
+  </g>
+  <g transform="translate(480, 300)">
+    <circle r="22" fill="#334155" stroke="#64748b" stroke-width="2" />
+    <text class="node-text">Q8</text>
+    <text y="36" class="sub-text">Spectator</text>
+  </g>
+
+  <!-- Active Nodes: Q2, Q3, Q4, Q5, Q6, Q7 -->
+  <g transform="translate(280, 200)">
+    <circle r="24" fill="#0284c7" stroke="#38bdf8" stroke-width="3" />
+    <text class="node-text">Q2</text>
+    <text y="38" class="sub-text">Mapped (Hub)</text>
+  </g>
+  <g transform="translate(280, 100)">
+    <circle r="24" fill="#0284c7" stroke="#38bdf8" stroke-width="3" />
+    <text class="node-text">Q3</text>
+    <text y="-32" class="sub-text">Mapped</text>
+  </g>
+  <g transform="translate(380, 200)">
+    <circle r="24" fill="#0284c7" stroke="#38bdf8" stroke-width="3" />
+    <text class="node-text">Q4</text>
+    <text y="38" class="sub-text">Mapped (Hub)</text>
+  </g>
+  <g transform="translate(480, 200)">
+    <circle r="24" fill="#0284c7" stroke="#38bdf8" stroke-width="3" />
+    <text class="node-text">Q5</text>
+    <text y="38" class="sub-text">Mapped</text>
+  </g>
+  <g transform="translate(580, 200)">
+    <circle r="24" fill="#0284c7" stroke="#38bdf8" stroke-width="3" />
+    <text class="node-text">Q6</text>
+    <text y="38" class="sub-text">Mapped</text>
+  </g>
+  <g transform="translate(380, 300)">
+    <circle r="24" fill="#0284c7" stroke="#38bdf8" stroke-width="3" />
+    <text class="node-text">Q7</text>
+    <text y="38" class="sub-text">Mapped</text>
+  </g>
+
+  <!-- Metric Panels Below -->
+  <rect x="40" y="370" width="230" height="105" class="stat-card" />
+  <text x="55" y="395" class="card-header">Hardware Specification</text>
+  <text x="55" y="418" class="card-body">• Physical Qubits: 9 (6 active, 3 idle)</text>
+  <text x="55" y="438" class="card-body">• Physical Links: 8 (16 CX pairs)</text>
+  <text x="55" y="458" class="card-body">• Max Degree: 3 (Hubs at Q2, Q4)</text>
+
+  <rect x="290" y="370" width="240" height="105" class="stat-card" />
+  <text x="305" y="395" class="card-header">Compilation Overhead (6Q)</text>
+  <text x="305" y="418" class="card-body">• Transpiled Depth: 52 gates</text>
+  <text x="305" y="438" class="card-body">• Total CX: 25 (16 basis + 9 routing)</text>
+  <text x="305" y="458" class="card-body">• Routing SWAPs: 3 (+56.2% CX overhead)</text>
+
+  <rect x="550" y="370" width="250" height="105" class="stat-card" />
+  <text x="565" y="395" class="card-header">Solution Quality (Noisy)</text>
+  <text x="565" y="418" class="card-body">• Mean Cut &lt;C&gt;: 16.4282 ± 0.0560</text>
+  <text x="565" y="438" class="card-body">• Approx Ratio: 82.14%</text>
+  <text x="565" y="458" class="card-body">• P(opt): 12.92% (529/4096)</text>
+</svg>
